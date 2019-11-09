@@ -8,19 +8,21 @@
 //! * Units are not discarded when creating quantities.  In keeping with Rust
 //!   philosohpy, conversions must be done manually (using the `to` method).
 //!
-//! ## Room For Improvement
-//!
-//! * Small set of quantities and units implemented
-//! * Quantities are f64 only
-//!
 //! ## Example
 //!
 //! ```rust
 //! use mag::{Length, length::{ft, m}};
 //!
 //! let a = 3.5 * ft;
-//! assert_eq!(a.to::<m>().to_string(), "1.0668 m");
+//! let b = a.to::<m>();
+//! assert_eq!(b.to_string(), "1.0668 m");
 //! ```
+//!
+//! ## Room For Improvement
+//!
+//! * Small set of quantities and units implemented
+//! * Quantities are f64 only
+//!
 #![forbid(unsafe_code)]
 
 // Implement basic ops for a quantity struct
