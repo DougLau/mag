@@ -1,0 +1,13 @@
+[package]
+name = "mag"
+version = "0.1.0"
+authors = ["Doug Lau <doug.p.lau@gmail.com>"]
+description = "Measurement unit conversions (magnitude!)"
+license = "MIT OR Apache-2.0"
+documentation = "https://docs.rs/mag"
+repository = "https://github.com/DougLau/mag"
+readme = "README.md"
+keywords = ["units", "measurement", "dimensional-analysis"]
+edition = "2018"
+
+[dependencies]
