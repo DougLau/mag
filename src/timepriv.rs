@@ -69,7 +69,7 @@ pub struct Period<U> where U: Unit {
 ///
 #[derive(Debug, Copy, Clone, PartialEq)]
 pub struct Frequency<U> where U: Unit {
-    /// Period quantity
+    /// Frequency quantity
     pub quantity: f64,
     /// Measurement unit
     unit: PhantomData<U>,
@@ -84,8 +84,14 @@ impl<U> fmt::Display for Period<U> where U: Unit {
     }
 }
 
+impl<U> fmt::Display for Frequency<U> where U: Unit {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{} {}", self.quantity, U::INVERSE)
+    }
+}
+
 impl<U> Period<U> where U: Unit {
-    /// Create a new time measurement
+    /// Create a new period measurement
     pub fn new(quantity: f64) -> Self {
         Period::<U> { quantity, unit: PhantomData }
     }
@@ -94,5 +100,36 @@ impl<U> Period<U> where U: Unit {
     pub fn to<T: Unit>(self) -> Period<T> {
         let quantity = self.quantity * U::factor::<T>();
         Period::<T> { quantity, unit: PhantomData }
+    }
+}
+
+impl<U> Div<Period<U>> for f64 where U: Unit {
+    type Output = Frequency<U>;
+
+    fn div(self, other: Period<U>) -> Self::Output {
+        let quantity = self / other.quantity;
+        Self::Output { quantity, unit: PhantomData }
+    }
+}
+
+impl<U> Frequency<U> where U: Unit {
+    /// Create a new frequency measurement
+    pub fn new(quantity: f64) -> Self {
+        Frequency::<U> { quantity, unit: PhantomData }
+    }
+
+    /// Convert to specified units
+    pub fn to<T: Unit>(self) -> Frequency<T> {
+        let quantity = self.quantity * U::factor::<T>();
+        Frequency::<T> { quantity, unit: PhantomData }
+    }
+}
+
+impl<U> Div<Frequency<U>> for f64 where U: Unit {
+    type Output = Period<U>;
+
+    fn div(self, other: Frequency<U>) -> Self::Output {
+        let quantity = self / other.quantity;
+        Self::Output { quantity, unit: PhantomData }
     }
 }
