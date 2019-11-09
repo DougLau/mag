@@ -5,17 +5,16 @@
 //! * Easy to understand and use
 //! * No external dependencies
 //! * Fast compile time
-//! * Units are not discarded when creating quantities.  In keeping with Rust
-//!   philosohpy, conversions must be done manually (using the `to` method).
+//! * Units are not discarded when creating quantities
 //!
 //! ## Example
 //!
 //! ```rust
 //! use mag::{Length, length::{ft, m}};
 //!
-//! let a = 3.5 * ft;
+//! let a = 1.0 * ft;
 //! let b = a.to::<m>();
-//! assert_eq!(b.to_string(), "1.0668 m");
+//! assert_eq!(b.to_string(), "0.3048 m");
 //! ```
 //!
 //! ## Room For Improvement

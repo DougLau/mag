@@ -46,6 +46,8 @@ pub struct Period<U> where U: Unit {
     unit: PhantomData<U>,
 }
 
+/// A measurement of temporal frequency for repeating events.
+///
 /// Frequency is a derived quantity with a specific [unit].
 ///
 /// ## Operations

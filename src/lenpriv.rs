@@ -49,7 +49,9 @@ pub struct Length<U> where U: Unit {
     unit: PhantomData<U>,
 }
 
-/// Area is a derived quantity with a specific [length unit] squared.
+/// A measurement of physical area.
+///
+/// Area is a derived quantity with a specific [unit] squared.
 ///
 /// ## Operations
 ///
@@ -60,7 +62,7 @@ pub struct Length<U> where U: Unit {
 /// * Area `/` f64 `=>` Area
 /// * Area `/` [Length] `=>` [Length]
 ///
-/// [length unit]: length/index.html
+/// [unit]: length/index.html
 /// [Length]: struct.Length.html
 /// [Volume]: struct.Volume.html
 ///
@@ -83,7 +85,9 @@ pub struct Area<U> where U: Unit {
     unit: PhantomData<U>,
 }
 
-/// Volume is a derived quantity with a specific [length unit] cubed.
+/// A measurement of physical volume.
+///
+/// Volume is a derived quantity with a specific [unit] cubed.
 ///
 /// ## Operations
 ///
@@ -95,7 +99,7 @@ pub struct Area<U> where U: Unit {
 /// * Volume `/` [Area] `=>` [Length]
 ///
 /// [Area]: struct.Area.html
-/// [length unit]: length/index.html
+/// [unit]: length/index.html
 /// [Length]: struct.Length.html
 ///
 #[derive(Debug, Copy, Clone, PartialEq)]
