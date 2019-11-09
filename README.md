@@ -5,8 +5,7 @@ Mag is a library for dealing with units of measure.  Magnitude!
 * Easy to understand and use
 * No external dependencies
 * Fast compile time
-* Units are not discarded when creating quantities.  In keeping with Rust
-  philosohpy, conversions must be done manually (using the `to` method).
+* Units are not discarded when creating quantities
 
 ## Example
 
