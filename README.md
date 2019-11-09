@@ -11,11 +11,11 @@ Mag is a library for dealing with units of measure.  Magnitude!
 ## Example
 
 ```rust
-use mag::{Length, length::{ft, m}};
+use mag::length::{ft, m};
 
-let a = 3.5 * ft;
-let b = a.to::<m>();
-assert_eq!(b.to_string(), "1.0668 m");
+let a = 1.0 * ft; // Length<ft>
+let b = a.to::<m>(); // Length<m>
+assert_eq!(b.to_string(), "0.3048 m");
 ```
 
 ## Room For Improvement

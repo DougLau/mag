@@ -5,19 +5,29 @@
 //! Base units of length.
 //!
 //! Each unit is defined relative to meters with a conversion factor.  They can
-//! be used to conveniently create [Length] structs.
+//! be used to conveniently create [Length], [Area] and [Volume] structs.
 //!
 //! ## Example
 //!
 //! ```rust
-//! use mag::length::cm;
+//! use mag::length::{cm, m, mi, yd};
 //!
-//! let a = 25.5 * cm;
+//! let a = 25.5 * cm; // Length<cm>
+//! let b = 5.6 * mi; // Length<mi>
+//! let c = 1.2 * m * m; // Area<m>
+//! let d = 3.1 * yd * yd * yd; // Volume<yd>
+//! // let e = 1.0 * m * mi; // ERROR: units must match!
+//!
 //! assert_eq!(a.to_string(), "25.5 cm");
+//! assert_eq!(b.to_string(), "5.6 mi");
+//! assert_eq!(c.to_string(), "1.2 m²");
+//! assert_eq!(d.to_string(), "3.1 yd³");
 //! ```
+//! [Area]: ../struct.Area.html
 //! [Length]: ../struct.Length.html
+//! [Volume]: ../struct.Volume.html
 //!
-use crate::lenpriv::Length;
+use crate::lenpriv::{Area, Length, Volume};
 use std::ops::Mul;
 
 /// Unit definition for Length
@@ -51,10 +61,22 @@ macro_rules! length_unit {
 
         impl Mul<$unit> for f64 {
             type Output = Length<$unit>;
+            fn mul(self, _unit: $unit) -> Self::Output {
+                Length::new(self)
+            }
+        }
 
-            fn mul(self, _other: $unit) -> Self::Output {
-                let quantity = self;
-                Length::new(quantity)
+        impl Mul<$unit> for Length<$unit> {
+            type Output = Area<$unit>;
+            fn mul(self, _unit: $unit) -> Self::Output {
+                Area::new(self.quantity)
+            }
+        }
+
+        impl Mul<$unit> for Area<$unit> {
+            type Output = Volume<$unit>;
+            fn mul(self, _unit: $unit) -> Self::Output {
+                Volume::new(self.quantity)
             }
         }
     };
@@ -75,7 +97,6 @@ length_unit!(/** Yard */ yd, 0.9144, "yd");
 #[cfg(test)]
 mod test {
     use super::*;
-    use super::super::*;
 
     #[test]
     fn len_display() {
@@ -93,14 +114,14 @@ mod test {
 
     #[test]
     fn area_display() {
-        assert_eq!(Area::<m>::new(1.0).to_string(), "1 m²");
-        assert_eq!(Area::<In>::new(18.5).to_string(), "18.5 in²");
+        assert_eq!((1.0 * m * m).to_string(), "1 m²");
+        assert_eq!((18.5 * In * In).to_string(), "18.5 in²");
     }
 
     #[test]
     fn volume_display() {
-        assert_eq!(Volume::<um>::new(123.0).to_string(), "123 μm³");
-        assert_eq!(Volume::<In>::new(54.3).to_string(), "54.3 in³");
+        assert_eq!((123.0 * um * um * um).to_string(), "123 μm³");
+        assert_eq!((54.3 * In * In * In).to_string(), "54.3 in³");
     }
 
     #[test]
@@ -116,14 +137,14 @@ mod test {
 
     #[test]
     fn area_to() {
-        assert_eq!(Area::<ft>::new(1.0).to(), Area::<In>::new(144.0));
-        assert_eq!(Area::<m>::new(1.0).to(), Area::<cm>::new(10_000.0));
+        assert_eq!((1.0 * ft * ft).to(), 144.0 * In * In);
+        assert_eq!((1.0 * m * m).to(), 10_000.0 * cm * cm);
     }
 
     #[test]
     fn volume_to() {
-        assert_eq!(Volume::<yd>::new(2.0).to(), Volume::<ft>::new(54.0));
-        assert_eq!(Volume::<cm>::new(4.8).to(), Volume::<mm>::new(4_800.0));
+        assert_eq!((2.0 * yd * yd * yd).to(), 54.0 * ft * ft * ft);
+        assert_eq!((4.8 * cm * cm * cm).to(), 4_800.0 * mm * mm * mm);
     }
 
     #[test]
@@ -135,25 +156,19 @@ mod test {
 
     #[test]
     fn area_add() {
-        assert_eq!(
-            Area::<yd>::new(12.0) + Area::<yd>::new(15.0),
-            Area::<yd>::new(27.0)
-        );
-        assert_eq!(
-            Area::<km>::new(25.6) + Area::<km>::new(15.4),
-            Area::<km>::new(41.0)
-        );
+        assert_eq!(12.0 * yd * yd + 15.0 * yd * yd, 27.0 * yd * yd);
+        assert_eq!(25.6 * km * km + 15.4 * km * km, 41.0 * km * km);
     }
 
     #[test]
     fn volume_add() {
         assert_eq!(
-            Volume::<mm>::new(25.0) + Volume::<mm>::new(5.1),
-            Volume::<mm>::new(30.1)
+            25.0 * mm * mm * mm + 5.1 * mm * mm * mm,
+            30.1 * mm * mm * mm
         );
         assert_eq!(
-            Volume::<In>::new(1.2) + Volume::<In>::new(3.8),
-            Volume::<In>::new(5.0)
+            1.2 * In * In * In + 3.8 * In * In * In,
+            5.0 * In * In * In
         );
     }
 
@@ -165,42 +180,34 @@ mod test {
 
     #[test]
     fn area_sub() {
-        assert_eq!(
-            Area::<mi>::new(5.0) - Area::<mi>::new(2.5),
-            Area::<mi>::new(2.5)
-        );
+        assert_eq!(5.0 * mi * mi - 2.5 * mi * mi, 2.5 * mi * mi);
     }
 
     #[test]
     fn volume_sub() {
-        assert_eq!(
-            Volume::<m>::new(10.0) - Volume::<m>::new(4.5),
-            Volume::<m>::new(5.5)
-        );
+        assert_eq!(10.0 * m * m * m - 4.5 * m * m * m, 5.5 * m * m * m);
     }
 
     #[test]
     fn len_mul() {
-        assert_eq!((3.0 * m) * (3.0 * m), Area::<m>::new(9.0));
+        assert_eq!((3.0 * m) * (3.0 * m), 9.0 * m * m);
         assert_eq!((3.0 * nm) * 3.0, 9.0 * nm);
         assert_eq!(3.0 * (3.0 * m), 9.0 * m);
-        assert_eq!((10.0 * In) * (5.0 * In), Area::<In>::new(50.0));
+        assert_eq!((10.0 * In) * (5.0 * In), 50.0 * In * In);
     }
 
     #[test]
     fn area_mul() {
-        assert_eq!(Area::<dm>::new(3.0) * 2.5, Area::<dm>::new(7.5));
-        assert_eq!(4.0 * Area::<dm>::new(3.0), Area::<dm>::new(12.0));
-        assert_eq!(
-            Area::<mm>::new(123.0) * Length::<mm>::new(2.0),
-            Volume::<mm>::new(246.0)
-        );
+        assert_eq!(3.0 * dm * dm * 2.5, 7.5 * dm * dm);
+        assert_eq!(4.0 * (3.0 * dm * dm), 12.0 * dm * dm);
+        assert_eq!(123.0 * mm * mm * (2.0 * mm), 246.0 * mm * mm * mm);
+        assert_eq!(123.0 * mm * mm * 2.0 * mm, 246.0 * mm * mm * mm);
     }
 
     #[test]
     fn volume_mul() {
-        assert_eq!(Volume::<um>::new(8.0) * 1.5, Volume::<um>::new(12.0));
-        assert_eq!(4.0 * Volume::<km>::new(2.5), Volume::<km>::new(10.0));
+        assert_eq!(8.0 * um * um * um * 1.5, 12.0 * um * um * um);
+        assert_eq!(4.0 * (2.5 * km * km * km), 10.0 * km * km * km);
     }
 
     #[test]
@@ -210,14 +217,14 @@ mod test {
 
     #[test]
     fn area_div() {
-        assert_eq!(Area::<cm>::new(500.0) / 5.0, Area::<cm>::new(100.0));
-        assert_eq!(Area::<nm>::new(40.0) / Length::<nm>::new(10.0), 4.0 * nm);
+        assert_eq!((500.0 * cm * cm) / 5.0, 100.0 * cm * cm);
+        assert_eq!(40.0 * nm * nm / (10.0 * nm), 4.0 * nm);
     }
 
     #[test]
     fn volume_div() {
-        assert_eq!(Volume::<mm>::new(50.0) / 10.0, Volume::<mm>::new(5.0));
-        assert_eq!(Volume::<yd>::new(40.0) / (2.0 * yd), Area::<yd>::new(20.0));
-        assert_eq!(Volume::<In>::new(25.0) / Area::<In>::new(5.0), 5.0 * In);
+        assert_eq!((50.0 * mm * mm * mm) / 10.0, 5.0 * mm * mm * mm);
+        assert_eq!((40.0 * yd * yd * yd) / (2.0 * yd), 20.0 * yd * yd);
+        assert_eq!((25.0 * In * In * In) / (5.0 * In * In), 5.0 * In);
     }
 }

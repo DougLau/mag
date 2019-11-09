@@ -9,7 +9,7 @@ use std::fmt;
 use std::marker::PhantomData;
 use std::ops::{Add, Div, Mul, Sub};
 
-/// A measurement of period, duration or interval of time.
+/// A measurement of _period_, _duration_ or _interval_ of time.
 ///
 /// Period is a base quantity with a specific [unit].
 ///
@@ -46,7 +46,7 @@ pub struct Period<U> where U: Unit {
     unit: PhantomData<U>,
 }
 
-/// A measurement of temporal frequency for repeating events.
+/// A measurement of _temporal frequency_ for repeating events.
 ///
 /// Frequency is a derived quantity with a specific [unit].
 ///

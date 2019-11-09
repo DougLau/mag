@@ -7,6 +7,20 @@
 //! Each unit is defined relative to seconds with a conversion factor.  They
 //! can be used to conveniently create [Period] and [Frequency] structs.
 //!
+//! ## Example
+//!
+//! ```rust
+//! use mag::time::{s, ms};
+//!
+//! let a = 22.8 * s; // Period<s>
+//! let b = 50.6 * ms; // Period<ms>
+//! let c = 60.0 / s; // Frequency<s>
+//!
+//! assert_eq!(a.to_string(), "22.8 s");
+//! assert_eq!(b.to_string(), "50.6 ms");
+//! assert_eq!(c.to_string(), "60 Hz");
+//! ```
+//!
 //! [Frequency]: ../struct.Frequency.html
 //! [Period]: ../struct.Period.html
 //!

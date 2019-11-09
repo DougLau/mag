@@ -10,10 +10,10 @@
 //! ## Example
 //!
 //! ```rust
-//! use mag::{Length, length::{ft, m}};
+//! use mag::length::{ft, m};
 //!
-//! let a = 1.0 * ft;
-//! let b = a.to::<m>();
+//! let a = 1.0 * ft; // Length<ft>
+//! let b = a.to::<m>(); // Length<m>
 //! assert_eq!(b.to_string(), "0.3048 m");
 //! ```
 //!

@@ -9,7 +9,7 @@ use std::fmt;
 use std::marker::PhantomData;
 use std::ops::{Add, Div, Mul, Sub};
 
-/// A measurement of physical length, distance or range.
+/// A measurement of physical _length_, _distance_ or _range_.
 ///
 /// Length is a base quantity with a specific [unit].
 ///
@@ -21,6 +21,7 @@ use std::ops::{Add, Div, Mul, Sub};
 /// * f64 `*` Length `=>` Length
 /// * f64 `*` [unit] `=>` Length
 /// * Length `*` Length `=>` [Area]
+/// * Length `*` [unit] `=>` [Area]
 /// * Length `/` f64 `=>` Length
 ///
 /// Units must be the same for operations with two Length operands.  The [to]
@@ -33,10 +34,10 @@ use std::ops::{Add, Div, Mul, Sub};
 ///
 /// let a = 5.5 * In;
 /// let b = 4.5 * In;
+///
 /// println!("{} + {} = {}", a, b, a + b);
 /// println!("{} - {} = {}", a, b, a - b);
 /// ```
-///
 /// [Area]: struct.Area.html
 /// [unit]: length/index.html
 /// [to]: struct.Length.html#method.to
@@ -49,7 +50,7 @@ pub struct Length<U> where U: Unit {
     unit: PhantomData<U>,
 }
 
-/// A measurement of physical area.
+/// A measurement of physical _area_.
 ///
 /// Area is a derived quantity with a specific [unit] squared.
 ///
@@ -62,20 +63,21 @@ pub struct Length<U> where U: Unit {
 /// * Area `/` f64 `=>` Area
 /// * Area `/` [Length] `=>` [Length]
 ///
-/// [unit]: length/index.html
-/// [Length]: struct.Length.html
-/// [Volume]: struct.Volume.html
-///
 /// ## Example
 ///
 /// ```rust
-/// use mag::{Area, Length, length::m};
+/// use mag::length::m;
 ///
-/// let a = (10.0 * m) * (15.0 * m);
-/// assert_eq!(a, Area::new(150.0));
+/// let a = 150.0 * m * m; // Area<m>
+/// let b = (10.0 * m) * (15.0 * m); // Area<m>
+///
+/// assert_eq!(a, b);
 /// assert_eq!(a.to_string(), "150 m²");
 /// assert_eq!(a / (5.0 * m), 30.0 * m);
 /// ```
+/// [unit]: length/index.html
+/// [Length]: struct.Length.html
+/// [Volume]: struct.Volume.html
 ///
 #[derive(Debug, Copy, Clone, PartialEq)]
 pub struct Area<U> where U: Unit {
@@ -85,7 +87,7 @@ pub struct Area<U> where U: Unit {
     unit: PhantomData<U>,
 }
 
-/// A measurement of physical volume.
+/// A measurement of physical _volume_.
 ///
 /// Volume is a derived quantity with a specific [unit] cubed.
 ///
@@ -98,6 +100,17 @@ pub struct Area<U> where U: Unit {
 /// * Volume `/` [Length] `=>` [Area]
 /// * Volume `/` [Area] `=>` [Length]
 ///
+/// ## Example
+///
+/// ```rust
+/// use mag::length::yd;
+///
+/// let a = 2.5 * yd * yd * yd; // Volume<yd>
+/// let b = a / (2.0 * yd); // Area<yd>
+///
+/// assert_eq!(a.to_string(), "2.5 yd³");
+/// assert_eq!(b.to_string(), "1.25 yd²");
+/// ```
 /// [Area]: struct.Area.html
 /// [unit]: length/index.html
 /// [Length]: struct.Length.html
