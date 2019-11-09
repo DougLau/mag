@@ -54,7 +54,6 @@ macro_rules! length_unit {
 
             fn mul(self, _other: $unit) -> Self::Output {
                 let quantity = self;
-                //Self::Output { quantity, unit: PhantomData }
                 Length::new(quantity)
             }
         }
