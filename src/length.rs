@@ -94,6 +94,15 @@ length_unit!(/** Foot */ ft, 0.3048, "ft");
 length_unit!(/** Inch */ In, 0.0254, "in");
 length_unit!(/** Yard */ yd, 0.9144, "yd");
 
+#[cfg(feature = "obscure-units")]
+length_unit!(/** League */ league, 4828.032, "league");
+#[cfg(feature = "obscure-units")]
+length_unit!(/** Rod */ rod, 5.0292, "rod");
+#[cfg(feature = "obscure-units")]
+length_unit!(/** Furlong */ furlong, 201.168, "furlong");
+#[cfg(feature = "obscure-units")]
+length_unit!(/** Fathom */ fathom, 1.8288, "fathom");
+
 #[cfg(test)]
 mod test {
     use super::*;

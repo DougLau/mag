@@ -84,8 +84,6 @@ macro_rules! time_unit {
 time_unit!(/** Gigasecond */ Gs, 1_000_000_000.0, "Gs", "nHz");
 time_unit!(/** Megasecond */ Ms, 1_000_000.0, "Ms", "μHz");
 time_unit!(/** Kilosecond */ Ks, 1_000.0, "Ks", "mHz");
-time_unit!(/** 14 Days */ Fortnight, 14.0 * 24.0 * 60.0 * 60.0, "fortnight",
-    "/fortnight");
 time_unit!(/** Week */ wk, 7.0 * 24.0 * 60.0 * 60.0, "wk", "/wk");
 time_unit!(/** Day */ d, 24.0 * 60.0 * 60.0, "d", "/d");
 time_unit!(/** Hour */ h, 60.0 * 60.0, "h", "/h");
@@ -96,6 +94,10 @@ time_unit!(/** Millisecond */ ms, 0.001, "ms", "㎑");
 time_unit!(/** Microsecond */ us, 0.000_001, "μs", "㎒");
 time_unit!(/** Nanosecond */ ns, 0.000_000_001, "ns", "㎓");
 time_unit!(/** Picosecond */ ps, 0.000_000_000_001, "ps", "㎔");
+
+#[cfg(feature = "obscure-units")]
+time_unit!(/** 14 Days */ Fortnight, 14.0 * 24.0 * 60.0 * 60.0, "fortnight",
+    "/fortnight");
 
 #[cfg(test)]
 mod test {

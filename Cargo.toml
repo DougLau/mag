@@ -11,3 +11,9 @@ keywords = ["units", "measurement", "dimensional-analysis"]
 edition = "2018"
 
 [dependencies]
+
+[features]
+default = []
+
+# More obscure units are available
+obscure-units = []
