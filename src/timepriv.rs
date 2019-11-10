@@ -68,7 +68,7 @@ pub struct Period<U> where U: Unit {
 ///
 /// let a = 25.0 / s;
 ///
-/// assert_eq!(a.to_string(), "25 Hz");
+/// assert_eq!(a.to_string(), "25 ㎐");
 /// ```
 /// [Period]: struct.Period.html
 /// [unit]: time/index.html
@@ -127,7 +127,7 @@ impl<U> Frequency<U> where U: Unit {
 
     /// Convert to specified units
     pub fn to<T: Unit>(self) -> Frequency<T> {
-        let quantity = self.quantity * U::factor::<T>();
+        let quantity = self.quantity / U::factor::<T>();
         Frequency::<T> { quantity, unit: PhantomData }
     }
 }

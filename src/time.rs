@@ -18,7 +18,7 @@
 //!
 //! assert_eq!(a.to_string(), "22.8 s");
 //! assert_eq!(b.to_string(), "50.6 ms");
-//! assert_eq!(c.to_string(), "60 Hz");
+//! assert_eq!(c.to_string(), "60 ㎐");
 //! ```
 //!
 //! [Frequency]: ../struct.Frequency.html
@@ -79,20 +79,21 @@ macro_rules! time_unit {
     };
 }
 
-time_unit!(/** Gigasecond */ Gs, 1_000_000_000.0, "Gs", "GHz");
-time_unit!(/** Megasecond */ Ms, 1_000_000.0, "Ms", "MHz");
-time_unit!(/** Kilosecond */ Ks, 1_000.0, "Ks", "KHz");
+time_unit!(/** Gigasecond */ Gs, 1_000_000_000.0, "Gs", "nHz");
+time_unit!(/** Megasecond */ Ms, 1_000_000.0, "Ms", "μHz");
+time_unit!(/** Kilosecond */ Ks, 1_000.0, "Ks", "mHz");
 time_unit!(/** 14 Days */ Fortnight, 14.0 * 24.0 * 60.0 * 60.0, "fortnight",
     "/fortnight");
 time_unit!(/** Week */ wk, 7.0 * 24.0 * 60.0 * 60.0, "wk", "/wk");
 time_unit!(/** Day */ d, 24.0 * 60.0 * 60.0, "d", "/d");
 time_unit!(/** Hour */ h, 60.0 * 60.0, "h", "/h");
 time_unit!(/** Minute */ min, 60.0, "min", "/min");
-time_unit!(/** Second */ s, 1.0, "s", "Hz");
-time_unit!(/** Decisecond */ ds, 0.1, "ds", "dHz");
-time_unit!(/** Millisecond */ ms, 0.001, "ms", "mHz");
-time_unit!(/** Microsecond */ us, 0.000_001, "μs", "μHz");
-time_unit!(/** Nanosecond */ ns, 0.000_000_001, "ns", "nHz");
+time_unit!(/** Second */ s, 1.0, "s", "㎐");
+time_unit!(/** Decisecond */ ds, 0.1, "ds", "daHz");
+time_unit!(/** Millisecond */ ms, 0.001, "ms", "㎑");
+time_unit!(/** Microsecond */ us, 0.000_001, "μs", "㎒");
+time_unit!(/** Nanosecond */ ns, 0.000_000_001, "ns", "㎓");
+time_unit!(/** Picosecond */ ps, 0.000_000_000_001, "ps", "㎔");
 
 #[cfg(test)]
 mod test {
@@ -103,15 +104,17 @@ mod test {
     fn time_display() {
         assert_eq!((23.7 * s).to_string(), "23.7 s");
         assert_eq!((3.25 * h).to_string(), "3.25 h");
-        assert_eq!((50.0 / s).to_string(), "50 Hz");
+        assert_eq!((50.0 / s).to_string(), "50 ㎐");
         assert_eq!((2.0 / d).to_string(), "2 /d");
+        assert_eq!((333.3 / us).to_string(), "333.3 ㎒");
     }
 
     #[test]
     fn time_to() {
         assert_eq!((4.75 * h).to(), 285.0 * min);
         assert_eq!((2.5 * s).to(), 2_500.0 * ms);
-        assert_eq!((1_000.0 / s).to(), Frequency::<Ks>::new(1.0));
+        assert_eq!((1_000.0 / s).to(), 1.0 / ms);
+        assert_eq!((300.0 / ms).to(), 0.3 / us);
     }
 
     #[test]
@@ -138,7 +141,7 @@ mod test {
     fn time_div() {
         assert_eq!(5. / h, Frequency::<h>::new(5.0));
         assert_eq!(60.0 / s, Frequency::<s>::new(60.0));
-        assert_eq!(1.0 / (1.0 * s), Frequency::<s>::new(1.0));
-        assert_eq!(2.0 / (1.0 / min), Period::<min>::new(2.0));
+        assert_eq!(1.0 / (1.0 * s), 1.0 / s);
+        assert_eq!(2.0 / (1.0 / min), 2.0 * min);
     }
 }
