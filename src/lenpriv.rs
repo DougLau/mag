@@ -35,8 +35,8 @@ use std::ops::{Add, Div, Mul, Sub};
 /// let a = 5.5 * In;
 /// let b = 4.5 * In;
 ///
-/// println!("{} + {} = {}", a, b, a + b);
-/// println!("{} - {} = {}", a, b, a - b);
+/// assert_eq!(a.to_string(), "5.5 in");
+/// assert_eq!(a + b, 10.0 * In);
 /// ```
 /// [Area]: struct.Area.html
 /// [unit]: length/index.html

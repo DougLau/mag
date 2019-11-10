@@ -26,14 +26,14 @@ use std::ops::{Add, Div, Mul, Sub};
 /// method can be used for conversion.
 ///
 /// ```rust
-/// use mag::{Period, time::min};
+/// use mag::time::min;
 ///
 /// let a = 15.0 * min;
 /// let b = 5.5 * min;
-/// println!("{} + {} = {}", a, b, a + b);
-/// println!("{} - {} = {}", a, b, a - b);
-/// ```
 ///
+/// assert_eq!(a.to_string(), "15 min");
+/// assert_eq!((a + b).to_string(), "20.5 min");
+/// ```
 /// [Frequency]: struct.Frequency.html
 /// [unit]: time/index.html
 /// [to]: struct.Period.html#method.to
@@ -63,6 +63,13 @@ pub struct Period<U> where U: Unit {
 /// Units must be the same for operations with two Frequency operands.  The [to]
 /// method can be used for conversion.
 ///
+/// ```rust
+/// use mag::time::s;
+///
+/// let a = 25.0 / s;
+///
+/// assert_eq!(a.to_string(), "25 Hz");
+/// ```
 /// [Period]: struct.Period.html
 /// [unit]: time/index.html
 /// [to]: struct.Frequency.html#method.to
