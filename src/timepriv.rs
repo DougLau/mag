@@ -4,7 +4,7 @@
 //
 //! Private module for time structs
 //!
-use crate::time::Unit;
+use crate::{Length, Velocity, length, time::Unit};
 use std::fmt;
 use std::marker::PhantomData;
 use std::ops::{Add, Div, Mul, Sub};
@@ -121,6 +121,17 @@ impl<U> Div<Period<U>> for f64 where U: Unit {
     }
 }
 
+impl<L, T> Div<Period<T>> for Length<L>
+    where L: length::Unit, T: Unit
+{
+    type Output = Velocity<L, T>;
+
+    fn div(self, per: Period<T>) -> Self::Output {
+        let quantity = self.quantity / per.quantity;
+        Velocity::new(quantity)
+    }
+}
+
 impl<U> Frequency<U> where U: Unit {
     /// Create a new frequency measurement
     pub fn new(quantity: f64) -> Self {
@@ -140,5 +151,27 @@ impl<U> Div<Frequency<U>> for f64 where U: Unit {
     fn div(self, other: Frequency<U>) -> Self::Output {
         let quantity = self / other.quantity;
         Self::Output { quantity, unit: PhantomData }
+    }
+}
+
+impl<L, T> Mul<Length<L>> for Frequency<T>
+    where L: length::Unit, T: Unit
+{
+    type Output = Velocity<L, T>;
+
+    fn mul(self, len: Length<L>) -> Self::Output {
+        let quantity = self.quantity * len.quantity;
+        Velocity::new(quantity)
+    }
+}
+
+impl<L, T> Mul<Frequency<T>> for Length<L>
+    where L: length::Unit, T: Unit
+{
+    type Output = Velocity<L, T>;
+
+    fn mul(self, freq: Frequency<T>) -> Self::Output {
+        let quantity = self.quantity * freq.quantity;
+        Velocity::new(quantity)
     }
 }

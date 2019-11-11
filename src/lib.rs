@@ -70,6 +70,8 @@ pub mod length;
 mod lenpriv;
 pub mod time;
 mod timepriv;
+mod velocity;
 
 pub use lenpriv::{Area, Length, Volume};
 pub use timepriv::{Frequency, Period};
+pub use velocity::Velocity;

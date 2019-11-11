@@ -26,7 +26,7 @@
 //! [Frequency]: ../struct.Frequency.html
 //! [Period]: ../struct.Period.html
 //!
-use super::{Frequency, Period};
+use super::{Frequency, length, Length, Period, Velocity};
 use std::ops::{Div, Mul};
 
 /// Unit definition for time
@@ -72,10 +72,18 @@ macro_rules! time_unit {
 
         impl Div<$unit> for f64 {
             type Output = Frequency<$unit>;
-
             fn div(self, _other: $unit) -> Self::Output {
                 let quantity = self;
                 Frequency::new(quantity)
+            }
+        }
+
+        impl<L> Div<$unit> for Length<L>
+            where L: length::Unit
+        {
+            type Output = Velocity<L, $unit>;
+            fn div(self, _unit: $unit) -> Self::Output {
+                Velocity::new(self.quantity)
             }
         }
     };
