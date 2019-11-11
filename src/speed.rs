@@ -1,36 +1,36 @@
-// velocity.rs
+// speed.rs
 //
 // Copyright (C) 2019  Minnesota Department of Transportation
 //
-//! Private module for velocity structs
+//! Private module for speed structs
 //!
 use crate::{length, time};
 use std::fmt;
 use std::marker::PhantomData;
 use std::ops::{Add, Div, Mul, Sub};
 
-/// A measurement of _velocity_ or _speed_.
+/// A measurement of _speed_.
 ///
-/// Velocity is a derived quantity with [length unit]s and [time unit]s.
+/// Speed is a derived quantity with [length unit]s and [time unit]s.
 ///
 /// ## Operations
 ///
-/// * Velocity `+` Velocity `=>` Velocity
-/// * Velocity `-` Velocity `=>` Velocity
-/// * Velocity `*` f64 `=>` Velocity
-/// * f64 `*` Velocity `=>` Velocity
-/// * [Length] `*` [Frequency] `=>` Velocity
-/// * Velocity `/` f64 `=>` Velocity
-/// * [Length] `/` [time unit] `=>` Velocity
-/// * [Length] `/` [Period] `=>` Velocity
+/// * Speed `+` Speed `=>` Speed
+/// * Speed `-` Speed `=>` Speed
+/// * Speed `*` f64 `=>` Speed
+/// * f64 `*` Speed `=>` Speed
+/// * [Length] `*` [Frequency] `=>` Speed
+/// * Speed `/` f64 `=>` Speed
+/// * [Length] `/` [time unit] `=>` Speed
+/// * [Length] `/` [Period] `=>` Speed
 ///
-/// Units must be the same for operations with two Velocity operands.  The [to]
+/// Units must be the same for operations with two Speed operands.  The [to]
 /// method can be used for conversion.
 ///
 /// ## Example
 ///
 /// ```rust
-/// use mag::{Velocity, length::{m, mi}, time::{h, s}};
+/// use mag::{Speed, length::{m, mi}, time::{h, s}};
 ///
 /// let a = 7.4 * m / s;
 /// let b = 55.0 * mi / h;
@@ -43,11 +43,11 @@ use std::ops::{Add, Div, Mul, Sub};
 /// [Period]: struct.Period.html
 /// [length unit]: length/index.html
 /// [time unit]: time/index.html
-/// [to]: struct.Velocity.html#method.to
+/// [to]: struct.Speed.html#method.to
 ///
 #[derive(Debug, Copy, Clone, PartialEq)]
-pub struct Velocity<L, P> where L: length::Unit, P: time::Unit {
-    /// Velocity quantity
+pub struct Speed<L, P> where L: length::Unit, P: time::Unit {
+    /// Speed quantity
     pub quantity: f64,
     /// Length unit
     length: PhantomData<L>,
@@ -55,7 +55,7 @@ pub struct Velocity<L, P> where L: length::Unit, P: time::Unit {
     period: PhantomData<P>,
 }
 
-impl<L, P> Add for Velocity<L, P> where L: length::Unit, P: time::Unit {
+impl<L, P> Add for Speed<L, P> where L: length::Unit, P: time::Unit {
     type Output = Self;
 
     fn add(self, other: Self) -> Self::Output {
@@ -64,7 +64,7 @@ impl<L, P> Add for Velocity<L, P> where L: length::Unit, P: time::Unit {
     }
 }
 
-impl<L, P> Sub for Velocity<L, P> where L: length::Unit, P: time::Unit {
+impl<L, P> Sub for Speed<L, P> where L: length::Unit, P: time::Unit {
     type Output = Self;
 
     fn sub(self, other: Self) -> Self::Output {
@@ -73,7 +73,7 @@ impl<L, P> Sub for Velocity<L, P> where L: length::Unit, P: time::Unit {
     }
 }
 
-impl<L, P> Mul<f64> for Velocity<L, P> where L: length::Unit, P: time::Unit {
+impl<L, P> Mul<f64> for Speed<L, P> where L: length::Unit, P: time::Unit {
     type Output = Self;
 
     fn mul(self, other: f64) -> Self::Output {
@@ -82,16 +82,16 @@ impl<L, P> Mul<f64> for Velocity<L, P> where L: length::Unit, P: time::Unit {
     }
 }
 
-impl<L, P> Mul<Velocity<L, P>> for f64 where L: length::Unit, P: time::Unit {
-    type Output = Velocity<L, P>;
+impl<L, P> Mul<Speed<L, P>> for f64 where L: length::Unit, P: time::Unit {
+    type Output = Speed<L, P>;
 
-    fn mul(self, other: Velocity<L, P>) -> Self::Output {
+    fn mul(self, other: Speed<L, P>) -> Self::Output {
         let quantity = self * other.quantity;
-        Velocity { quantity, length: PhantomData, period: PhantomData }
+        Speed { quantity, length: PhantomData, period: PhantomData }
     }
 }
 
-impl<L, P> Div<f64> for Velocity<L, P> where L: length::Unit, P: time::Unit {
+impl<L, P> Div<f64> for Speed<L, P> where L: length::Unit, P: time::Unit {
     type Output = Self;
 
     fn div(self, other: f64) -> Self::Output {
@@ -100,10 +100,10 @@ impl<L, P> Div<f64> for Velocity<L, P> where L: length::Unit, P: time::Unit {
     }
 }
 
-impl<L, P> Velocity<L, P> where L: length::Unit, P: time::Unit {
+impl<L, P> Speed<L, P> where L: length::Unit, P: time::Unit {
     /// Create a new length measurement
     pub fn new(quantity: f64) -> Self {
-        Velocity::<L, P> {
+        Speed::<L, P> {
             quantity,
             length: PhantomData,
             period: PhantomData,
@@ -111,16 +111,16 @@ impl<L, P> Velocity<L, P> where L: length::Unit, P: time::Unit {
     }
 
     /// Convert to specified units
-    pub fn to<N, R>(self) -> Velocity<N, R>
+    pub fn to<N, R>(self) -> Speed<N, R>
         where N: length::Unit, R: time::Unit
     {
         let factor = L::factor::<N>() / P::factor::<R>();
         let quantity = self.quantity * factor;
-        Velocity { quantity, length: PhantomData, period: PhantomData }
+        Speed { quantity, length: PhantomData, period: PhantomData }
     }
 }
 
-impl<L, P> fmt::Display for Velocity<L, P>
+impl<L, P> fmt::Display for Speed<L, P>
     where L: length::Unit, P: time::Unit
 {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
@@ -163,17 +163,17 @@ mod test {
     fn vel_mul() {
         assert_eq!((5.1 * In / s) * 2.0, 10.2 * In / s);
         assert_eq!(3.0 * (10.5 * mi / us), 31.5 * mi / us);
-        // Length * Frequency => Velocity
+        // Length * Frequency => Speed
         assert_eq!((15.0 * m) * (3.0 / ds), 45.0 * m / ds);
-        // Frequency * Length => Velocity
+        // Frequency * Length => Speed
         assert_eq!((5.0 / s) * (3.0 * yd), 15.0 * yd / s);
     }
 
     #[test]
     fn time_div() {
-        // Length / [time unit] => Velocity
-        assert_eq!(10.0 * mi / h, Velocity::<mi, h>::new(10.0));
-        // Length / Period => Velocity
-        assert_eq!((45.5 * km) / (1.0 * h), Velocity::<km, h>::new(45.5));
+        // Length / [time unit] => Speed
+        assert_eq!(10.0 * mi / h, Speed::<mi, h>::new(10.0));
+        // Length / Period => Speed
+        assert_eq!((45.5 * km) / (1.0 * h), Speed::<km, h>::new(45.5));
     }
 }

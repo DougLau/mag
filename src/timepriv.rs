@@ -4,7 +4,7 @@
 //
 //! Private module for time structs
 //!
-use crate::{Length, Velocity, length, time::Unit};
+use crate::{Length, Speed, length, time::Unit};
 use std::fmt;
 use std::marker::PhantomData;
 use std::ops::{Add, Div, Mul, Sub};
@@ -124,11 +124,11 @@ impl<U> Div<Period<U>> for f64 where U: Unit {
 impl<L, T> Div<Period<T>> for Length<L>
     where L: length::Unit, T: Unit
 {
-    type Output = Velocity<L, T>;
+    type Output = Speed<L, T>;
 
     fn div(self, per: Period<T>) -> Self::Output {
         let quantity = self.quantity / per.quantity;
-        Velocity::new(quantity)
+        Speed::new(quantity)
     }
 }
 
@@ -157,21 +157,21 @@ impl<U> Div<Frequency<U>> for f64 where U: Unit {
 impl<L, T> Mul<Length<L>> for Frequency<T>
     where L: length::Unit, T: Unit
 {
-    type Output = Velocity<L, T>;
+    type Output = Speed<L, T>;
 
     fn mul(self, len: Length<L>) -> Self::Output {
         let quantity = self.quantity * len.quantity;
-        Velocity::new(quantity)
+        Speed::new(quantity)
     }
 }
 
 impl<L, T> Mul<Frequency<T>> for Length<L>
     where L: length::Unit, T: Unit
 {
-    type Output = Velocity<L, T>;
+    type Output = Speed<L, T>;
 
     fn mul(self, freq: Frequency<T>) -> Self::Output {
         let quantity = self.quantity * freq.quantity;
-        Velocity::new(quantity)
+        Speed::new(quantity)
     }
 }
