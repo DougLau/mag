@@ -55,59 +55,50 @@ pub struct Speed<L, P> where L: length::Unit, P: time::Unit {
     period: PhantomData<P>,
 }
 
+// Speed + Speed => Speed
 impl<L, P> Add for Speed<L, P> where L: length::Unit, P: time::Unit {
     type Output = Self;
-
     fn add(self, other: Self) -> Self::Output {
-        let quantity = self.quantity + other.quantity;
-        Self { quantity, length: PhantomData, period: PhantomData }
+        Self::new(self.quantity + other.quantity)
     }
 }
 
+// Speed - Speed => Speed
 impl<L, P> Sub for Speed<L, P> where L: length::Unit, P: time::Unit {
     type Output = Self;
-
     fn sub(self, other: Self) -> Self::Output {
-        let quantity = self.quantity - other.quantity;
-        Self { quantity, length: PhantomData, period: PhantomData }
+        Self::new(self.quantity - other.quantity)
     }
 }
 
+// Speed * f64 => Speed
 impl<L, P> Mul<f64> for Speed<L, P> where L: length::Unit, P: time::Unit {
     type Output = Self;
-
-    fn mul(self, other: f64) -> Self::Output {
-        let quantity = self.quantity * other;
-        Self { quantity, length: PhantomData, period: PhantomData }
+    fn mul(self, scalar: f64) -> Self::Output {
+        Self::new(self.quantity * scalar)
     }
 }
 
+// f64 * Speed => Speed
 impl<L, P> Mul<Speed<L, P>> for f64 where L: length::Unit, P: time::Unit {
     type Output = Speed<L, P>;
-
     fn mul(self, other: Speed<L, P>) -> Self::Output {
-        let quantity = self * other.quantity;
-        Speed { quantity, length: PhantomData, period: PhantomData }
+        Speed::new(self * other.quantity)
     }
 }
 
+// Speed / f64 => Speed
 impl<L, P> Div<f64> for Speed<L, P> where L: length::Unit, P: time::Unit {
     type Output = Self;
-
-    fn div(self, other: f64) -> Self::Output {
-        let quantity = self.quantity / other;
-        Self { quantity, length: PhantomData, period: PhantomData }
+    fn div(self, scalar: f64) -> Self::Output {
+        Self::new(self.quantity / scalar)
     }
 }
 
 impl<L, P> Speed<L, P> where L: length::Unit, P: time::Unit {
     /// Create a new length measurement
     pub fn new(quantity: f64) -> Self {
-        Speed::<L, P> {
-            quantity,
-            length: PhantomData,
-            period: PhantomData,
-        }
+        Speed::<L, P> { quantity, length: PhantomData, period: PhantomData }
     }
 
     /// Convert to specified units
@@ -115,8 +106,7 @@ impl<L, P> Speed<L, P> where L: length::Unit, P: time::Unit {
         where N: length::Unit, R: time::Unit
     {
         let factor = L::factor::<N>() / P::factor::<R>();
-        let quantity = self.quantity * factor;
-        Speed { quantity, length: PhantomData, period: PhantomData }
+        Speed::new(self.quantity * factor)
     }
 }
 

@@ -136,7 +136,7 @@ impl<U> Length<U> where U: Unit {
     /// Convert to specified units
     pub fn to<T: Unit>(self) -> Length<T> {
         let quantity = self.quantity * U::factor::<T>();
-        Length::<T> { quantity, unit: PhantomData }
+        Length::new(quantity)
     }
 }
 
@@ -150,7 +150,7 @@ impl<U> Area<U> where U: Unit {
     pub fn to<T: Unit>(self) -> Area<T> {
         let factor = U::factor::<T>() * U::factor::<T>();
         let quantity = self.quantity * factor;
-        Area::<T> { quantity, unit: PhantomData }
+        Area::new(quantity)
     }
 }
 
@@ -164,7 +164,7 @@ impl<U> Volume<U> where U: Unit {
     pub fn to<T: Unit>(self) -> Volume<T> {
         let factor = U::factor::<T>() * U::factor::<T>() * U::factor::<T>();
         let quantity = self.quantity * factor;
-        Volume::<T> { quantity, unit: PhantomData }
+        Volume::new(quantity)
     }
 }
 
@@ -186,47 +186,42 @@ impl<U> fmt::Display for Volume<U> where U: Unit {
     }
 }
 
+// Length * Length => Area
 impl<U> Mul for Length<U> where U: Unit {
     type Output = Area<U>;
-
     fn mul(self, other: Self) -> Self::Output {
-        let quantity = self.quantity * other.quantity;
-        Self::Output { quantity, unit: PhantomData }
+        Area::new(self.quantity * other.quantity)
     }
 }
 
+// Area * Length => Volume
 impl<U> Mul<Length<U>> for Area<U> where U: Unit {
     type Output = Volume<U>;
-
     fn mul(self, other: Length<U>) -> Self::Output {
-        let quantity = self.quantity * other.quantity;
-        Self::Output { quantity, unit: PhantomData }
+        Volume::new(self.quantity * other.quantity)
     }
 }
 
+// Area / Length => Length
 impl<U> Div<Length<U>> for Area<U> where U: Unit {
     type Output = Length<U>;
-
     fn div(self, other: Length<U>) -> Self::Output {
-        let quantity = self.quantity / other.quantity;
-        Self::Output { quantity, unit: PhantomData }
+        Length::new(self.quantity / other.quantity)
     }
 }
 
+// Volume / Length => Area
 impl<U> Div<Length<U>> for Volume<U> where U: Unit {
     type Output = Area<U>;
-
     fn div(self, other: Length<U>) -> Self::Output {
-        let quantity = self.quantity / other.quantity;
-        Self::Output { quantity, unit: PhantomData }
+        Area::new(self.quantity / other.quantity)
     }
 }
 
+// Volume / Area => Length
 impl<U> Div<Area<U>> for Volume<U> where U: Unit {
     type Output = Length<U>;
-
     fn div(self, other: Area<U>) -> Self::Output {
-        let quantity = self.quantity / other.quantity;
-        Self::Output { quantity, unit: PhantomData }
+        Length::new(self.quantity / other.quantity)
     }
 }

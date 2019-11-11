@@ -22,7 +22,6 @@
 //! assert_eq!(c.to_string(), "60 ㎐");
 //! assert_eq!(d.to_string(), "3.1 ㎓");
 //! ```
-//!
 //! [Frequency]: ../struct.Frequency.html
 //! [Period]: ../struct.Period.html
 //!
@@ -61,26 +60,24 @@ macro_rules! time_unit {
             const INVERSE: &'static str = { $inverse };
         }
 
+        // f64 * <unit> => Period
         impl Mul<$unit> for f64 {
             type Output = Period<$unit>;
-
             fn mul(self, _other: $unit) -> Self::Output {
-                let quantity = self;
-                Period::new(quantity)
+                Period::new(self)
             }
         }
 
+        // f64 / <unit> => Frequency
         impl Div<$unit> for f64 {
             type Output = Frequency<$unit>;
             fn div(self, _other: $unit) -> Self::Output {
-                let quantity = self;
-                Frequency::new(quantity)
+                Frequency::new(self)
             }
         }
 
-        impl<L> Div<$unit> for Length<L>
-            where L: length::Unit
-        {
+        // Length / <unit> => Speed
+        impl<L> Div<$unit> for Length<L> where L: length::Unit {
             type Output = Speed<L, $unit>;
             fn div(self, _unit: $unit) -> Self::Output {
                 Speed::new(self.quantity)

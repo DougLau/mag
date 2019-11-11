@@ -108,27 +108,23 @@ impl<U> Period<U> where U: Unit {
     /// Convert to specified units
     pub fn to<T: Unit>(self) -> Period<T> {
         let quantity = self.quantity * U::factor::<T>();
-        Period::<T> { quantity, unit: PhantomData }
+        Period::new(quantity)
     }
 }
 
+// f64 / Period => Frequency
 impl<U> Div<Period<U>> for f64 where U: Unit {
     type Output = Frequency<U>;
-
     fn div(self, other: Period<U>) -> Self::Output {
-        let quantity = self / other.quantity;
-        Self::Output { quantity, unit: PhantomData }
+        Self::Output::new(self / other.quantity)
     }
 }
 
-impl<L, T> Div<Period<T>> for Length<L>
-    where L: length::Unit, T: Unit
-{
+// Length / Period => Speed
+impl<L, T> Div<Period<T>> for Length<L> where L: length::Unit, T: Unit {
     type Output = Speed<L, T>;
-
     fn div(self, per: Period<T>) -> Self::Output {
-        let quantity = self.quantity / per.quantity;
-        Speed::new(quantity)
+        Speed::new(self.quantity / per.quantity)
     }
 }
 
@@ -141,37 +137,30 @@ impl<U> Frequency<U> where U: Unit {
     /// Convert to specified units
     pub fn to<T: Unit>(self) -> Frequency<T> {
         let quantity = self.quantity / U::factor::<T>();
-        Frequency::<T> { quantity, unit: PhantomData }
+        Frequency::new(quantity)
     }
 }
 
+// f64 / Frequency => Period
 impl<U> Div<Frequency<U>> for f64 where U: Unit {
     type Output = Period<U>;
-
     fn div(self, other: Frequency<U>) -> Self::Output {
-        let quantity = self / other.quantity;
-        Self::Output { quantity, unit: PhantomData }
+        Self::Output::new(self / other.quantity)
     }
 }
 
-impl<L, T> Mul<Length<L>> for Frequency<T>
-    where L: length::Unit, T: Unit
-{
+// Frequency * Length => Speed
+impl<L, T> Mul<Length<L>> for Frequency<T> where L: length::Unit, T: Unit {
     type Output = Speed<L, T>;
-
     fn mul(self, len: Length<L>) -> Self::Output {
-        let quantity = self.quantity * len.quantity;
-        Speed::new(quantity)
+        Speed::new(self.quantity * len.quantity)
     }
 }
 
-impl<L, T> Mul<Frequency<T>> for Length<L>
-    where L: length::Unit, T: Unit
-{
+// Length * Frequency => Speed
+impl<L, T> Mul<Frequency<T>> for Length<L> where L: length::Unit, T: Unit {
     type Output = Speed<L, T>;
-
     fn mul(self, freq: Frequency<T>) -> Self::Output {
-        let quantity = self.quantity * freq.quantity;
-        Speed::new(quantity)
+        Speed::new(self.quantity * freq.quantity)
     }
 }

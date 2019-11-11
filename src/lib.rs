@@ -38,36 +38,31 @@ macro_rules! impl_base_ops {
         impl<U> Add for $quan<U> where U: $unit {
             type Output = Self;
             fn add(self, other: Self) -> Self::Output {
-                let quantity = self.quantity + other.quantity;
-                Self { quantity, unit: PhantomData }
+                Self::new(self.quantity + other.quantity)
             }
         }
         impl<U> Sub for $quan<U> where U: $unit {
             type Output = Self;
             fn sub(self, other: Self) -> Self::Output {
-                let quantity = self.quantity - other.quantity;
-                Self { quantity, unit: PhantomData }
+                Self::new(self.quantity - other.quantity)
             }
         }
         impl<U> Mul<f64> for $quan<U> where U: $unit {
             type Output = Self;
-            fn mul(self, other: f64) -> Self::Output {
-                let quantity = self.quantity * other;
-                Self::Output { quantity, unit: PhantomData }
+            fn mul(self, scalar: f64) -> Self::Output {
+                Self::new(self.quantity * scalar)
             }
         }
         impl<U> Mul<$quan<U>> for f64 where U: $unit {
             type Output = $quan<U>;
             fn mul(self, other: $quan<U>) -> Self::Output {
-                let quantity = self * other.quantity;
-                Self::Output { quantity, unit: PhantomData }
+                Self::Output::new(self * other.quantity)
             }
         }
         impl<U> Div<f64> for $quan<U> where U: $unit {
             type Output = Self;
-            fn div(self, other: f64) -> Self::Output {
-                let quantity = self.quantity / other;
-                Self::Output { quantity, unit: PhantomData }
+            fn div(self, scalar: f64) -> Self::Output {
+                Self::new(self.quantity / scalar)
             }
         }
     }

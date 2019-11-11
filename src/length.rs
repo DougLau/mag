@@ -59,6 +59,7 @@ macro_rules! length_unit {
             const ABBREVIATION: &'static str = { $abbreviation };
         }
 
+        // f64 * <unit> => Length
         impl Mul<$unit> for f64 {
             type Output = Length<$unit>;
             fn mul(self, _unit: $unit) -> Self::Output {
@@ -66,6 +67,7 @@ macro_rules! length_unit {
             }
         }
 
+        // Length * <unit> => Area
         impl Mul<$unit> for Length<$unit> {
             type Output = Area<$unit>;
             fn mul(self, _unit: $unit) -> Self::Output {
@@ -73,6 +75,7 @@ macro_rules! length_unit {
             }
         }
 
+        // Area * <unit> => Volume
         impl Mul<$unit> for Area<$unit> {
             type Output = Volume<$unit>;
             fn mul(self, _unit: $unit) -> Self::Output {
