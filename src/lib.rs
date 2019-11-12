@@ -73,7 +73,10 @@ mod lenpriv;
 pub mod time;
 mod timepriv;
 mod speed;
+mod temppriv;
+pub mod temp;
 
 pub use lenpriv::{Area, Length, Volume};
 pub use timepriv::{Frequency, Period};
 pub use speed::Speed;
+pub use temppriv::Temperature;
