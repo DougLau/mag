@@ -125,32 +125,32 @@ mod test {
     use super::super::time::*;
 
     #[test]
-    fn vel_display() {
+    fn speed_display() {
         assert_eq!((23.4 * m / s).to_string(), "23.4 m/s");
         assert_eq!((45.55 * mi / h).to_string(), "45.55 mi/h");
         assert_eq!((25.1 * mm / d).to_string(), "25.1 mm/d");
     }
 
     #[test]
-    fn vel_to() {
+    fn speed_to() {
         assert_eq!((88.0 * ft / s).to(), 59.999999998752 * mi / h);
         assert_eq!((55.0 * mi / h).to(), 88.51392000000001 * km / h);
     }
 
     #[test]
-    fn vel_add() {
+    fn speed_add() {
         assert_eq!(10.1 * nm / s + 15.1 * nm / s, 25.2 * nm / s);
         assert_eq!(20. * km / h + 30. * km / h, 50.0 * km / h);
     }
 
     #[test]
-    fn vel_sub() {
+    fn speed_sub() {
         assert_eq!(55.6 * mm / d - 33.0 * mm / d, 22.6 * mm / d);
         assert_eq!(10.0 * km / ms - 5.5 * km / ms, 4.5 * km / ms);
     }
 
     #[test]
-    fn vel_mul() {
+    fn speed_mul() {
         assert_eq!((5.1 * In / s) * 2.0, 10.2 * In / s);
         assert_eq!(3.0 * (10.5 * mi / us), 31.5 * mi / us);
         // Length * Frequency => Speed
@@ -160,7 +160,7 @@ mod test {
     }
 
     #[test]
-    fn time_div() {
+    fn speed_div() {
         // Length / [time unit] => Speed
         assert_eq!(10.0 * mi / h, Speed::<mi, h>::new(10.0));
         // Length / Period => Speed
