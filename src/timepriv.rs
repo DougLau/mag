@@ -89,13 +89,15 @@ impl_base_ops!(Frequency, Unit);
 
 impl<U> fmt::Display for Period<U> where U: Unit {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{} {}", self.quantity, U::ABBREVIATION)
+        self.quantity.fmt(f)?;
+        write!(f, " {}", U::ABBREVIATION)
     }
 }
 
 impl<U> fmt::Display for Frequency<U> where U: Unit {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{} {}", self.quantity, U::INVERSE)
+        self.quantity.fmt(f)?;
+        write!(f, " {}", U::INVERSE)
     }
 }
 

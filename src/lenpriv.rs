@@ -170,19 +170,22 @@ impl<U> Volume<U> where U: Unit {
 
 impl<U> fmt::Display for Length<U> where U: Unit {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{} {}", self.quantity, U::ABBREVIATION)
+        self.quantity.fmt(f)?;
+        write!(f, " {}", U::ABBREVIATION)
     }
 }
 
 impl<U> fmt::Display for Area<U> where U: Unit {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{} {}²", self.quantity, U::ABBREVIATION)
+        self.quantity.fmt(f)?;
+        write!(f, " {}²", U::ABBREVIATION)
     }
 }
 
 impl<U> fmt::Display for Volume<U> where U: Unit {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{} {}³", self.quantity, U::ABBREVIATION)
+        self.quantity.fmt(f)?;
+        write!(f, " {}³", U::ABBREVIATION)
     }
 }
 

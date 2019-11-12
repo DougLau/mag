@@ -114,7 +114,8 @@ impl<L, P> fmt::Display for Speed<L, P>
     where L: length::Unit, P: time::Unit
 {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{} {}/{}", self.quantity, L::ABBREVIATION, P::ABBREVIATION)
+        self.quantity.fmt(f)?;
+        write!(f, " {}/{}", L::ABBREVIATION, P::ABBREVIATION)
     }
 }
 
@@ -129,6 +130,7 @@ mod test {
         assert_eq!((23.4 * m / s).to_string(), "23.4 m/s");
         assert_eq!((45.55 * mi / h).to_string(), "45.55 mi/h");
         assert_eq!((25.1 * mm / d).to_string(), "25.1 mm/d");
+        assert_eq!(format!("{:.0}", (88.0 * ft / s).to::<mi, h>()), "60 mi/h");
     }
 
     #[test]

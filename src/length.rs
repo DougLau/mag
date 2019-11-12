@@ -15,13 +15,13 @@
 //! let a = 25.5 * cm; // Length<cm>
 //! let b = 5.6 * mi; // Length<mi>
 //! let c = 1.2 * m * m; // Area<m>
-//! let d = 3.1 * yd * yd * yd; // Volume<yd>
+//! let d = 5.259 * yd * yd * yd; // Volume<yd>
 //! // let e = 1.0 * m * mi; // ERROR: units must match!
 //!
 //! assert_eq!(a.to_string(), "25.5 cm");
 //! assert_eq!(b.to_string(), "5.6 mi");
 //! assert_eq!(c.to_string(), "1.2 m²");
-//! assert_eq!(d.to_string(), "3.1 yd³");
+//! assert_eq!(format!("{:.2}", d), "5.26 yd³");
 //! ```
 //! [Area]: ../struct.Area.html
 //! [Length]: ../struct.Length.html
@@ -128,6 +128,7 @@ mod test {
     fn area_display() {
         assert_eq!((1.0 * m * m).to_string(), "1 m²");
         assert_eq!((18.5 * In * In).to_string(), "18.5 in²");
+        assert_eq!(format!("{:.2}", 1.234 * cm * cm), "1.23 cm²");
     }
 
     #[test]

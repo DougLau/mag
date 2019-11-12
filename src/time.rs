@@ -15,12 +15,12 @@
 //! let a = 22.8 * s; // Period<s>
 //! let b = 50.6 * ms; // Period<ms>
 //! let c = 60.0 / s; // Frequency<s>
-//! let d = 3.1 / ns; // Frequency<ns>
+//! let d = 3.1234 / ns; // Frequency<ns>
 //!
 //! assert_eq!(a.to_string(), "22.8 s");
 //! assert_eq!(b.to_string(), "50.6 ms");
 //! assert_eq!(c.to_string(), "60 ㎐");
-//! assert_eq!(d.to_string(), "3.1 ㎓");
+//! assert_eq!(format!("{:.2}", d), "3.12 ㎓");
 //! ```
 //! [Frequency]: ../struct.Frequency.html
 //! [Period]: ../struct.Period.html
@@ -115,7 +115,7 @@ mod test {
         assert_eq!((3.25 * h).to_string(), "3.25 h");
         assert_eq!((50.0 / s).to_string(), "50 ㎐");
         assert_eq!((2.0 / d).to_string(), "2 /d");
-        assert_eq!((333.3 / us).to_string(), "333.3 ㎒");
+        assert_eq!(format!("{:.1}", 333.3333 / us), "333.3 ㎒");
     }
 
     #[test]
