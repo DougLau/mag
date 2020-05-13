@@ -42,9 +42,9 @@ Maybe **mag** doesn't fit your needs?  Check out these other crates:
 * [metric]
 * Plus many more!
 
-[uom]: https://docs.rs/uom/0.26.0/uom/
-[dimensioned]: https://docs.rs/dimensioned/0.7.0/dimensioned/
-[yaiouom]: https://docs.rs/yaiouom/0.1.3/yaiouom/
-[measurements]: https://docs.rs/measurements/0.10.3/measurements/
-[simple_units]: https://docs.rs/simple_units/0.1.0/simple_units/
-[metric]: https://docs.rs/metric/0.1.2/metric/
+[uom]: https://docs.rs/uom/latest/uom/
+[dimensioned]: https://docs.rs/dimensioned/latest/dimensioned/
+[yaiouom]: https://docs.rs/yaiouom/latest/yaiouom/
+[measurements]: https://docs.rs/measurements/latest/measurements/
+[simple_units]: https://docs.rs/simple_units/latest/simple_units/
+[metric]: https://docs.rs/metric/latest/metric/
