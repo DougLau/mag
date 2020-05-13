@@ -1,6 +1,6 @@
 // time.rs
 //
-// Copyright (C) 2019  Minnesota Department of Transportation
+// Copyright (C) 2019-2020  Minnesota Department of Transportation
 //
 //! Base units of time.
 //!
@@ -25,7 +25,7 @@
 //! [Frequency]: ../struct.Frequency.html
 //! [Period]: ../struct.Period.html
 //!
-use super::{Frequency, length, Length, Period, Speed};
+use super::{length, Frequency, Length, Period, Speed};
 use std::ops::{Div, Mul};
 
 /// Unit definition for time
@@ -86,28 +86,111 @@ macro_rules! time_unit {
     };
 }
 
-time_unit!(/** Gigasecond */ Gs, 1_000_000_000.0, "Gs", "nHz");
-time_unit!(/** Megasecond */ Ms, 1_000_000.0, "Ms", "μHz");
-time_unit!(/** Kilosecond */ Ks, 1_000.0, "Ks", "mHz");
-time_unit!(/** Week */ wk, 7.0 * 24.0 * 60.0 * 60.0, "wk", "/wk");
-time_unit!(/** Day */ d, 24.0 * 60.0 * 60.0, "d", "/d");
-time_unit!(/** Hour */ h, 60.0 * 60.0, "h", "/h");
-time_unit!(/** Minute */ min, 60.0, "min", "/min");
-time_unit!(/** Second */ s, 1.0, "s", "㎐");
-time_unit!(/** Decisecond */ ds, 0.1, "ds", "daHz");
-time_unit!(/** Millisecond */ ms, 0.001, "ms", "㎑");
-time_unit!(/** Microsecond */ us, 0.000_001, "μs", "㎒");
-time_unit!(/** Nanosecond */ ns, 0.000_000_001, "ns", "㎓");
-time_unit!(/** Picosecond */ ps, 0.000_000_000_001, "ps", "㎔");
+time_unit!(
+    /** Gigasecond */
+    Gs,
+    1_000_000_000.0,
+    "Gs",
+    "nHz"
+);
+time_unit!(
+    /** Megasecond */
+    Ms,
+    1_000_000.0,
+    "Ms",
+    "μHz"
+);
+time_unit!(
+    /** Kilosecond */
+    Ks,
+    1_000.0,
+    "Ks",
+    "mHz"
+);
+time_unit!(
+    /** Week */
+    wk,
+    7.0 * 24.0 * 60.0 * 60.0,
+    "wk",
+    "/wk"
+);
+time_unit!(
+    /** Day */
+    d,
+    24.0 * 60.0 * 60.0,
+    "d",
+    "/d"
+);
+time_unit!(
+    /** Hour */
+    h,
+    60.0 * 60.0,
+    "h",
+    "/h"
+);
+time_unit!(
+    /** Minute */
+    min,
+    60.0,
+    "min",
+    "/min"
+);
+time_unit!(
+    /** Second */
+    s,
+    1.0,
+    "s",
+    "㎐"
+);
+time_unit!(
+    /** Decisecond */
+    ds,
+    0.1,
+    "ds",
+    "daHz"
+);
+time_unit!(
+    /** Millisecond */
+    ms,
+    0.001,
+    "ms",
+    "㎑"
+);
+time_unit!(
+    /** Microsecond */
+    us,
+    0.000_001,
+    "μs",
+    "㎒"
+);
+time_unit!(
+    /** Nanosecond */
+    ns,
+    0.000_000_001,
+    "ns",
+    "㎓"
+);
+time_unit!(
+    /** Picosecond */
+    ps,
+    0.000_000_000_001,
+    "ps",
+    "㎔"
+);
 
 #[cfg(feature = "obscure-units")]
-time_unit!(/** 14 Days */ Fortnight, 14.0 * 24.0 * 60.0 * 60.0, "fortnight",
-    "/fortnight");
+time_unit!(
+    /** 14 Days */
+    Fortnight,
+    14.0 * 24.0 * 60.0 * 60.0,
+    "fortnight",
+    "/fortnight"
+);
 
 #[cfg(test)]
 mod test {
-    use super::*;
     use super::super::Frequency;
+    use super::*;
 
     #[test]
     fn time_display() {

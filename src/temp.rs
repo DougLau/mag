@@ -1,6 +1,6 @@
 // temp.rs
 //
-// Copyright (C) 2019  Minnesota Department of Transportation
+// Copyright (C) 2019-2020  Minnesota Department of Transportation
 //
 //! Base units of temperature.
 //!
@@ -60,13 +60,43 @@ macro_rules! temp_unit {
     };
 }
 
-temp_unit!(/** Degrees Celsius / Centigrade */ DegC, 1.0, 273.15, "°C");
-temp_unit!(/** Degrees Kelvin*/ DegK, 1.0, 0.0, "°K");
-temp_unit!(/** Degrees Fahrenheit */ DegF, 5.0 / 9.0, 459.67, "°F");
-temp_unit!(/** Degrees Rankine */ DegR, 5.0 / 9.0, 0.0, "°R");
+temp_unit!(
+    /** Degrees Celsius / Centigrade */
+    DegC,
+    1.0,
+    273.15,
+    "°C"
+);
+temp_unit!(
+    /** Degrees Kelvin*/
+    DegK,
+    1.0,
+    0.0,
+    "°K"
+);
+temp_unit!(
+    /** Degrees Fahrenheit */
+    DegF,
+    5.0 / 9.0,
+    459.67,
+    "°F"
+);
+temp_unit!(
+    /** Degrees Rankine */
+    DegR,
+    5.0 / 9.0,
+    0.0,
+    "°R"
+);
 
 #[cfg(feature = "obscure-units")]
-temp_unit!(/** Degrees Réaumur */ DegRe, 0.8, 273.15, "°Ré");
+temp_unit!(
+    /** Degrees Réaumur */
+    DegRe,
+    0.8,
+    273.15,
+    "°Ré"
+);
 
 #[cfg(test)]
 mod test {

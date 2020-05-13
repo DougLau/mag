@@ -1,10 +1,10 @@
 // timepriv.rs
 //
-// Copyright (C) 2019  Minnesota Department of Transportation
+// Copyright (C) 2019-2020  Minnesota Department of Transportation
 //
 //! Private module for time structs
 //!
-use crate::{Length, Speed, length, time::Unit};
+use crate::{length, time::Unit, Length, Speed};
 use std::fmt;
 use std::marker::PhantomData;
 use std::ops::{Add, Div, Mul, Sub};
@@ -39,7 +39,10 @@ use std::ops::{Add, Div, Mul, Sub};
 /// [to]: struct.Period.html#method.to
 ///
 #[derive(Debug, Copy, Clone, PartialEq)]
-pub struct Period<U> where U: Unit {
+pub struct Period<U>
+where
+    U: Unit,
+{
     /// Period quantity
     pub quantity: f64,
     /// Measurement unit
@@ -77,7 +80,10 @@ pub struct Period<U> where U: Unit {
 /// [to]: struct.Frequency.html#method.to
 ///
 #[derive(Debug, Copy, Clone, PartialEq)]
-pub struct Frequency<U> where U: Unit {
+pub struct Frequency<U>
+where
+    U: Unit,
+{
     /// Frequency quantity
     pub quantity: f64,
     /// Measurement unit
@@ -87,24 +93,36 @@ pub struct Frequency<U> where U: Unit {
 impl_base_ops!(Period, Unit);
 impl_base_ops!(Frequency, Unit);
 
-impl<U> fmt::Display for Period<U> where U: Unit {
+impl<U> fmt::Display for Period<U>
+where
+    U: Unit,
+{
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         self.quantity.fmt(f)?;
         write!(f, " {}", U::ABBREVIATION)
     }
 }
 
-impl<U> fmt::Display for Frequency<U> where U: Unit {
+impl<U> fmt::Display for Frequency<U>
+where
+    U: Unit,
+{
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         self.quantity.fmt(f)?;
         write!(f, " {}", U::INVERSE)
     }
 }
 
-impl<U> Period<U> where U: Unit {
+impl<U> Period<U>
+where
+    U: Unit,
+{
     /// Create a new period measurement
     pub fn new(quantity: f64) -> Self {
-        Period::<U> { quantity, unit: PhantomData }
+        Period::<U> {
+            quantity,
+            unit: PhantomData,
+        }
     }
 
     /// Convert to specified units
@@ -115,7 +133,10 @@ impl<U> Period<U> where U: Unit {
 }
 
 // f64 / Period => Frequency
-impl<U> Div<Period<U>> for f64 where U: Unit {
+impl<U> Div<Period<U>> for f64
+where
+    U: Unit,
+{
     type Output = Frequency<U>;
     fn div(self, other: Period<U>) -> Self::Output {
         Self::Output::new(self / other.quantity)
@@ -123,17 +144,27 @@ impl<U> Div<Period<U>> for f64 where U: Unit {
 }
 
 // Length / Period => Speed
-impl<L, T> Div<Period<T>> for Length<L> where L: length::Unit, T: Unit {
+impl<L, T> Div<Period<T>> for Length<L>
+where
+    L: length::Unit,
+    T: Unit,
+{
     type Output = Speed<L, T>;
     fn div(self, per: Period<T>) -> Self::Output {
         Speed::new(self.quantity / per.quantity)
     }
 }
 
-impl<U> Frequency<U> where U: Unit {
+impl<U> Frequency<U>
+where
+    U: Unit,
+{
     /// Create a new frequency measurement
     pub fn new(quantity: f64) -> Self {
-        Frequency::<U> { quantity, unit: PhantomData }
+        Frequency::<U> {
+            quantity,
+            unit: PhantomData,
+        }
     }
 
     /// Convert to specified units
@@ -144,7 +175,10 @@ impl<U> Frequency<U> where U: Unit {
 }
 
 // f64 / Frequency => Period
-impl<U> Div<Frequency<U>> for f64 where U: Unit {
+impl<U> Div<Frequency<U>> for f64
+where
+    U: Unit,
+{
     type Output = Period<U>;
     fn div(self, other: Frequency<U>) -> Self::Output {
         Self::Output::new(self / other.quantity)
@@ -152,7 +186,11 @@ impl<U> Div<Frequency<U>> for f64 where U: Unit {
 }
 
 // Frequency * Length => Speed
-impl<L, T> Mul<Length<L>> for Frequency<T> where L: length::Unit, T: Unit {
+impl<L, T> Mul<Length<L>> for Frequency<T>
+where
+    L: length::Unit,
+    T: Unit,
+{
     type Output = Speed<L, T>;
     fn mul(self, len: Length<L>) -> Self::Output {
         Speed::new(self.quantity * len.quantity)
@@ -160,7 +198,11 @@ impl<L, T> Mul<Length<L>> for Frequency<T> where L: length::Unit, T: Unit {
 }
 
 // Length * Frequency => Speed
-impl<L, T> Mul<Frequency<T>> for Length<L> where L: length::Unit, T: Unit {
+impl<L, T> Mul<Frequency<T>> for Length<L>
+where
+    L: length::Unit,
+    T: Unit,
+{
     type Output = Speed<L, T>;
     fn mul(self, freq: Frequency<T>) -> Self::Output {
         Speed::new(self.quantity * freq.quantity)

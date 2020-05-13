@@ -1,6 +1,6 @@
 // lenpriv.rs
 //
-// Copyright (C) 2019  Minnesota Department of Transportation
+// Copyright (C) 2019-2020  Minnesota Department of Transportation
 //
 //! Private module for length structs
 //!
@@ -43,7 +43,10 @@ use std::ops::{Add, Div, Mul, Sub};
 /// [to]: struct.Length.html#method.to
 ///
 #[derive(Debug, Copy, Clone, PartialEq)]
-pub struct Length<U> where U: Unit {
+pub struct Length<U>
+where
+    U: Unit,
+{
     /// Length quantity
     pub quantity: f64,
     /// Measurement unit
@@ -80,7 +83,10 @@ pub struct Length<U> where U: Unit {
 /// [Volume]: struct.Volume.html
 ///
 #[derive(Debug, Copy, Clone, PartialEq)]
-pub struct Area<U> where U: Unit {
+pub struct Area<U>
+where
+    U: Unit,
+{
     /// Area quantity
     pub quantity: f64,
     /// Measurement unit
@@ -116,7 +122,10 @@ pub struct Area<U> where U: Unit {
 /// [Length]: struct.Length.html
 ///
 #[derive(Debug, Copy, Clone, PartialEq)]
-pub struct Volume<U> where U: Unit {
+pub struct Volume<U>
+where
+    U: Unit,
+{
     /// Volume quantity
     pub quantity: f64,
     /// Measurement unit
@@ -127,10 +136,16 @@ impl_base_ops!(Length, Unit);
 impl_base_ops!(Area, Unit);
 impl_base_ops!(Volume, Unit);
 
-impl<U> Length<U> where U: Unit {
+impl<U> Length<U>
+where
+    U: Unit,
+{
     /// Create a new length measurement
     pub fn new(quantity: f64) -> Self {
-        Length::<U> { quantity, unit: PhantomData }
+        Length::<U> {
+            quantity,
+            unit: PhantomData,
+        }
     }
 
     /// Convert to specified units
@@ -140,10 +155,16 @@ impl<U> Length<U> where U: Unit {
     }
 }
 
-impl<U> Area<U> where U: Unit {
+impl<U> Area<U>
+where
+    U: Unit,
+{
     /// Create a new area measurement
     pub fn new(quantity: f64) -> Self {
-        Area::<U> { quantity, unit: PhantomData }
+        Area::<U> {
+            quantity,
+            unit: PhantomData,
+        }
     }
 
     /// Convert to specified units
@@ -154,10 +175,16 @@ impl<U> Area<U> where U: Unit {
     }
 }
 
-impl<U> Volume<U> where U: Unit {
+impl<U> Volume<U>
+where
+    U: Unit,
+{
     /// Create a new volume measurement
     pub fn new(quantity: f64) -> Self {
-        Volume::<U> { quantity, unit: PhantomData }
+        Volume::<U> {
+            quantity,
+            unit: PhantomData,
+        }
     }
 
     /// Convert to specified units
@@ -168,21 +195,30 @@ impl<U> Volume<U> where U: Unit {
     }
 }
 
-impl<U> fmt::Display for Length<U> where U: Unit {
+impl<U> fmt::Display for Length<U>
+where
+    U: Unit,
+{
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         self.quantity.fmt(f)?;
         write!(f, " {}", U::ABBREVIATION)
     }
 }
 
-impl<U> fmt::Display for Area<U> where U: Unit {
+impl<U> fmt::Display for Area<U>
+where
+    U: Unit,
+{
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         self.quantity.fmt(f)?;
         write!(f, " {}²", U::ABBREVIATION)
     }
 }
 
-impl<U> fmt::Display for Volume<U> where U: Unit {
+impl<U> fmt::Display for Volume<U>
+where
+    U: Unit,
+{
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         self.quantity.fmt(f)?;
         write!(f, " {}³", U::ABBREVIATION)
@@ -190,7 +226,10 @@ impl<U> fmt::Display for Volume<U> where U: Unit {
 }
 
 // Length * Length => Area
-impl<U> Mul for Length<U> where U: Unit {
+impl<U> Mul for Length<U>
+where
+    U: Unit,
+{
     type Output = Area<U>;
     fn mul(self, other: Self) -> Self::Output {
         Area::new(self.quantity * other.quantity)
@@ -198,7 +237,10 @@ impl<U> Mul for Length<U> where U: Unit {
 }
 
 // Area * Length => Volume
-impl<U> Mul<Length<U>> for Area<U> where U: Unit {
+impl<U> Mul<Length<U>> for Area<U>
+where
+    U: Unit,
+{
     type Output = Volume<U>;
     fn mul(self, other: Length<U>) -> Self::Output {
         Volume::new(self.quantity * other.quantity)
@@ -206,7 +248,10 @@ impl<U> Mul<Length<U>> for Area<U> where U: Unit {
 }
 
 // Area / Length => Length
-impl<U> Div<Length<U>> for Area<U> where U: Unit {
+impl<U> Div<Length<U>> for Area<U>
+where
+    U: Unit,
+{
     type Output = Length<U>;
     fn div(self, other: Length<U>) -> Self::Output {
         Length::new(self.quantity / other.quantity)
@@ -214,7 +259,10 @@ impl<U> Div<Length<U>> for Area<U> where U: Unit {
 }
 
 // Volume / Length => Area
-impl<U> Div<Length<U>> for Volume<U> where U: Unit {
+impl<U> Div<Length<U>> for Volume<U>
+where
+    U: Unit,
+{
     type Output = Area<U>;
     fn div(self, other: Length<U>) -> Self::Output {
         Area::new(self.quantity / other.quantity)
@@ -222,7 +270,10 @@ impl<U> Div<Length<U>> for Volume<U> where U: Unit {
 }
 
 // Volume / Area => Length
-impl<U> Div<Area<U>> for Volume<U> where U: Unit {
+impl<U> Div<Area<U>> for Volume<U>
+where
+    U: Unit,
+{
     type Output = Length<U>;
     fn div(self, other: Area<U>) -> Self::Output {
         Length::new(self.quantity / other.quantity)

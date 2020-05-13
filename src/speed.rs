@@ -1,6 +1,6 @@
 // speed.rs
 //
-// Copyright (C) 2019  Minnesota Department of Transportation
+// Copyright (C) 2019-2020  Minnesota Department of Transportation
 //
 //! Private module for speed structs
 //!
@@ -46,7 +46,11 @@ use std::ops::{Add, Div, Mul, Sub};
 /// [to]: struct.Speed.html#method.to
 ///
 #[derive(Debug, Copy, Clone, PartialEq)]
-pub struct Speed<L, P> where L: length::Unit, P: time::Unit {
+pub struct Speed<L, P>
+where
+    L: length::Unit,
+    P: time::Unit,
+{
     /// Speed quantity
     pub quantity: f64,
     /// Length unit
@@ -56,7 +60,11 @@ pub struct Speed<L, P> where L: length::Unit, P: time::Unit {
 }
 
 // Speed + Speed => Speed
-impl<L, P> Add for Speed<L, P> where L: length::Unit, P: time::Unit {
+impl<L, P> Add for Speed<L, P>
+where
+    L: length::Unit,
+    P: time::Unit,
+{
     type Output = Self;
     fn add(self, other: Self) -> Self::Output {
         Self::new(self.quantity + other.quantity)
@@ -64,7 +72,11 @@ impl<L, P> Add for Speed<L, P> where L: length::Unit, P: time::Unit {
 }
 
 // Speed - Speed => Speed
-impl<L, P> Sub for Speed<L, P> where L: length::Unit, P: time::Unit {
+impl<L, P> Sub for Speed<L, P>
+where
+    L: length::Unit,
+    P: time::Unit,
+{
     type Output = Self;
     fn sub(self, other: Self) -> Self::Output {
         Self::new(self.quantity - other.quantity)
@@ -72,7 +84,11 @@ impl<L, P> Sub for Speed<L, P> where L: length::Unit, P: time::Unit {
 }
 
 // Speed * f64 => Speed
-impl<L, P> Mul<f64> for Speed<L, P> where L: length::Unit, P: time::Unit {
+impl<L, P> Mul<f64> for Speed<L, P>
+where
+    L: length::Unit,
+    P: time::Unit,
+{
     type Output = Self;
     fn mul(self, scalar: f64) -> Self::Output {
         Self::new(self.quantity * scalar)
@@ -80,7 +96,11 @@ impl<L, P> Mul<f64> for Speed<L, P> where L: length::Unit, P: time::Unit {
 }
 
 // f64 * Speed => Speed
-impl<L, P> Mul<Speed<L, P>> for f64 where L: length::Unit, P: time::Unit {
+impl<L, P> Mul<Speed<L, P>> for f64
+where
+    L: length::Unit,
+    P: time::Unit,
+{
     type Output = Speed<L, P>;
     fn mul(self, other: Speed<L, P>) -> Self::Output {
         Speed::new(self * other.quantity)
@@ -88,22 +108,36 @@ impl<L, P> Mul<Speed<L, P>> for f64 where L: length::Unit, P: time::Unit {
 }
 
 // Speed / f64 => Speed
-impl<L, P> Div<f64> for Speed<L, P> where L: length::Unit, P: time::Unit {
+impl<L, P> Div<f64> for Speed<L, P>
+where
+    L: length::Unit,
+    P: time::Unit,
+{
     type Output = Self;
     fn div(self, scalar: f64) -> Self::Output {
         Self::new(self.quantity / scalar)
     }
 }
 
-impl<L, P> Speed<L, P> where L: length::Unit, P: time::Unit {
+impl<L, P> Speed<L, P>
+where
+    L: length::Unit,
+    P: time::Unit,
+{
     /// Create a new length measurement
     pub fn new(quantity: f64) -> Self {
-        Speed::<L, P> { quantity, length: PhantomData, period: PhantomData }
+        Speed::<L, P> {
+            quantity,
+            length: PhantomData,
+            period: PhantomData,
+        }
     }
 
     /// Convert to specified units
     pub fn to<N, R>(self) -> Speed<N, R>
-        where N: length::Unit, R: time::Unit
+    where
+        N: length::Unit,
+        R: time::Unit,
     {
         let factor = L::factor::<N>() / P::factor::<R>();
         Speed::new(self.quantity * factor)
@@ -111,7 +145,9 @@ impl<L, P> Speed<L, P> where L: length::Unit, P: time::Unit {
 }
 
 impl<L, P> fmt::Display for Speed<L, P>
-    where L: length::Unit, P: time::Unit
+where
+    L: length::Unit,
+    P: time::Unit,
 {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         self.quantity.fmt(f)?;
@@ -121,9 +157,9 @@ impl<L, P> fmt::Display for Speed<L, P>
 
 #[cfg(test)]
 mod test {
-    use super::*;
     use super::super::length::*;
     use super::super::time::*;
+    use super::*;
 
     #[test]
     fn speed_display() {

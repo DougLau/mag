@@ -1,6 +1,6 @@
 // length.rs
 //
-// Copyright (C) 2019  Minnesota Department of Transportation
+// Copyright (C) 2019-2020  Minnesota Department of Transportation
 //
 //! Base units of length.
 //!
@@ -85,26 +85,101 @@ macro_rules! length_unit {
     };
 }
 
-length_unit!(/** Kilometer / Kilometre */ km, 1_000.0, "km");
-length_unit!(/** Meter / Metre */ m, 1.0, "m");
-length_unit!(/** Decimeter / Decimetre */ dm, 0.1, "dm");
-length_unit!(/** Centimeter / Centimetre */ cm, 0.01, "cm");
-length_unit!(/** Millimeter / Millimetre */ mm, 0.001, "mm");
-length_unit!(/** Micrometer / Micrometre */ um, 0.000_001, "μm");
-length_unit!(/** Nanometer / Nanometre */ nm, 0.000_000_001, "nm");
-length_unit!(/** Mile */ mi, 1609.344, "mi");
-length_unit!(/** Foot */ ft, 0.3048, "ft");
-length_unit!(/** Inch */ In, 0.0254, "in");
-length_unit!(/** Yard */ yd, 0.9144, "yd");
+length_unit!(
+    /** Kilometer / Kilometre */
+    km,
+    1_000.0,
+    "km"
+);
+length_unit!(
+    /** Meter / Metre */
+    m,
+    1.0,
+    "m"
+);
+length_unit!(
+    /** Decimeter / Decimetre */
+    dm,
+    0.1,
+    "dm"
+);
+length_unit!(
+    /** Centimeter / Centimetre */
+    cm,
+    0.01,
+    "cm"
+);
+length_unit!(
+    /** Millimeter / Millimetre */
+    mm,
+    0.001,
+    "mm"
+);
+length_unit!(
+    /** Micrometer / Micrometre */
+    um,
+    0.000_001,
+    "μm"
+);
+length_unit!(
+    /** Nanometer / Nanometre */
+    nm,
+    0.000_000_001,
+    "nm"
+);
+length_unit!(
+    /** Mile */
+    mi,
+    1609.344,
+    "mi"
+);
+length_unit!(
+    /** Foot */
+    ft,
+    0.3048,
+    "ft"
+);
+length_unit!(
+    /** Inch */
+    In,
+    0.0254,
+    "in"
+);
+length_unit!(
+    /** Yard */
+    yd,
+    0.9144,
+    "yd"
+);
 
 #[cfg(feature = "obscure-units")]
-length_unit!(/** League */ league, 4828.032, "league");
+length_unit!(
+    /** League */
+    league,
+    4828.032,
+    "league"
+);
 #[cfg(feature = "obscure-units")]
-length_unit!(/** Rod */ rod, 5.0292, "rod");
+length_unit!(
+    /** Rod */
+    rod,
+    5.0292,
+    "rod"
+);
 #[cfg(feature = "obscure-units")]
-length_unit!(/** Furlong */ furlong, 201.168, "furlong");
+length_unit!(
+    /** Furlong */
+    furlong,
+    201.168,
+    "furlong"
+);
 #[cfg(feature = "obscure-units")]
-length_unit!(/** Fathom */ fathom, 1.8288, "fathom");
+length_unit!(
+    /** Fathom */
+    fathom,
+    1.8288,
+    "fathom"
+);
 
 #[cfg(test)]
 mod test {
@@ -179,10 +254,7 @@ mod test {
             25.0 * mm * mm * mm + 5.1 * mm * mm * mm,
             30.1 * mm * mm * mm
         );
-        assert_eq!(
-            1.2 * In * In * In + 3.8 * In * In * In,
-            5.0 * In * In * In
-        );
+        assert_eq!(1.2 * In * In * In + 3.8 * In * In * In, 5.0 * In * In * In);
     }
 
     #[test]

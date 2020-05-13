@@ -1,6 +1,6 @@
 // temppriv.rs
 //
-// Copyright (C) 2019  Minnesota Department of Transportation
+// Copyright (C) 2019-2020  Minnesota Department of Transportation
 //
 //! Private module for temperature structs
 //!
@@ -35,24 +35,36 @@ use std::ops::{Add, Sub};
 /// [to]: struct.Temperature.html#method.to
 ///
 #[derive(Debug, Copy, Clone, PartialEq)]
-pub struct Temperature<U> where U: Unit {
+pub struct Temperature<U>
+where
+    U: Unit,
+{
     /// Temperature quantity
     pub quantity: f64,
     /// Measurement unit
     unit: PhantomData<U>,
 }
 
-impl<U> fmt::Display for Temperature<U> where U: Unit {
+impl<U> fmt::Display for Temperature<U>
+where
+    U: Unit,
+{
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         self.quantity.fmt(f)?;
         write!(f, " {}", U::ABBREVIATION)
     }
 }
 
-impl<U> Temperature<U> where U: Unit {
+impl<U> Temperature<U>
+where
+    U: Unit,
+{
     /// Create a new temperature measurement
     pub fn new(quantity: f64) -> Self {
-        Temperature { quantity, unit: PhantomData }
+        Temperature {
+            quantity,
+            unit: PhantomData,
+        }
     }
 
     /// Convert to specified units
@@ -64,7 +76,10 @@ impl<U> Temperature<U> where U: Unit {
 }
 
 // Temperature + Temperature => Temperature
-impl<U> Add for Temperature<U> where U: Unit {
+impl<U> Add for Temperature<U>
+where
+    U: Unit,
+{
     type Output = Self;
     fn add(self, other: Self) -> Self::Output {
         Self::new(self.quantity + other.quantity)
@@ -72,7 +87,10 @@ impl<U> Add for Temperature<U> where U: Unit {
 }
 
 // Temperature - Temperature => Temperature
-impl<U> Sub for Temperature<U> where U: Unit {
+impl<U> Sub for Temperature<U>
+where
+    U: Unit,
+{
     type Output = Self;
     fn sub(self, other: Self) -> Self::Output {
         Self::new(self.quantity - other.quantity)
