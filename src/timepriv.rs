@@ -1,13 +1,15 @@
 // timepriv.rs
 //
-// Copyright (C) 2019-2020  Minnesota Department of Transportation
+// Copyright (C) 2019-2021  Minnesota Department of Transportation
 //
 //! Private module for time structs
 //!
+extern crate alloc;
+
 use crate::{length, time::Unit, Length, Speed};
-use std::fmt;
-use std::marker::PhantomData;
-use std::ops::{Add, Div, Mul, Sub};
+use core::fmt;
+use core::marker::PhantomData;
+use core::ops::{Add, Div, Mul, Sub};
 
 /// A measurement of _period_, _duration_ or _interval_ of time.
 ///
@@ -45,6 +47,7 @@ where
 {
     /// Period quantity
     pub quantity: f64,
+
     /// Measurement unit
     unit: PhantomData<U>,
 }
@@ -86,6 +89,7 @@ where
 {
     /// Frequency quantity
     pub quantity: f64,
+
     /// Measurement unit
     unit: PhantomData<U>,
 }

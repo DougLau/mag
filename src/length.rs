@@ -1,6 +1,6 @@
 // length.rs
 //
-// Copyright (C) 2019-2020  Minnesota Department of Transportation
+// Copyright (C) 2019-2021  Minnesota Department of Transportation
 //
 //! Base units of length.
 //!
@@ -27,21 +27,21 @@
 //! [Length]: ../struct.Length.html
 //! [Volume]: ../struct.Volume.html
 //!
+extern crate alloc;
+
 use crate::lenpriv::{Area, Length, Volume};
-use std::ops::Mul;
+use core::ops::Mul;
 
 /// Unit definition for Length
 pub trait Unit {
     /// Multiplication factor to convert to meters
     fn m_factor() -> f64;
+
     /// Multiplication factor to convert to another unit
     fn factor<T: Unit>() -> f64 {
-        // Use 14 digits precision for conversion constants.
-        // The significand of f64 is 52 bits, which is about 15 digits.
-        const PRECISION: f64 = 100_000_000_000_000.0;
-        // This gets compiled down to a constant value
-        ((Self::m_factor() / T::m_factor()) * PRECISION).round() / PRECISION
+        Self::m_factor() / T::m_factor()
     }
+
     /// Unit abbreviation
     const ABBREVIATION: &'static str;
 }
@@ -184,6 +184,7 @@ length_unit!(
 #[cfg(test)]
 mod test {
     use super::*;
+    use alloc::{format, string::ToString};
 
     #[test]
     fn len_display() {
@@ -214,18 +215,18 @@ mod test {
 
     #[test]
     fn len_to() {
-        assert_eq!((1.0 * ft).to(), (12.0 * In));
+        assert_eq!((1.0 * ft).to(), (12.000000000000002 * In));
         assert_eq!((1.0 * yd).to(), (3.0 * ft));
         assert_eq!((1.0 * yd).to(), (36.0 * In));
         assert_eq!((1.0 * mi).to(), (5280.0 * ft));
         assert_eq!((1.0 * m).to(), (0.001 * km));
         assert_eq!((110.0 * cm).to(), (1.1 * m));
-        assert_eq!((1.0 * cm).to(), 0.393_700_787_401_57 * In);
+        assert_eq!((1.0 * cm).to(), 0.393_700_787_401_574_8 * In);
     }
 
     #[test]
     fn area_to() {
-        assert_eq!((1.0 * ft * ft).to(), 144.0 * In * In);
+        assert_eq!((1.0 * ft * ft).to(), 144.00000000000006 * In * In);
         assert_eq!((1.0 * m * m).to(), 10_000.0 * cm * cm);
     }
 

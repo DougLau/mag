@@ -1,6 +1,6 @@
 // time.rs
 //
-// Copyright (C) 2019-2020  Minnesota Department of Transportation
+// Copyright (C) 2019-2021  Minnesota Department of Transportation
 //
 //! Base units of time.
 //!
@@ -25,19 +25,24 @@
 //! [Frequency]: ../struct.Frequency.html
 //! [Period]: ../struct.Period.html
 //!
+extern crate alloc;
+
 use super::{length, Frequency, Length, Period, Speed};
-use std::ops::{Div, Mul};
+use core::ops::{Div, Mul};
 
 /// Unit definition for time
 pub trait Unit {
     /// Multiplication factor to convert to seconds
     fn s_factor() -> f64;
+
     /// Multiplication factor to convert to another unit
     fn factor<T: Unit>() -> f64 {
         Self::s_factor() / T::s_factor()
     }
+
     /// Unit abbreviation
     const ABBREVIATION: &'static str;
+
     /// Inverse unit abbreviation
     const INVERSE: &'static str;
 }
@@ -189,8 +194,11 @@ time_unit!(
 
 #[cfg(test)]
 mod test {
+    extern crate alloc;
+
     use super::super::Frequency;
     use super::*;
+    use alloc::{format, string::ToString};
 
     #[test]
     fn time_display() {

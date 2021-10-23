@@ -5,9 +5,9 @@
 //! Private module for speed structs
 //!
 use crate::{length, time};
-use std::fmt;
-use std::marker::PhantomData;
-use std::ops::{Add, Div, Mul, Sub};
+use core::fmt;
+use core::marker::PhantomData;
+use core::ops::{Add, Div, Mul, Sub};
 
 /// A measurement of _speed_.
 ///
@@ -53,8 +53,10 @@ where
 {
     /// Speed quantity
     pub quantity: f64,
+
     /// Length unit
     length: PhantomData<L>,
+
     /// Period unit
     period: PhantomData<P>,
 }
@@ -157,9 +159,13 @@ where
 
 #[cfg(test)]
 mod test {
+    extern crate alloc;
+
     use super::super::length::*;
     use super::super::time::*;
     use super::*;
+    use alloc::format;
+    use alloc::string::ToString;
 
     #[test]
     fn speed_display() {
@@ -171,7 +177,7 @@ mod test {
 
     #[test]
     fn speed_to() {
-        assert_eq!((88.0 * ft / s).to(), 59.999999998752 * mi / h);
+        assert_eq!((88.0 * ft / s).to(), 59.99999999999999 * mi / h);
         assert_eq!((55.0 * mi / h).to(), 88.51392000000001 * km / h);
     }
 

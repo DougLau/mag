@@ -1,6 +1,6 @@
 // temp.rs
 //
-// Copyright (C) 2019-2020  Minnesota Department of Transportation
+// Copyright (C) 2019-2021  Minnesota Department of Transportation
 //
 //! Base units of temperature.
 //!
@@ -20,15 +20,19 @@
 //! ```
 //! [Temperature]: ../struct.Temperature.html
 //!
+extern crate alloc;
+
 use super::Temperature;
-use std::ops::Mul;
+use core::ops::Mul;
 
 /// Unit definition for temperature
 pub trait Unit {
     /// Multiplication factor to convert to Kelvin
     fn k_factor() -> f64;
+
     /// Offset to convert to Kelvin
     fn k_offset() -> f64;
+
     /// Unit abbreviation
     const ABBREVIATION: &'static str;
 }
@@ -101,6 +105,7 @@ temp_unit!(
 #[cfg(test)]
 mod test {
     use super::*;
+    use alloc::{format, string::ToString};
 
     #[test]
     fn temp_display() {

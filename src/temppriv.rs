@@ -1,13 +1,15 @@
 // temppriv.rs
 //
-// Copyright (C) 2019-2020  Minnesota Department of Transportation
+// Copyright (C) 2019-2021  Minnesota Department of Transportation
 //
 //! Private module for temperature structs
 //!
+extern crate alloc;
+
 use crate::temp::Unit;
-use std::fmt;
-use std::marker::PhantomData;
-use std::ops::{Add, Sub};
+use core::fmt;
+use core::marker::PhantomData;
+use core::ops::{Add, Sub};
 
 /// A measurement of thermodynamic _temperature_.
 ///
@@ -41,6 +43,7 @@ where
 {
     /// Temperature quantity
     pub quantity: f64,
+
     /// Measurement unit
     unit: PhantomData<U>,
 }

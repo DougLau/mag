@@ -1,6 +1,6 @@
 // lib.rs
 //
-// Copyright (C) 2019-2020  Minnesota Department of Transportation
+// Copyright (C) 2019-2021  Minnesota Department of Transportation
 //
 //! Mag is a library for dealing with units of measure.  Magnitude!
 //!
@@ -35,6 +35,7 @@
 //! * Quantities are f64 only
 //!
 #![forbid(unsafe_code)]
+#![no_std]
 
 // Implement basic ops for a quantity struct
 macro_rules! impl_base_ops {

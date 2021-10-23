@@ -1,13 +1,13 @@
 // lenpriv.rs
 //
-// Copyright (C) 2019-2020  Minnesota Department of Transportation
+// Copyright (C) 2019-2021  Minnesota Department of Transportation
 //
 //! Private module for length structs
 //!
 use crate::length::Unit;
-use std::fmt;
-use std::marker::PhantomData;
-use std::ops::{Add, Div, Mul, Sub};
+use core::fmt;
+use core::marker::PhantomData;
+use core::ops::{Add, Div, Mul, Sub};
 
 /// A measurement of physical _length_, _distance_ or _range_.
 ///
@@ -49,6 +49,7 @@ where
 {
     /// Length quantity
     pub quantity: f64,
+
     /// Measurement unit
     unit: PhantomData<U>,
 }
@@ -89,6 +90,7 @@ where
 {
     /// Area quantity
     pub quantity: f64,
+
     /// Measurement unit
     unit: PhantomData<U>,
 }
@@ -128,6 +130,7 @@ where
 {
     /// Volume quantity
     pub quantity: f64,
+
     /// Measurement unit
     unit: PhantomData<U>,
 }
