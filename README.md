@@ -1,13 +1,7 @@
-Mag is a library for dealing with units of measure.  Magnitude!
+Mag is a library for dealing with physical quantities and units.
 
-## Highlights
-
-* Easy to understand and use
-* No external dependencies
-* Fast compile time
-* Units are not discarded when creating quantities
-
-## Example
+Quantities are created by multiplying scalar values by a unit type.  These units
+are named after common abbreviations:
 
 ```rust
 use mag::{length::{ft, m, mi}, time::{h, s}};
@@ -25,10 +19,12 @@ assert_eq!(d.to_string(), "60 ㎐");
 assert_eq!(e.to_string(), "55 mi/h");
 ```
 
-## Possible Improvements
+## Highlights
 
-* Add Current, Mass, Density, etc.
-* Improve Area to allow acre, hectare units
+* Easy to understand and use
+* No external dependencies
+* Fast compile time
+* Units are not discarded when creating quantities
 
 ## Alternative
 
