@@ -1,15 +1,12 @@
 [package]
 name = "mag"
-version = "0.3.0"
-description = "Measurement unit conversions (magnitude!)"
+version = "0.4.0"
+description = "Physical quantities and units"
 license = "MIT OR Apache-2.0"
 documentation = "https://docs.rs/mag"
 repository = "https://github.com/DougLau/mag"
 readme = "README.md"
-keywords = ["units", "measurement", "dimensional-analysis"]
+keywords = ["units", "measurement", "no_std"]
 edition = "2018"
 
 [dependencies]
-
-[features]
-default = []
