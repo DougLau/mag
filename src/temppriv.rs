@@ -11,7 +11,7 @@ use core::fmt;
 use core::marker::PhantomData;
 use core::ops::{Add, Sub};
 
-/// A measurement of thermodynamic _temperature_.
+/// Thermodynamic _temperature_.
 ///
 /// Temperature is a base quantity with a specific [unit].
 ///

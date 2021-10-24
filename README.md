@@ -27,7 +27,7 @@ assert_eq!(e.to_string(), "55 mi/h");
 
 ## Possible Improvements
 
-* Small set of quantities and units implemented
+* Small set of quantities and units
 * Quantities are f64 only
 
 ## Alternative
