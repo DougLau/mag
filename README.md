@@ -1,4 +1,4 @@
-Mag is a library for dealing with physical quantities and units.
+[Mag] is a library for dealing with physical quantities and units.
 
 Quantities are created by multiplying scalar values by a unit type.  These units
 are named after common abbreviations:
@@ -31,4 +31,5 @@ assert_eq!(e.to_string(), "55 mi/h");
 If mag doesn't fit your needs, you could try the [uom] crate, which has many
 more features.
 
+[mag]: https://docs.rs/mag/latest/mag/
 [uom]: https://docs.rs/uom/latest/uom/
