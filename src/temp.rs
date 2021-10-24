@@ -112,6 +112,7 @@ mod test {
         assert_eq!((22.4 * DegC).to_string(), "22.4 °C");
         assert_eq!((-5.2 * DegF).to_string(), "-5.2 °F");
         assert_eq!(format!("{:.1}", 111.1111 * DegK), "111.1 °K");
+        assert_eq!(format!("{:.2}", (32.0 * DegF).to::<DegC>()), "0.00 °C");
     }
 
     #[test]
