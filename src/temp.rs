@@ -13,10 +13,11 @@
 //! use mag::temp::{DegC, DegF};
 //!
 //! let a = 22.8 * DegC; // Temperature<DegC>
-//! let b = 50.6 * DegF; // Temperature<DegF>
+//! let b = 98.6 * DegF; // Temperature<DegF>
 //!
 //! assert_eq!(a.to_string(), "22.8 °C");
-//! assert_eq!(b.to_string(), "50.6 °F");
+//! assert_eq!(b.to_string(), "98.6 °F");
+//! assert_eq!(b.to(), 37 * DegC);
 //! ```
 //! [Temperature]: ../struct.Temperature.html
 //!

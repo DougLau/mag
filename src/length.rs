@@ -157,7 +157,7 @@ length_unit!(
 );
 
 length_unit!(
-    /** Inch */
+    /** Inch (capitalized to avoid clashing with `in` keyword) */
     In,
     0.0254,
     "in"
