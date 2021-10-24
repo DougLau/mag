@@ -16,7 +16,7 @@
 //! let b = 5.6 * mi; // Length<mi>
 //! let c = 1.2 * m * m; // Area<m>
 //! let d = 5.259 * yd * yd * yd; // Volume<yd>
-//! // let e = 1.0 * m * mi; // ERROR: units must match!
+//! // let e = 1 * m * mi; // ERROR: units must match!
 //!
 //! assert_eq!(a.to_string(), "25.5 cm");
 //! assert_eq!(b.to_string(), "5.6 mi");

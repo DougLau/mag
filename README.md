@@ -1,4 +1,4 @@
-Mag is a library for dealing with common units of measure.  Magnitude!
+Mag is a library for dealing with units of measure.  Magnitude!
 
 ## Highlights
 
@@ -14,7 +14,7 @@ use mag::{length::{ft, m, mi}, time::{h, s}};
 
 let a = 1.0 * ft; // Length<ft>
 let b = a.to::<m>(); // convert to Length<m>
-let c = 30.0 * s; // Period<s>
+let c = 30 * s; // Period<s>
 let d = 60.0 / s; // Frequency<s>
 let e = 55.0 * mi / h; // Speed<mi, h>
 
