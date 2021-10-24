@@ -25,26 +25,14 @@ assert_eq!(d.to_string(), "60 ㎐");
 assert_eq!(e.to_string(), "55 mi/h");
 ```
 
-## Room For Improvement
+## Possible Improvements
 
 * Small set of quantities and units implemented
 * Quantities are f64 only
 
-## Alternatives
+## Alternative
 
-Maybe **mag** doesn't fit your needs?  Check out these other crates:
-
-* [uom]
-* [dimensioned]
-* [yaiouom]
-* [measurements]
-* [simple_units]
-* [metric]
-* Plus many more!
+If mag doesn't fit your needs, try the [uom] crate, which has many more
+features.
 
 [uom]: https://docs.rs/uom/latest/uom/
-[dimensioned]: https://docs.rs/dimensioned/latest/dimensioned/
-[yaiouom]: https://docs.rs/yaiouom/latest/yaiouom/
-[measurements]: https://docs.rs/measurements/latest/measurements/
-[simple_units]: https://docs.rs/simple_units/latest/simple_units/
-[metric]: https://docs.rs/metric/latest/metric/
