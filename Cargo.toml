@@ -13,6 +13,3 @@ edition = "2018"
 
 [features]
 default = []
-
-# More obscure units are available
-obscure-units = []

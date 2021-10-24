@@ -93,7 +93,6 @@ temp_unit!(
     "°R"
 );
 
-#[cfg(feature = "obscure-units")]
 temp_unit!(
     /** Degrees Réaumur */
     DegRe,

@@ -183,7 +183,6 @@ time_unit!(
     "㎔"
 );
 
-#[cfg(feature = "obscure-units")]
 time_unit!(
     /** 14 Days */
     Fortnight,

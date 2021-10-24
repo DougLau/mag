@@ -91,91 +91,100 @@ length_unit!(
     1_000.0,
     "km"
 );
+
 length_unit!(
     /** Meter / Metre */
     m,
     1.0,
     "m"
 );
+
 length_unit!(
     /** Decimeter / Decimetre */
     dm,
     0.1,
     "dm"
 );
+
 length_unit!(
     /** Centimeter / Centimetre */
     cm,
     0.01,
     "cm"
 );
+
 length_unit!(
     /** Millimeter / Millimetre */
     mm,
     0.001,
     "mm"
 );
+
 length_unit!(
     /** Micrometer / Micrometre */
     um,
     0.000_001,
     "μm"
 );
+
 length_unit!(
     /** Nanometer / Nanometre */
     nm,
     0.000_000_001,
     "nm"
 );
+
 length_unit!(
     /** Mile */
     mi,
     1609.344,
     "mi"
 );
+
 length_unit!(
-    /** Foot */
+    /** Foot (international) */
     ft,
     0.3048,
     "ft"
 );
+
 length_unit!(
     /** Inch */
     In,
     0.0254,
     "in"
 );
+
 length_unit!(
-    /** Yard */
+    /** Yard (international) */
     yd,
     0.9144,
     "yd"
 );
 
-#[cfg(feature = "obscure-units")]
 length_unit!(
-    /** League */
+    /** League (3 mi) */
     league,
     4828.032,
     "league"
 );
-#[cfg(feature = "obscure-units")]
+
 length_unit!(
-    /** Rod */
+    /** Rod (16.5 ft) */
     rod,
     5.0292,
     "rod"
 );
-#[cfg(feature = "obscure-units")]
+
 length_unit!(
-    /** Furlong */
+    /** Furlong (220 yd) */
     furlong,
     201.168,
     "furlong"
 );
-#[cfg(feature = "obscure-units")]
+
 length_unit!(
-    /** Fathom */
+    /** Fathom (6 ft) */
     fathom,
     1.8288,
     "fathom"
