@@ -27,12 +27,12 @@ assert_eq!(e.to_string(), "55 mi/h");
 
 ## Possible Improvements
 
-* Small set of quantities and units
-* Quantities are f64 only
+* Add Current, Mass, Density, etc.
+* Improve Area to allow acre, hectare units
 
 ## Alternative
 
-If mag doesn't fit your needs, try the [uom] crate, which has many more
-features.
+If mag doesn't fit your needs, you could try the [uom] crate, which has many
+more features.
 
 [uom]: https://docs.rs/uom/latest/uom/
