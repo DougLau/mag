@@ -67,6 +67,14 @@ macro_rules! length_unit {
             }
         }
 
+        // i32 * <unit> => Length
+        impl Mul<$unit> for i32 {
+            type Output = Length<$unit>;
+            fn mul(self, _unit: $unit) -> Self::Output {
+                Length::new(f64::from(self))
+            }
+        }
+
         // Length * <unit> => Area
         impl Mul<$unit> for Length<$unit> {
             type Output = Area<$unit>;
@@ -248,6 +256,7 @@ mod test {
     #[test]
     fn len_add() {
         assert_eq!(1.0 * m + 1.0 * m, 2.0 * m);
+        assert_eq!(1 * m + 1 * m, 2 * m);
         assert_eq!(10.0 * ft + 2.0 * ft, 12.0 * ft);
         assert_eq!(6.0 * In + 6.0 * In, 12.0 * In);
     }

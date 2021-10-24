@@ -19,6 +19,7 @@ use core::ops::{Add, Div, Mul, Sub};
 /// * Speed `-` Speed `=>` Speed
 /// * Speed `*` f64 `=>` Speed
 /// * f64 `*` Speed `=>` Speed
+/// * i32 `*` Speed `=>` Speed
 /// * [Length] `*` [Frequency] `=>` Speed
 /// * Speed `/` f64 `=>` Speed
 /// * [Length] `/` [time unit] `=>` Speed
@@ -33,7 +34,7 @@ use core::ops::{Add, Div, Mul, Sub};
 /// use mag::{Speed, length::{m, mi}, time::{h, s}};
 ///
 /// let a = 7.4 * m / s;
-/// let b = 55.0 * mi / h;
+/// let b = 55 * mi / h;
 ///
 /// assert_eq!(a.to_string(), "7.4 m/s");
 /// assert_eq!(b.to_string(), "55 mi/h");
@@ -106,6 +107,18 @@ where
     type Output = Speed<L, P>;
     fn mul(self, other: Speed<L, P>) -> Self::Output {
         Speed::new(self * other.quantity)
+    }
+}
+
+// i32 * Speed => Speed
+impl<L, P> Mul<Speed<L, P>> for i32
+where
+    L: length::Unit,
+    P: time::Unit,
+{
+    type Output = Speed<L, P>;
+    fn mul(self, other: Speed<L, P>) -> Self::Output {
+        Speed::new(f64::from(self) * other.quantity)
     }
 }
 

@@ -22,6 +22,7 @@ use core::ops::{Add, Div, Mul, Sub};
 /// * Period `*` f64 `=>` Period
 /// * f64 `*` Period `=>` Period
 /// * f64 `*` [unit] `=>` Period
+/// * i32 `*` [unit] `=>` Period
 /// * f64 `/` Period `=>` [Frequency]
 ///
 /// Units must be the same for operations with two Period operands.  The [to]
@@ -30,7 +31,7 @@ use core::ops::{Add, Div, Mul, Sub};
 /// ```rust
 /// use mag::time::{min, s};
 ///
-/// let a = 15.0 * min;
+/// let a = 15 * min;
 /// let b = 90.0 * s;
 ///
 /// assert_eq!(a.to_string(), "15 min");

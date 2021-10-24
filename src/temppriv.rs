@@ -20,6 +20,7 @@ use core::ops::{Add, Sub};
 /// * Temperature `+` Temperature `=>` Temperature
 /// * Temperature `-` Temperature `=>` Temperature
 /// * f64 `*` [unit] `=>` Temperature
+/// * i32 `*` [unit] `=>` Temperature
 ///
 /// Units must be the same for operations with two Temperature operands.  The
 /// [to] method can be used for conversion.
@@ -28,7 +29,7 @@ use core::ops::{Add, Sub};
 /// use mag::temp::{DegC, DegF};
 ///
 /// let a = 72.5 * DegF;
-/// let b = 100.0 * DegC;
+/// let b = 100 * DegC;
 ///
 /// assert_eq!(a.to_string(), "72.5 °F");
 /// assert_eq!(b.to_string(), "100 °C");

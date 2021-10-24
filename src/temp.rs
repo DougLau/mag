@@ -61,6 +61,14 @@ macro_rules! temp_unit {
                 Temperature::new(self)
             }
         }
+
+        // i32 * <unit> => Temperature
+        impl Mul<$unit> for i32 {
+            type Output = Temperature<$unit>;
+            fn mul(self, _other: $unit) -> Self::Output {
+                Temperature::new(f64::from(self))
+            }
+        }
     };
 }
 

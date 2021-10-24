@@ -73,6 +73,14 @@ macro_rules! time_unit {
             }
         }
 
+        // i32 * <unit> => Period
+        impl Mul<$unit> for i32 {
+            type Output = Period<$unit>;
+            fn mul(self, _other: $unit) -> Self::Output {
+                Period::new(f64::from(self))
+            }
+        }
+
         // f64 / <unit> => Frequency
         impl Div<$unit> for f64 {
             type Output = Frequency<$unit>;

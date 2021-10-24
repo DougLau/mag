@@ -18,7 +18,7 @@
 //!
 //! let a = 1.0 * ft; // Length<ft>
 //! let b = a.to::<m>(); // convert to Length<m>
-//! let c = 30.0 * s; // Period<s>
+//! let c = 30 * s; // Period<s>
 //! let d = 60.0 / s; // Frequency<s>
 //! let e = 55.0 * mi / h; // Speed<mi, h>
 //!
@@ -65,6 +65,15 @@ macro_rules! impl_base_ops {
             type Output = Self;
             fn mul(self, scalar: f64) -> Self::Output {
                 Self::new(self.quantity * scalar)
+            }
+        }
+        impl<U> Mul<i32> for $quan<U>
+        where
+            U: $unit,
+        {
+            type Output = Self;
+            fn mul(self, scalar: i32) -> Self::Output {
+                Self::new(self.quantity * f64::from(scalar))
             }
         }
         impl<U> Mul<$quan<U>> for f64

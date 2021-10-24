@@ -20,6 +20,7 @@ use core::ops::{Add, Div, Mul, Sub};
 /// * Length `*` f64 `=>` Length
 /// * f64 `*` Length `=>` Length
 /// * f64 `*` [unit] `=>` Length
+/// * i32 `*` [unit] `=>` Length
 /// * Length `*` Length `=>` [Area]
 /// * Length `*` [unit] `=>` [Area]
 /// * Length `/` f64 `=>` Length
@@ -73,7 +74,7 @@ where
 /// use mag::length::m;
 ///
 /// let a = 150.0 * m * m; // Area<m>
-/// let b = (10.0 * m) * (15.0 * m); // Area<m>
+/// let b = 10.0 * m * 15.0 * m; // Area<m>
 ///
 /// assert_eq!(a, b);
 /// assert_eq!(a.to_string(), "150 m²");
