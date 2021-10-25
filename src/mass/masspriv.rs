@@ -15,12 +15,12 @@ use core::ops::{Add, Div, Mul, Sub};
 ///
 /// ## Operations
 ///
+/// * f64 `*` [unit] `=>` Mass
+/// * i32 `*` [unit] `=>` Mass
 /// * Mass `+` Mass `=>` Mass
 /// * Mass `-` Mass `=>` Mass
 /// * Mass `*` f64 `=>` Mass
 /// * f64 `*` Mass `=>` Mass
-/// * f64 `*` [unit] `=>` Mass
-/// * i32 `*` [unit] `=>` Mass
 /// * Mass `/` f64 `=>` Mass
 ///
 /// Units must be the same for operations with two Mass operands.  The [to]

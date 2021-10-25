@@ -15,15 +15,15 @@ use core::ops::{Add, Div, Mul, Sub};
 ///
 /// ## Operations
 ///
+/// * [Length] `*` [Frequency] `=>` Speed
+/// * [Length] `/` [time unit] `=>` Speed
+/// * [Length] `/` [Period] `=>` Speed
 /// * Speed `+` Speed `=>` Speed
 /// * Speed `-` Speed `=>` Speed
 /// * Speed `*` f64 `=>` Speed
 /// * f64 `*` Speed `=>` Speed
 /// * i32 `*` Speed `=>` Speed
-/// * [Length] `*` [Frequency] `=>` Speed
 /// * Speed `/` f64 `=>` Speed
-/// * [Length] `/` [time unit] `=>` Speed
-/// * [Length] `/` [Period] `=>` Speed
 ///
 /// Units must be the same for operations with two Speed operands.  The [to]
 /// method can be used for conversion.

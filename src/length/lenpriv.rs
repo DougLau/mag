@@ -15,12 +15,12 @@ use core::ops::{Add, Div, Mul, Sub};
 ///
 /// ## Operations
 ///
+/// * f64 `*` [unit] `=>` Length
+/// * i32 `*` [unit] `=>` Length
 /// * Length `+` Length `=>` Length
 /// * Length `-` Length `=>` Length
 /// * Length `*` f64 `=>` Length
 /// * f64 `*` Length `=>` Length
-/// * f64 `*` [unit] `=>` Length
-/// * i32 `*` [unit] `=>` Length
 /// * Length `*` Length `=>` [Area]
 /// * Length `*` [unit] `=>` [Area]
 /// * Length `/` f64 `=>` Length

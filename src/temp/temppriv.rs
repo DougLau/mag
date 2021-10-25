@@ -17,10 +17,10 @@ use core::ops::{Add, Sub};
 ///
 /// ## Operations
 ///
-/// * Temperature `+` Temperature `=>` Temperature
-/// * Temperature `-` Temperature `=>` Temperature
 /// * f64 `*` [unit] `=>` Temperature
 /// * i32 `*` [unit] `=>` Temperature
+/// * Temperature `+` Temperature `=>` Temperature
+/// * Temperature `-` Temperature `=>` Temperature
 ///
 /// Units must be the same for operations with two Temperature operands.  The
 /// [to] method can be used for conversion.

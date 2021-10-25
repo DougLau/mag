@@ -84,7 +84,7 @@ temp_unit!(
 );
 
 temp_unit!(
-    /** Degrees Kelvin*/
+    /** Degrees Kelvin */
     DegK,
     1.0,
     0.0,

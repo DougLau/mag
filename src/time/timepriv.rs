@@ -17,12 +17,12 @@ use core::ops::{Add, Div, Mul, Sub};
 ///
 /// ## Operations
 ///
+/// * f64 `*` [unit] `=>` Period
+/// * i32 `*` [unit] `=>` Period
 /// * Period `+` Period `=>` Period
 /// * Period `-` Period `=>` Period
 /// * Period `*` f64 `=>` Period
 /// * f64 `*` Period `=>` Period
-/// * f64 `*` [unit] `=>` Period
-/// * i32 `*` [unit] `=>` Period
 /// * f64 `/` Period `=>` [Frequency]
 ///
 /// Units must be the same for operations with two Period operands.  The [to]
@@ -59,12 +59,13 @@ where
 ///
 /// ## Operations
 ///
+/// * f64 `/` [unit] `=>` Frequency
+/// * i32 `/` [unit] `=>` Frequency
 /// * Frequency `+` Frequency `=>` Frequency
 /// * Frequency `-` Frequency `=>` Frequency
 /// * Frequency `*` f64 `=>` Frequency
 /// * f64 `*` Frequency `=>` Frequency
 /// * f64 `/` [Period] `=>` Frequency
-/// * f64 `/` [unit] `=>` Frequency
 /// * f64 `/` Frequency `=>` [Period]
 ///
 /// Units must be the same for operations with two Frequency operands.  The

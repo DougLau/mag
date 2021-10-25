@@ -91,6 +91,14 @@ macro_rules! time_unit {
             }
         }
 
+        // i32 / <unit> => Frequency
+        impl Div<$unit> for i32 {
+            type Output = Frequency<$unit>;
+            fn div(self, _other: $unit) -> Self::Output {
+                Frequency::new(f64::from(self))
+            }
+        }
+
         // Length / <unit> => Speed
         impl<L> Div<$unit> for Length<L> where L: length::Unit {
             type Output = Speed<L, $unit>;
