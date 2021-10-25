@@ -5,7 +5,7 @@
 //! Base units of temperature.
 //!
 //! Each unit is defined relative to degrees Kelvin with a conversion factor and
-//! offset.  They can be used to conveniently create [Temperature] structs.
+//! zero point.  They can be used to conveniently create [Temperature] structs.
 //!
 //! ## Example
 //!
@@ -34,27 +34,27 @@ pub trait Unit {
     const ABBREVIATION: &'static str;
 
     /// Multiplication factor to convert to Kelvin
-    fn k_factor() -> f64;
+    const K_FACTOR: f64;
 
-    /// Offset to convert to Kelvin
-    fn k_offset() -> f64;
+    /// Value at aero Kelvin
+    const K_ZERO: f64;
 }
 
 macro_rules! temp_unit {
     (
         $(#[$meta:meta])* $unit:ident,
+        $abbreviation:expr,
         $k_factor:expr,
-        $k_offset:expr,
-        $abbreviation:expr
+        $k_zero:expr
     ) => {
         $(#[$meta])*
         #[derive(Debug, Copy, Clone, PartialEq)]
         pub struct $unit;
 
         impl Unit for $unit {
-            fn k_factor() -> f64 { $k_factor }
-            fn k_offset() -> f64 { $k_offset }
-            const ABBREVIATION: &'static str = { $abbreviation };
+            const ABBREVIATION: &'static str = $abbreviation;
+            const K_FACTOR: f64 = $k_factor;
+            const K_ZERO: f64 = $k_zero;
         }
 
         // f64 * <unit> => Temperature
@@ -78,41 +78,41 @@ macro_rules! temp_unit {
 temp_unit!(
     /** Degrees Celsius / Centigrade */
     DegC,
+    "°C",
     1.0,
-    273.15,
-    "°C"
+    -273.15
 );
 
 temp_unit!(
     /** Degrees Kelvin */
     DegK,
+    "°K",
     1.0,
-    0.0,
-    "°K"
+    0.0
 );
 
 temp_unit!(
     /** Degrees Fahrenheit */
     DegF,
+    "°F",
     5.0 / 9.0,
-    459.67,
-    "°F"
+    -459.67
 );
 
 temp_unit!(
     /** Degrees Rankine */
     DegR,
+    "°R",
     5.0 / 9.0,
-    0.0,
-    "°R"
+    0.0
 );
 
 temp_unit!(
     /** Degrees Réaumur */
     DegRe,
+    "°Ré",
     0.8,
-    273.15,
-    "°Ré"
+    -273.15
 );
 
 #[cfg(test)]

@@ -41,20 +41,20 @@ pub trait Unit {
     const INVERSE: &'static str;
 
     /// Multiplication factor to convert to seconds
-    fn s_factor() -> f64;
+    const S_FACTOR: f64;
 
     /// Multiplication factor to convert to another unit
     fn factor<T: Unit>() -> f64 {
-        Self::s_factor() / T::s_factor()
+        Self::S_FACTOR / T::S_FACTOR
     }
 }
 
 macro_rules! time_unit {
     (
         $(#[$meta:meta])* $unit:ident,
-        $s_factor:expr,
         $abbreviation:expr,
-        $inverse:expr
+        $inverse:expr,
+        $s_factor:expr
     ) => {
         $(#[$meta])*
         #[allow(non_camel_case_types)]
@@ -62,9 +62,9 @@ macro_rules! time_unit {
         pub struct $unit;
 
         impl Unit for $unit {
-            fn s_factor() -> f64 { $s_factor }
-            const ABBREVIATION: &'static str = { $abbreviation };
-            const INVERSE: &'static str = { $inverse };
+            const ABBREVIATION: &'static str = $abbreviation;
+            const INVERSE: &'static str = $inverse;
+            const S_FACTOR: f64 = $s_factor;
         }
 
         // f64 * <unit> => Period
@@ -112,113 +112,113 @@ macro_rules! time_unit {
 time_unit!(
     /** Gigasecond */
     Gs,
-    1_000_000_000.0,
     "Gs",
-    "nHz"
+    "nHz",
+    1_000_000_000.0
 );
 
 time_unit!(
     /** Megasecond */
     Ms,
-    1_000_000.0,
     "Ms",
-    "μHz"
+    "μHz",
+    1_000_000.0
 );
 
 time_unit!(
     /** Kilosecond */
     Ks,
-    1_000.0,
     "Ks",
-    "mHz"
+    "mHz",
+    1_000.0
 );
 
 time_unit!(
     /** Week */
     wk,
-    7.0 * 24.0 * 60.0 * 60.0,
     "wk",
-    "/wk"
+    "/wk",
+    7.0 * 24.0 * 60.0 * 60.0
 );
 
 time_unit!(
     /** Day */
     d,
-    24.0 * 60.0 * 60.0,
     "d",
-    "/d"
+    "/d",
+    24.0 * 60.0 * 60.0
 );
 
 time_unit!(
     /** Hour */
     h,
-    60.0 * 60.0,
     "h",
-    "/h"
+    "/h",
+    60.0 * 60.0
 );
 
 time_unit!(
     /** Minute */
     min,
-    60.0,
     "min",
-    "/min"
+    "/min",
+    60.0
 );
 
 time_unit!(
     /** Second */
     s,
-    1.0,
     "s",
-    "㎐"
+    "㎐",
+    1.0
 );
 
 time_unit!(
     /** Decisecond */
     ds,
-    0.1,
     "ds",
-    "daHz"
+    "daHz",
+    0.1
 );
 
 time_unit!(
     /** Millisecond */
     ms,
-    0.001,
     "ms",
-    "㎑"
+    "㎑",
+    0.001
 );
 
 time_unit!(
     /** Microsecond */
     us,
-    0.000_001,
     "μs",
-    "㎒"
+    "㎒",
+    0.000_001
 );
 
 time_unit!(
     /** Nanosecond */
     ns,
-    0.000_000_001,
     "ns",
-    "㎓"
+    "㎓",
+    0.000_000_001
 );
 
 time_unit!(
     /** Picosecond */
     ps,
-    0.000_000_000_001,
     "ps",
-    "㎔"
+    "㎔",
+    0.000_000_000_001
 );
 
 time_unit!(
     /** 14 Days */
     Fortnight,
-    14.0 * 24.0 * 60.0 * 60.0,
     "fortnight",
-    "/fortnight"
+    "/fortnight",
+    14.0 * 24.0 * 60.0 * 60.0
 );
 
 #[cfg(test)]

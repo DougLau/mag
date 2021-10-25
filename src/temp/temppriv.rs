@@ -73,8 +73,8 @@ where
 
     /// Convert to specified units
     pub fn to<T: Unit>(self) -> Temperature<T> {
-        let dk = (self.quantity + U::k_offset()) * U::k_factor();
-        let quantity = dk / T::k_factor() - T::k_offset();
+        let dk = (self.quantity - U::K_ZERO) * U::K_FACTOR;
+        let quantity = dk / T::K_FACTOR + T::K_ZERO;
         Temperature::new(quantity)
     }
 }

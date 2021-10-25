@@ -40,16 +40,16 @@ pub trait Unit {
     const ABBREVIATION: &'static str;
 
     /// Multiplication factor to convert to meters
-    fn m_factor() -> f64;
+    const M_FACTOR: f64;
 
     /// Multiplication factor to convert to another unit
     fn factor<T: Unit>() -> f64 {
-        Self::m_factor() / T::m_factor()
+        Self::M_FACTOR / T::M_FACTOR
     }
 }
 
 macro_rules! length_unit {
-    ($(#[$meta:meta])* $unit:ident, $m_factor:expr, $abbreviation:expr) => {
+    ($(#[$meta:meta])* $unit:ident, $abbreviation:expr, $m_factor:expr) => {
 
         $(#[$meta])*
         #[allow(non_camel_case_types)]
@@ -57,8 +57,8 @@ macro_rules! length_unit {
         pub struct $unit;
 
         impl Unit for $unit {
-            fn m_factor() -> f64 { $m_factor }
-            const ABBREVIATION: &'static str = { $abbreviation };
+            const ABBREVIATION: &'static str = $abbreviation;
+            const M_FACTOR: f64 = $m_factor;
         }
 
         // f64 * <unit> => Length
@@ -98,106 +98,106 @@ macro_rules! length_unit {
 length_unit!(
     /** Kilometer / Kilometre */
     km,
-    1_000.0,
-    "km"
+    "km",
+    1_000.0
 );
 
 length_unit!(
     /** Meter / Metre */
     m,
-    1.0,
-    "m"
+    "m",
+    1.0
 );
 
 length_unit!(
     /** Decimeter / Decimetre */
     dm,
-    0.1,
-    "dm"
+    "dm",
+    0.1
 );
 
 length_unit!(
     /** Centimeter / Centimetre */
     cm,
-    0.01,
-    "cm"
+    "cm",
+    0.01
 );
 
 length_unit!(
     /** Millimeter / Millimetre */
     mm,
-    0.001,
-    "mm"
+    "mm",
+    0.001
 );
 
 length_unit!(
     /** Micrometer / Micrometre */
     um,
-    0.000_001,
-    "μm"
+    "μm",
+    0.000_001
 );
 
 length_unit!(
     /** Nanometer / Nanometre */
     nm,
-    0.000_000_001,
-    "nm"
+    "nm",
+    0.000_000_001
 );
 
 length_unit!(
     /** Mile */
     mi,
-    1609.344,
-    "mi"
+    "mi",
+    1_609.344
 );
 
 length_unit!(
     /** Foot (international) */
     ft,
-    0.3048,
-    "ft"
+    "ft",
+    0.304_8
 );
 
 length_unit!(
     /** Inch (capitalized to avoid clashing with `in` keyword) */
     In,
-    0.0254,
-    "in"
+    "in",
+    0.025_4
 );
 
 length_unit!(
     /** Yard (international) */
     yd,
-    0.9144,
-    "yd"
+    "yd",
+    0.914_4
 );
 
 length_unit!(
     /** League (3 mi) */
     league,
-    4828.032,
-    "league"
+    "league",
+    4_828.032
 );
 
 length_unit!(
     /** Rod (16.5 ft) */
     rod,
-    5.0292,
-    "rod"
+    "rod",
+    5.029_2
 );
 
 length_unit!(
     /** Furlong (220 yd) */
     furlong,
-    201.168,
-    "furlong"
+    "furlong",
+    201.168
 );
 
 length_unit!(
     /** Fathom (6 ft) */
     fathom,
-    1.8288,
-    "fathom"
+    "fathom",
+    1.828_8
 );
 
 #[cfg(test)]

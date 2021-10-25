@@ -33,11 +33,11 @@ pub trait Unit {
     const ABBREVIATION: &'static str;
 
     /// Multiplication factor to convert to grams
-    fn g_factor() -> f64;
+    const G_FACTOR: f64;
 
     /// Multiplication factor to convert to another unit
     fn factor<T: Unit>() -> f64 {
-        Self::g_factor() / T::g_factor()
+        Self::G_FACTOR / T::G_FACTOR
     }
 }
 
@@ -50,8 +50,8 @@ macro_rules! mass_unit {
         pub struct $unit;
 
         impl Unit for $unit {
-            const ABBREVIATION: &'static str = { $abbreviation };
-            fn g_factor() -> f64 { $g_factor }
+            const ABBREVIATION: &'static str = $abbreviation;
+            const G_FACTOR: f64 = $g_factor;
         }
 
         // f64 * <unit> => Mass
