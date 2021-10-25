@@ -9,6 +9,7 @@
 // Implement basic ops for a quantity struct
 macro_rules! impl_base_ops {
     ($quan:ident, $unit:path) => {
+        // <quan> + <quan> => <quan>
         impl<U> Add for $quan<U>
         where
             U: $unit,
@@ -18,6 +19,8 @@ macro_rules! impl_base_ops {
                 Self::new(self.quantity + other.quantity)
             }
         }
+
+        // <quan> - <quan> => <quan>
         impl<U> Sub for $quan<U>
         where
             U: $unit,
@@ -27,6 +30,8 @@ macro_rules! impl_base_ops {
                 Self::new(self.quantity - other.quantity)
             }
         }
+
+        // <quan> * f64 => <quan>
         impl<U> Mul<f64> for $quan<U>
         where
             U: $unit,
@@ -36,6 +41,8 @@ macro_rules! impl_base_ops {
                 Self::new(self.quantity * scalar)
             }
         }
+
+        // <quan> * i32 => <quan>
         impl<U> Mul<i32> for $quan<U>
         where
             U: $unit,
@@ -45,6 +52,8 @@ macro_rules! impl_base_ops {
                 Self::new(self.quantity * f64::from(scalar))
             }
         }
+
+        // f64 * <quan> => <quan>
         impl<U> Mul<$quan<U>> for f64
         where
             U: $unit,
@@ -54,6 +63,8 @@ macro_rules! impl_base_ops {
                 Self::Output::new(self * other.quantity)
             }
         }
+
+        // <quan> / f64 => <quan>
         impl<U> Div<f64> for $quan<U>
         where
             U: $unit,
@@ -67,11 +78,13 @@ macro_rules! impl_base_ops {
 }
 
 pub mod length;
+pub mod mass;
 mod speed;
 pub mod temp;
 pub mod time;
 
 pub use length::lenpriv::{Area, Length, Volume};
+pub use mass::masspriv::Mass;
 pub use speed::Speed;
 pub use temp::temppriv::Temperature;
 pub use time::timepriv::{Frequency, Period};
