@@ -29,11 +29,16 @@
 //!
 extern crate alloc;
 
-use crate::lenpriv::{Area, Length, Volume};
+pub(crate) mod lenpriv;
+
+use crate::length::lenpriv::{Area, Length, Volume};
 use core::ops::Mul;
 
 /// Unit definition for Length
 pub trait Unit {
+    /// Unit abbreviation
+    const ABBREVIATION: &'static str;
+
     /// Multiplication factor to convert to meters
     fn m_factor() -> f64;
 
@@ -41,9 +46,6 @@ pub trait Unit {
     fn factor<T: Unit>() -> f64 {
         Self::m_factor() / T::m_factor()
     }
-
-    /// Unit abbreviation
-    const ABBREVIATION: &'static str;
 }
 
 macro_rules! length_unit {

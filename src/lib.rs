@@ -67,14 +67,11 @@ macro_rules! impl_base_ops {
 }
 
 pub mod length;
-mod lenpriv;
 mod speed;
 pub mod temp;
-mod temppriv;
 pub mod time;
-mod timepriv;
 
-pub use lenpriv::{Area, Length, Volume};
+pub use length::lenpriv::{Area, Length, Volume};
 pub use speed::Speed;
-pub use temppriv::Temperature;
-pub use timepriv::{Frequency, Period};
+pub use temp::temppriv::Temperature;
+pub use time::timepriv::{Frequency, Period};

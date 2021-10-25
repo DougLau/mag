@@ -23,19 +23,21 @@
 //!
 extern crate alloc;
 
-use super::Temperature;
+pub(crate) mod temppriv;
+
+use crate::temp::temppriv::Temperature;
 use core::ops::Mul;
 
 /// Unit definition for temperature
 pub trait Unit {
+    /// Unit abbreviation
+    const ABBREVIATION: &'static str;
+
     /// Multiplication factor to convert to Kelvin
     fn k_factor() -> f64;
 
     /// Offset to convert to Kelvin
     fn k_offset() -> f64;
-
-    /// Unit abbreviation
-    const ABBREVIATION: &'static str;
 }
 
 macro_rules! temp_unit {
@@ -80,6 +82,7 @@ temp_unit!(
     273.15,
     "°C"
 );
+
 temp_unit!(
     /** Degrees Kelvin*/
     DegK,
@@ -87,6 +90,7 @@ temp_unit!(
     0.0,
     "°K"
 );
+
 temp_unit!(
     /** Degrees Fahrenheit */
     DegF,
@@ -94,6 +98,7 @@ temp_unit!(
     459.67,
     "°F"
 );
+
 temp_unit!(
     /** Degrees Rankine */
     DegR,

@@ -27,11 +27,19 @@
 //!
 extern crate alloc;
 
-use super::{length, Frequency, Length, Period, Speed};
+pub(crate) mod timepriv;
+
+use crate::{length, Frequency, Length, Period, Speed};
 use core::ops::{Div, Mul};
 
 /// Unit definition for time
 pub trait Unit {
+    /// Unit abbreviation
+    const ABBREVIATION: &'static str;
+
+    /// Inverse unit abbreviation
+    const INVERSE: &'static str;
+
     /// Multiplication factor to convert to seconds
     fn s_factor() -> f64;
 
@@ -39,12 +47,6 @@ pub trait Unit {
     fn factor<T: Unit>() -> f64 {
         Self::s_factor() / T::s_factor()
     }
-
-    /// Unit abbreviation
-    const ABBREVIATION: &'static str;
-
-    /// Inverse unit abbreviation
-    const INVERSE: &'static str;
 }
 
 macro_rules! time_unit {
@@ -106,6 +108,7 @@ time_unit!(
     "Gs",
     "nHz"
 );
+
 time_unit!(
     /** Megasecond */
     Ms,
@@ -113,6 +116,7 @@ time_unit!(
     "Ms",
     "μHz"
 );
+
 time_unit!(
     /** Kilosecond */
     Ks,
@@ -120,6 +124,7 @@ time_unit!(
     "Ks",
     "mHz"
 );
+
 time_unit!(
     /** Week */
     wk,
@@ -127,6 +132,7 @@ time_unit!(
     "wk",
     "/wk"
 );
+
 time_unit!(
     /** Day */
     d,
@@ -134,6 +140,7 @@ time_unit!(
     "d",
     "/d"
 );
+
 time_unit!(
     /** Hour */
     h,
@@ -141,6 +148,7 @@ time_unit!(
     "h",
     "/h"
 );
+
 time_unit!(
     /** Minute */
     min,
@@ -148,6 +156,7 @@ time_unit!(
     "min",
     "/min"
 );
+
 time_unit!(
     /** Second */
     s,
@@ -155,6 +164,7 @@ time_unit!(
     "s",
     "㎐"
 );
+
 time_unit!(
     /** Decisecond */
     ds,
@@ -162,6 +172,7 @@ time_unit!(
     "ds",
     "daHz"
 );
+
 time_unit!(
     /** Millisecond */
     ms,
@@ -169,6 +180,7 @@ time_unit!(
     "ms",
     "㎑"
 );
+
 time_unit!(
     /** Microsecond */
     us,
@@ -176,6 +188,7 @@ time_unit!(
     "μs",
     "㎒"
 );
+
 time_unit!(
     /** Nanosecond */
     ns,
@@ -183,6 +196,7 @@ time_unit!(
     "ns",
     "㎓"
 );
+
 time_unit!(
     /** Picosecond */
     ps,
