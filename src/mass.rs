@@ -3,10 +3,10 @@
 // Copyright (C) 2021  Minnesota Department of Transportation
 // Copyright (C) 2021  Douglas P Lau
 //
-//! Units of physical mass.
+//! Units of physical [Mass].
 //!
 //! Each unit is defined relative to grams with a conversion factor.  They can
-//! be used to conveniently create [Mass] structs.
+//! be used to conveniently create Mass quantities.
 //!
 //! ## Example
 //!
@@ -19,11 +19,89 @@
 //! assert_eq!(a.to_string(), "1.2 kg");
 //! assert_eq!(b.to_string(), "5 g");
 //! ```
-//! [Mass]: ../struct.Mass.html
-//!
+//! [Mass]: struct.Mass.html
 extern crate alloc;
 
-pub(crate) mod masspriv;
+pub(crate) mod quan {
+    use core::fmt;
+    use core::marker::PhantomData;
+    use core::ops::{Add, Div, Mul, Sub};
+    use crate::mass::Unit;
+
+    /// Quantity of mass.
+    ///
+    /// Mass is a base quantity with a specific [unit].
+    ///
+    /// ## Operations
+    ///
+    /// * f64 `*` [unit] `=>` Mass
+    /// * i32 `*` [unit] `=>` Mass
+    /// * Mass `+` Mass `=>` Mass
+    /// * Mass `-` Mass `=>` Mass
+    /// * Mass `*` f64 `=>` Mass
+    /// * f64 `*` Mass `=>` Mass
+    /// * Mass `/` f64 `=>` Mass
+    ///
+    /// Units must be the same for operations with two Mass operands.  The [to]
+    /// method can be used for conversion.
+    ///
+    /// ## Example
+    ///
+    /// ```rust
+    /// use mag::mass::kg;
+    ///
+    /// let a = 2.5 * kg;
+    /// let b = 4.5 * kg;
+    ///
+    /// assert_eq!(a.to_string(), "2.5 kg");
+    /// assert_eq!(a + b, 7 * kg);
+    /// ```
+    /// [unit]: ../mass/index.html
+    /// [to]: struct.Mass.html#method.to
+    ///
+    #[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
+    pub struct Mass<U>
+    where
+        U: Unit,
+    {
+        /// Mass quantity
+        pub quantity: f64,
+
+        /// Measurement unit
+        unit: PhantomData<U>,
+    }
+
+    impl_base_ops!(Mass, Unit);
+
+    impl<U> Mass<U>
+    where
+        U: Unit,
+    {
+        /// Create a new mass quantity
+        pub fn new(quantity: f64) -> Self {
+            Mass::<U> {
+                quantity,
+                unit: PhantomData,
+            }
+        }
+
+        /// Convert to specified units
+        pub fn to<T: Unit>(self) -> Mass<T> {
+            let quantity = self.quantity * U::factor::<T>();
+            Mass::new(quantity)
+        }
+    }
+
+    impl<U> fmt::Display for Mass<U>
+    where
+        U: Unit,
+    {
+        fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+            self.quantity.fmt(f)?;
+            write!(f, " {}", U::ABBREVIATION)
+        }
+    }
+}
 
 /// Unit definition for Mass
 pub trait Unit {
@@ -74,17 +152,17 @@ macro_rules! mass_unit {
 
         // f64 * <unit> => Mass
         impl core::ops::Mul<$unit> for f64 {
-            type Output = $crate::Mass<$unit>;
+            type Output = $crate::quan::Mass<$unit>;
             fn mul(self, _unit: $unit) -> Self::Output {
-                $crate::Mass::new(self)
+                Self::Output::new(self)
             }
         }
 
         // i32 * <unit> => Mass
         impl core::ops::Mul<$unit> for i32 {
-            type Output = $crate::Mass<$unit>;
+            type Output = $crate::quan::Mass<$unit>;
             fn mul(self, _unit: $unit) -> Self::Output {
-                $crate::Mass::new(f64::from(self))
+                Self::Output::new(f64::from(self))
             }
         }
     };

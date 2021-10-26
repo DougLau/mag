@@ -23,9 +23,9 @@ assert_eq!(e.to_string(), "55 mi/h");
 ## Highlights
 
 * Easy to understand and use
-* No external dependencies
-* Fast compile time
 * Units are not discarded when creating quantities
+* Fast compile time
+* No external dependencies
 
 ## Alternative
 
