@@ -1,4 +1,5 @@
-[Mag] is a library for dealing with physical quantities and units.
+[Mag] is a library for dealing with physical quantities and units, using the
+International System of Quantities.
 
 Quantities are created by multiplying scalar values by a unit type.  These units
 are named after common abbreviations:

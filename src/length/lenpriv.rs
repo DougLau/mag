@@ -31,13 +31,13 @@ use core::ops::{Add, Div, Mul, Sub};
 /// ## Example
 ///
 /// ```rust
-/// use mag::{Length, length::In};
+/// use mag::length::{cm, m};
 ///
-/// let a = 5.5 * In;
-/// let b = 4.5 * In;
+/// let a = 5.5 * cm;
+/// let b = 4.5 * cm;
 ///
-/// assert_eq!(a.to_string(), "5.5 in");
-/// assert_eq!(a + b, 10.0 * In);
+/// assert_eq!(a.to_string(), "5.5 cm");
+/// assert_eq!((a + b).to(), 0.1 * m);
 /// ```
 /// [Area]: struct.Area.html
 /// [unit]: length/index.html
