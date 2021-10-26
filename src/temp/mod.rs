@@ -78,7 +78,7 @@ macro_rules! temp_unit {
         $k_zero:expr
     ) => {
         $(#[$doc])*
-        #[derive(Debug, Copy, Clone, PartialEq)]
+        #[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
         pub struct $unit;
 
         impl $crate::temp::Unit for $unit {

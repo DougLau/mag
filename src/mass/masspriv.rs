@@ -41,7 +41,7 @@ use core::ops::{Add, Div, Mul, Sub};
 /// [unit]: mass/index.html
 /// [to]: struct.Mass.html#method.to
 ///
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
 pub struct Mass<U>
 where
     U: Unit,

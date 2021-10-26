@@ -81,7 +81,7 @@ macro_rules! time_unit {
     ) => {
         $(#[$doc])*
         #[allow(non_camel_case_types)]
-        #[derive(Debug, Copy, Clone, PartialEq)]
+        #[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
         pub struct $unit;
 
         impl $crate::time::Unit for $unit {

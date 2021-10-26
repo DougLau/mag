@@ -42,7 +42,7 @@ use core::ops::{Add, Div, Mul, Sub};
 /// [unit]: time/index.html
 /// [to]: struct.Period.html#method.to
 ///
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
 pub struct Period<U>
 where
     U: Unit,
@@ -85,7 +85,7 @@ where
 /// [unit]: time/index.html
 /// [to]: struct.Frequency.html#method.to
 ///
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
 pub struct Frequency<U>
 where
     U: Unit,

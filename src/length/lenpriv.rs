@@ -44,7 +44,7 @@ use core::ops::{Add, Div, Mul, Sub};
 /// [unit]: length/index.html
 /// [to]: struct.Length.html#method.to
 ///
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
 pub struct Length<U>
 where
     U: Unit,
@@ -85,7 +85,7 @@ where
 /// [Length]: struct.Length.html
 /// [Volume]: struct.Volume.html
 ///
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
 pub struct Area<U>
 where
     U: Unit,
@@ -125,7 +125,7 @@ where
 /// [unit]: length/index.html
 /// [Length]: struct.Length.html
 ///
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
 pub struct Volume<U>
 where
     U: Unit,

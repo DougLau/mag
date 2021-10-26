@@ -47,7 +47,7 @@ use core::ops::{Add, Div, Mul, Sub};
 /// [time unit]: time/index.html
 /// [to]: struct.Speed.html#method.to
 ///
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
 pub struct Speed<L, P>
 where
     L: length::Unit,

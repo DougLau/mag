@@ -38,7 +38,7 @@ use core::ops::{Add, Sub};
 /// [unit]: temp/index.html
 /// [to]: struct.Temperature.html#method.to
 ///
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
 pub struct Temperature<U>
 where
     U: Unit,
