@@ -53,7 +53,7 @@ pub trait Unit {
 /// * `inverse` Inverse time unit (frequency)
 /// * `s_factor` Factor to convert to seconds
 ///
-/// # Example: Delisle
+/// # Example: Fortnight
 /// ```rust
 /// use mag::{time_unit, time::h};
 ///
