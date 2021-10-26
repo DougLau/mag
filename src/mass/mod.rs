@@ -1,6 +1,7 @@
 // mass.rs
 //
 // Copyright (C) 2021  Minnesota Department of Transportation
+// Copyright (C) 2021  Douglas P Lau
 //
 //! Units of physical mass.
 //!

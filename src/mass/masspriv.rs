@@ -1,6 +1,7 @@
 // masspriv.rs
 //
 // Copyright (C) 2021  Minnesota Department of Transportation
+// Copyright (C) 2021  Douglas P Lau
 //
 //! Private module for mass
 //!

@@ -1,6 +1,7 @@
 // timepriv.rs
 //
 // Copyright (C) 2019-2021  Minnesota Department of Transportation
+// Copyright (C) 2019-2021  Douglas P Lau
 //
 //! Private module for time structs
 //!
