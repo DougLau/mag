@@ -2,7 +2,7 @@
 //
 // Copyright (C) 2019-2021  Minnesota Department of Transportation
 //
-//! Base units of temperature.
+//! Units of thermodynamic temperature.
 //!
 //! Each unit is defined relative to degrees Kelvin with a conversion factor and
 //! zero point.  They can be used to conveniently create [Temperature] structs.
@@ -25,9 +25,6 @@ extern crate alloc;
 
 pub(crate) mod temppriv;
 
-use crate::temp::temppriv::Temperature;
-use core::ops::Mul;
-
 /// Unit definition for temperature
 pub trait Unit {
     /// Unit abbreviation
@@ -36,40 +33,71 @@ pub trait Unit {
     /// Multiplication factor to convert to Kelvin
     const K_FACTOR: f64;
 
-    /// Value at aero Kelvin
+    /// Value at aero degrees Kelvin
     const K_ZERO: f64;
 }
 
+/// Define a custom temperature [unit]
+///
+/// * `unit` Unit struct name
+/// * `abbreviation` Standard unit abbreviation
+/// * `k_factor` Factor to convert to degrees Kelvin
+/// * `k_zero` Value at absolute zero
+///
+/// # Example: Delisle
+/// ```rust
+/// use approx::assert_relative_eq;
+/// use mag::{temp_unit, temp::DegC};
+///
+/// temp_unit!(Delisle, "°D", -2.0 / 3.0, 559.73);
+///
+/// let boiling = 0 * Delisle;
+/// assert_eq!(boiling.to_string(), "0 °D");
+/// assert_relative_eq!(
+///     boiling.to::<DegC>().quantity,
+///     100.0,
+///     max_relative = 0.000_1
+/// );
+/// let freezing = 0 * DegC;
+/// assert_relative_eq!(
+///     freezing.to::<Delisle>().quantity,
+///     150.0,
+///     max_relative = 0.000_1
+/// );
+/// ```
+///
+/// [unit]: temp/trait.Unit.html
+#[macro_export]
 macro_rules! temp_unit {
     (
-        $(#[$meta:meta])* $unit:ident,
+        $(#[$doc:meta])* $unit:ident,
         $abbreviation:expr,
         $k_factor:expr,
         $k_zero:expr
     ) => {
-        $(#[$meta])*
+        $(#[$doc])*
         #[derive(Debug, Copy, Clone, PartialEq)]
         pub struct $unit;
 
-        impl Unit for $unit {
+        impl $crate::temp::Unit for $unit {
             const ABBREVIATION: &'static str = $abbreviation;
             const K_FACTOR: f64 = $k_factor;
             const K_ZERO: f64 = $k_zero;
         }
 
         // f64 * <unit> => Temperature
-        impl Mul<$unit> for f64 {
-            type Output = Temperature<$unit>;
+        impl core::ops::Mul<$unit> for f64 {
+            type Output = $crate::Temperature<$unit>;
             fn mul(self, _other: $unit) -> Self::Output {
-                Temperature::new(self)
+                $crate::Temperature::new(self)
             }
         }
 
         // i32 * <unit> => Temperature
-        impl Mul<$unit> for i32 {
-            type Output = Temperature<$unit>;
+        impl core::ops::Mul<$unit> for i32 {
+            type Output = $crate::Temperature<$unit>;
             fn mul(self, _other: $unit) -> Self::Output {
-                Temperature::new(f64::from(self))
+                $crate::Temperature::new(f64::from(self))
             }
         }
     };

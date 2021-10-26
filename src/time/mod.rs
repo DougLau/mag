@@ -2,7 +2,7 @@
 //
 // Copyright (C) 2019-2021  Minnesota Department of Transportation
 //
-//! Base units of time.
+//! Units of time.
 //!
 //! Each unit is defined relative to seconds with a conversion factor.  They
 //! can be used to conveniently create [Period] and [Frequency] structs.
@@ -29,9 +29,6 @@ extern crate alloc;
 
 pub(crate) mod timepriv;
 
-use crate::{length, Frequency, Length, Period, Speed};
-use core::ops::{Div, Mul};
-
 /// Unit definition for time
 pub trait Unit {
     /// Unit abbreviation
@@ -49,61 +46,88 @@ pub trait Unit {
     }
 }
 
+/// Define a custom time [unit]
+///
+/// * `unit` Unit struct name
+/// * `abbreviation` Standard unit abbreviation
+/// * `inverse` Inverse time unit (frequency)
+/// * `s_factor` Factor to convert to seconds
+///
+/// # Example: Delisle
+/// ```rust
+/// use mag::{time_unit, time::h};
+///
+/// time_unit!(
+///     Fortnight,
+///     "fortnight",
+///     "/fortnight",
+///     14.0 * 24.0 * 60.0 * 60.0
+/// );
+///
+/// let f = 1 * Fortnight;
+/// assert_eq!(f.to::<h>(), 24 * 14 * h);
+/// ```
+///
+/// [unit]: time/trait.Unit.html
+#[macro_export]
 macro_rules! time_unit {
     (
-        $(#[$meta:meta])* $unit:ident,
+        $(#[$doc:meta])* $unit:ident,
         $abbreviation:expr,
         $inverse:expr,
         $s_factor:expr
     ) => {
-        $(#[$meta])*
+        $(#[$doc])*
         #[allow(non_camel_case_types)]
         #[derive(Debug, Copy, Clone, PartialEq)]
         pub struct $unit;
 
-        impl Unit for $unit {
+        impl $crate::time::Unit for $unit {
             const ABBREVIATION: &'static str = $abbreviation;
             const INVERSE: &'static str = $inverse;
             const S_FACTOR: f64 = $s_factor;
         }
 
         // f64 * <unit> => Period
-        impl Mul<$unit> for f64 {
-            type Output = Period<$unit>;
+        impl core::ops::Mul<$unit> for f64 {
+            type Output = $crate::Period<$unit>;
             fn mul(self, _other: $unit) -> Self::Output {
-                Period::new(self)
+                $crate::Period::new(self)
             }
         }
 
         // i32 * <unit> => Period
-        impl Mul<$unit> for i32 {
-            type Output = Period<$unit>;
+        impl core::ops::Mul<$unit> for i32 {
+            type Output = $crate::Period<$unit>;
             fn mul(self, _other: $unit) -> Self::Output {
-                Period::new(f64::from(self))
+                $crate::Period::new(f64::from(self))
             }
         }
 
         // f64 / <unit> => Frequency
-        impl Div<$unit> for f64 {
-            type Output = Frequency<$unit>;
+        impl core::ops::Div<$unit> for f64 {
+            type Output = $crate::Frequency<$unit>;
             fn div(self, _other: $unit) -> Self::Output {
-                Frequency::new(self)
+                $crate::Frequency::new(self)
             }
         }
 
         // i32 / <unit> => Frequency
-        impl Div<$unit> for i32 {
-            type Output = Frequency<$unit>;
+        impl core::ops::Div<$unit> for i32 {
+            type Output = $crate::Frequency<$unit>;
             fn div(self, _other: $unit) -> Self::Output {
-                Frequency::new(f64::from(self))
+                $crate::Frequency::new(f64::from(self))
             }
         }
 
         // Length / <unit> => Speed
-        impl<L> Div<$unit> for Length<L> where L: length::Unit {
-            type Output = Speed<L, $unit>;
+        impl<L> core::ops::Div<$unit> for $crate::Length<L>
+        where
+            L: $crate::length::Unit
+        {
+            type Output = $crate::Speed<L, $unit>;
             fn div(self, _unit: $unit) -> Self::Output {
-                Speed::new(self.quantity)
+                $crate::Speed::new(self.quantity)
             }
         }
     };
@@ -211,14 +235,6 @@ time_unit!(
     "ps",
     "㎔",
     0.000_000_000_001
-);
-
-time_unit!(
-    /** 14 Days */
-    Fortnight,
-    "fortnight",
-    "/fortnight",
-    14.0 * 24.0 * 60.0 * 60.0
 );
 
 #[cfg(test)]

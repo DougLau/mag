@@ -2,7 +2,7 @@
 //
 // Copyright (C) 2019-2021  Minnesota Department of Transportation
 //
-//! Base units of length.
+//! Units of length in one dimension.
 //!
 //! Each unit is defined relative to meters with a conversion factor.  They can
 //! be used to conveniently create [Length], [Area] and [Volume] structs.
@@ -31,9 +31,6 @@ extern crate alloc;
 
 pub(crate) mod lenpriv;
 
-use crate::length::lenpriv::{Area, Length, Volume};
-use core::ops::Mul;
-
 /// Unit definition for Length
 pub trait Unit {
     /// Unit abbreviation
@@ -48,48 +45,65 @@ pub trait Unit {
     }
 }
 
+/// Define a custom [unit] of length
+///
+/// * `unit` Unit struct name
+/// * `abbreviation` Standard unit abbreviation
+/// * `m_factor` Factor to convert to meters
+///
+/// # Example: Football Field
+/// ```rust
+/// use mag::{length_unit, length::yd};
+///
+/// length_unit!(FootballField, "fbf", 91.44);
+///
+/// assert_eq!((1 * FootballField).to(), 100 * yd);
+/// ```
+///
+/// [unit]: length/trait.Unit.html
+#[macro_export]
 macro_rules! length_unit {
-    ($(#[$meta:meta])* $unit:ident, $abbreviation:expr, $m_factor:expr) => {
+    ($(#[$doc:meta])* $unit:ident, $abbreviation:expr, $m_factor:expr) => {
 
-        $(#[$meta])*
+        $(#[$doc])*
         #[allow(non_camel_case_types)]
         #[derive(Debug, Copy, Clone, PartialEq)]
         pub struct $unit;
 
-        impl Unit for $unit {
+        impl $crate::length::Unit for $unit {
             const ABBREVIATION: &'static str = $abbreviation;
             const M_FACTOR: f64 = $m_factor;
         }
 
         // f64 * <unit> => Length
-        impl Mul<$unit> for f64 {
-            type Output = Length<$unit>;
+        impl core::ops::Mul<$unit> for f64 {
+            type Output = $crate::Length<$unit>;
             fn mul(self, _unit: $unit) -> Self::Output {
-                Length::new(self)
+                $crate::Length::new(self)
             }
         }
 
         // i32 * <unit> => Length
-        impl Mul<$unit> for i32 {
-            type Output = Length<$unit>;
+        impl core::ops::Mul<$unit> for i32 {
+            type Output = $crate::Length<$unit>;
             fn mul(self, _unit: $unit) -> Self::Output {
-                Length::new(f64::from(self))
+                $crate::Length::new(f64::from(self))
             }
         }
 
         // Length * <unit> => Area
-        impl Mul<$unit> for Length<$unit> {
-            type Output = Area<$unit>;
+        impl core::ops::Mul<$unit> for $crate::Length<$unit> {
+            type Output = $crate::Area<$unit>;
             fn mul(self, _unit: $unit) -> Self::Output {
-                Area::new(self.quantity)
+                $crate::Area::new(self.quantity)
             }
         }
 
         // Area * <unit> => Volume
-        impl Mul<$unit> for Area<$unit> {
-            type Output = Volume<$unit>;
+        impl core::ops::Mul<$unit> for $crate::Area<$unit> {
+            type Output = $crate::Volume<$unit>;
             fn mul(self, _unit: $unit) -> Self::Output {
-                Volume::new(self.quantity)
+                $crate::Volume::new(self.quantity)
             }
         }
     };

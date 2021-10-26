@@ -9,4 +9,5 @@ readme = "README.md"
 keywords = ["units", "measurement", "no_std"]
 edition = "2018"
 
-[dependencies]
+[dev-dependencies]
+approx = "0.5"

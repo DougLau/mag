@@ -2,7 +2,7 @@
 //
 // Copyright (C) 2021  Minnesota Department of Transportation
 //
-//! Base units of mass.
+//! Units of physical mass.
 //!
 //! Each unit is defined relative to grams with a conversion factor.  They can
 //! be used to conveniently create [Mass] structs.
@@ -24,9 +24,6 @@ extern crate alloc;
 
 pub(crate) mod masspriv;
 
-use crate::mass::masspriv::Mass;
-use core::ops::Mul;
-
 /// Unit definition for Mass
 pub trait Unit {
     /// Unit abbreviation
@@ -41,32 +38,51 @@ pub trait Unit {
     }
 }
 
+/// Define a custom [unit] of mass
+///
+/// * `unit` Unit struct name
+/// * `abbreviation` Standard unit abbreviation
+/// * `g_factor` Factor to convert to grams
+///
+/// # Example: Solar Mass
+/// ```rust
+/// use mag::{mass_unit, mass::kg};
+///
+/// mass_unit!(M, "M☉", 1.988_47e33);
+///
+/// let sun = 1 * M;
+/// assert_eq!(sun.to(), 1.988_47e30 * kg);
+/// assert_eq!(sun.to_string(), "1 M☉");
+/// ```
+///
+/// [unit]: mass/trait.Unit.html
+#[macro_export]
 macro_rules! mass_unit {
-    ($(#[$meta:meta])* $unit:ident, $abbreviation:expr, $g_factor:expr) => {
+    ($(#[$doc:meta])* $unit:ident, $abbreviation:expr, $g_factor:expr) => {
 
-        $(#[$meta])*
+        $(#[$doc])*
         #[allow(non_camel_case_types)]
         #[derive(Debug, Copy, Clone, PartialEq)]
         pub struct $unit;
 
-        impl Unit for $unit {
+        impl $crate::mass::Unit for $unit {
             const ABBREVIATION: &'static str = $abbreviation;
             const G_FACTOR: f64 = $g_factor;
         }
 
         // f64 * <unit> => Mass
-        impl Mul<$unit> for f64 {
-            type Output = Mass<$unit>;
+        impl core::ops::Mul<$unit> for f64 {
+            type Output = $crate::Mass<$unit>;
             fn mul(self, _unit: $unit) -> Self::Output {
-                Mass::new(self)
+                $crate::Mass::new(self)
             }
         }
 
         // i32 * <unit> => Mass
-        impl Mul<$unit> for i32 {
-            type Output = Mass<$unit>;
+        impl core::ops::Mul<$unit> for i32 {
+            type Output = $crate::Mass<$unit>;
             fn mul(self, _unit: $unit) -> Self::Output {
-                Mass::new(f64::from(self))
+                $crate::Mass::new(f64::from(self))
             }
         }
     };
