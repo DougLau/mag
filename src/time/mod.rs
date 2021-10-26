@@ -46,7 +46,7 @@ pub trait Unit {
     }
 }
 
-/// Define a custom time [unit]
+/// Define a custom [unit] of [time]
 ///
 /// * `unit` Unit struct name
 /// * `abbreviation` Standard unit abbreviation
@@ -68,6 +68,7 @@ pub trait Unit {
 /// assert_eq!(f.to::<h>(), 24 * 14 * h);
 /// ```
 ///
+/// [time]: struct.Period.html
 /// [unit]: time/trait.Unit.html
 #[macro_export]
 macro_rules! time_unit {

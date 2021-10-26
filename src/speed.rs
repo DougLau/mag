@@ -9,7 +9,7 @@ use core::fmt;
 use core::marker::PhantomData;
 use core::ops::{Add, Div, Mul, Sub};
 
-/// A quantity of _speed_.
+/// Quantity of _speed_.
 ///
 /// Speed is a derived quantity with [length unit]s and [time unit]s.
 ///

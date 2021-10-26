@@ -31,7 +31,9 @@ extern crate alloc;
 
 pub(crate) mod lenpriv;
 
-/// Unit definition for Length
+/// Unit definition for [Length]
+///
+/// [Length]: ../struct.Length.html
 pub trait Unit {
     /// Unit abbreviation
     const ABBREVIATION: &'static str;
@@ -45,7 +47,7 @@ pub trait Unit {
     }
 }
 
-/// Define a custom [unit] of length
+/// Define a custom [unit] of [length]
 ///
 /// * `unit` Unit struct name
 /// * `abbreviation` Standard unit abbreviation
@@ -60,7 +62,8 @@ pub trait Unit {
 /// assert_eq!((1 * FootballField).to(), 100 * yd);
 /// ```
 ///
-/// [unit]: length/trait.Unit.html
+/// [Length]: struct.Length.html
+/// [Unit]: length/trait.Unit.html
 #[macro_export]
 macro_rules! length_unit {
     ($(#[$doc:meta])* $unit:ident, $abbreviation:expr, $m_factor:expr) => {

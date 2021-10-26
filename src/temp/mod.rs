@@ -37,7 +37,7 @@ pub trait Unit {
     const K_ZERO: f64;
 }
 
-/// Define a custom temperature [unit]
+/// Define a custom [unit] of [temperature]
 ///
 /// * `unit` Unit struct name
 /// * `abbreviation` Standard unit abbreviation
@@ -66,6 +66,7 @@ pub trait Unit {
 /// );
 /// ```
 ///
+/// [temperature]: struct.Temperature.html
 /// [unit]: temp/trait.Unit.html
 #[macro_export]
 macro_rules! temp_unit {

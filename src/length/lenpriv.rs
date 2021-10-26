@@ -9,7 +9,7 @@ use core::fmt;
 use core::marker::PhantomData;
 use core::ops::{Add, Div, Mul, Sub};
 
-/// A one dimensional _length_, _distance_ or _range_.
+/// One dimensional _length_, _distance_ or _range_.
 ///
 /// Length is a base quantity with a specific [unit].
 ///
@@ -55,7 +55,7 @@ where
     unit: PhantomData<U>,
 }
 
-/// A two dimensional _area_.
+/// Two dimensional _area_.
 ///
 /// Area is a derived quantity with a specific [unit] squared.
 ///
@@ -96,7 +96,7 @@ where
     unit: PhantomData<U>,
 }
 
-/// A three dimensional _volume_.
+/// Three dimensional _volume_.
 ///
 /// Volume is a derived quantity with a specific [unit] cubed.
 ///

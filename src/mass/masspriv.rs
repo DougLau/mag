@@ -9,7 +9,7 @@ use core::fmt;
 use core::marker::PhantomData;
 use core::ops::{Add, Div, Mul, Sub};
 
-/// A quantity of mass.
+/// Quantity of mass.
 ///
 /// Mass is a base quantity with a specific [unit].
 ///

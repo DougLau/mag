@@ -38,7 +38,7 @@ pub trait Unit {
     }
 }
 
-/// Define a custom [unit] of mass
+/// Define a custom [unit] of [mass]
 ///
 /// * `unit` Unit struct name
 /// * `abbreviation` Standard unit abbreviation
@@ -55,6 +55,7 @@ pub trait Unit {
 /// assert_eq!(sun.to_string(), "1 M☉");
 /// ```
 ///
+/// [mass]: struct.Mass.html
 /// [unit]: mass/trait.Unit.html
 #[macro_export]
 macro_rules! mass_unit {

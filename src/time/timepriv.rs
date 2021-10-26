@@ -11,7 +11,7 @@ use core::fmt;
 use core::marker::PhantomData;
 use core::ops::{Add, Div, Mul, Sub};
 
-/// A _period_, _duration_ or _interval_ of time.
+/// _Period_, _duration_ or _interval_ of time.
 ///
 /// Period is a base quantity with a specific [unit].
 ///
@@ -53,7 +53,7 @@ where
     unit: PhantomData<U>,
 }
 
-/// _Temporal frequency_ for repeating events.
+/// Temporal _frequency_, or _rate_ over time.
 ///
 /// Frequency is a derived quantity with a specific [unit].
 ///
