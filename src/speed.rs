@@ -9,7 +9,7 @@ use core::fmt;
 use core::marker::PhantomData;
 use core::ops::{Add, Div, Mul, Sub};
 
-/// A measurement of _speed_.
+/// A quantity of _speed_.
 ///
 /// Speed is a derived quantity with [length unit]s and [time unit]s.
 ///
@@ -46,7 +46,7 @@ use core::ops::{Add, Div, Mul, Sub};
 /// [time unit]: time/index.html
 /// [to]: struct.Speed.html#method.to
 ///
-#[derive(Debug, Copy, Clone, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Speed<L, P>
 where
     L: length::Unit,
@@ -139,7 +139,7 @@ where
     L: length::Unit,
     P: time::Unit,
 {
-    /// Create a new length measurement
+    /// Create a new speed quantity
     pub fn new(quantity: f64) -> Self {
         Speed::<L, P> {
             quantity,

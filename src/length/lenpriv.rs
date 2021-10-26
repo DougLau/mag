@@ -43,7 +43,7 @@ use core::ops::{Add, Div, Mul, Sub};
 /// [unit]: length/index.html
 /// [to]: struct.Length.html#method.to
 ///
-#[derive(Debug, Copy, Clone, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Length<U>
 where
     U: Unit,
@@ -84,7 +84,7 @@ where
 /// [Length]: struct.Length.html
 /// [Volume]: struct.Volume.html
 ///
-#[derive(Debug, Copy, Clone, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Area<U>
 where
     U: Unit,
@@ -124,7 +124,7 @@ where
 /// [unit]: length/index.html
 /// [Length]: struct.Length.html
 ///
-#[derive(Debug, Copy, Clone, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Volume<U>
 where
     U: Unit,
@@ -144,7 +144,7 @@ impl<U> Length<U>
 where
     U: Unit,
 {
-    /// Create a new length measurement
+    /// Create a new length quantity
     pub fn new(quantity: f64) -> Self {
         Length::<U> {
             quantity,
@@ -163,7 +163,7 @@ impl<U> Area<U>
 where
     U: Unit,
 {
-    /// Create a new area measurement
+    /// Create a new area quantity
     pub fn new(quantity: f64) -> Self {
         Area::<U> {
             quantity,
@@ -183,7 +183,7 @@ impl<U> Volume<U>
 where
     U: Unit,
 {
-    /// Create a new volume measurement
+    /// Create a new volume quantity
     pub fn new(quantity: f64) -> Self {
         Volume::<U> {
             quantity,

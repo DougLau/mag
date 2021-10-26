@@ -41,7 +41,7 @@ use core::ops::{Add, Div, Mul, Sub};
 /// [unit]: time/index.html
 /// [to]: struct.Period.html#method.to
 ///
-#[derive(Debug, Copy, Clone, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Period<U>
 where
     U: Unit,
@@ -84,7 +84,7 @@ where
 /// [unit]: time/index.html
 /// [to]: struct.Frequency.html#method.to
 ///
-#[derive(Debug, Copy, Clone, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Frequency<U>
 where
     U: Unit,
@@ -123,7 +123,7 @@ impl<U> Period<U>
 where
     U: Unit,
 {
-    /// Create a new period measurement
+    /// Create a new period quantity
     pub fn new(quantity: f64) -> Self {
         Period::<U> {
             quantity,
@@ -165,7 +165,7 @@ impl<U> Frequency<U>
 where
     U: Unit,
 {
-    /// Create a new frequency measurement
+    /// Create a new frequency quantity
     pub fn new(quantity: f64) -> Self {
         Frequency::<U> {
             quantity,

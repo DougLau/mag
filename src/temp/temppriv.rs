@@ -37,7 +37,7 @@ use core::ops::{Add, Sub};
 /// [unit]: temp/index.html
 /// [to]: struct.Temperature.html#method.to
 ///
-#[derive(Debug, Copy, Clone, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Temperature<U>
 where
     U: Unit,
@@ -63,7 +63,7 @@ impl<U> Temperature<U>
 where
     U: Unit,
 {
-    /// Create a new temperature measurement
+    /// Create a new temperature quantity
     pub fn new(quantity: f64) -> Self {
         Temperature {
             quantity,

@@ -40,7 +40,7 @@ use core::ops::{Add, Div, Mul, Sub};
 /// [unit]: mass/index.html
 /// [to]: struct.Mass.html#method.to
 ///
-#[derive(Debug, Copy, Clone, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Mass<U>
 where
     U: Unit,
@@ -58,7 +58,7 @@ impl<U> Mass<U>
 where
     U: Unit,
 {
-    /// Create a new mass measurement
+    /// Create a new mass quantity
     pub fn new(quantity: f64) -> Self {
         Mass::<U> {
             quantity,
