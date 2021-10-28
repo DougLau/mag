@@ -22,227 +22,95 @@
 //! [Mass]: struct.Mass.html
 extern crate alloc;
 
-pub(crate) mod quan {
-    use core::fmt;
-    use core::marker::PhantomData;
-    use core::ops::{Add, Div, Mul, Sub};
-    use crate::mass::Unit;
+use crate::declare_unit;
+use crate::measure::Mass;
 
-    /// Quantity of mass.
-    ///
-    /// Mass is a base quantity with a specific [unit].
-    ///
-    /// ## Operations
-    ///
-    /// * f64 `*` [unit] `=>` Mass
-    /// * i32 `*` [unit] `=>` Mass
-    /// * Mass `+` Mass `=>` Mass
-    /// * Mass `-` Mass `=>` Mass
-    /// * Mass `*` f64 `=>` Mass
-    /// * f64 `*` Mass `=>` Mass
-    /// * Mass `/` f64 `=>` Mass
-    ///
-    /// Units must be the same for operations with two Mass operands.  The [to]
-    /// method can be used for conversion.
-    ///
-    /// ## Example
-    ///
-    /// ```rust
-    /// use mag::mass::kg;
-    ///
-    /// let a = 2.5 * kg;
-    /// let b = 4.5 * kg;
-    ///
-    /// assert_eq!(a.to_string(), "2.5 kg");
-    /// assert_eq!(a + b, 7 * kg);
-    /// ```
-    /// [unit]: ../mass/index.html
-    /// [to]: struct.Mass.html#method.to
-    ///
-    #[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
-    pub struct Mass<U>
-    where
-        U: Unit,
-    {
-        /// Mass quantity
-        pub quantity: f64,
-
-        /// Measurement unit
-        unit: PhantomData<U>,
-    }
-
-    impl_base_ops!(Mass, Unit);
-
-    impl<U> Mass<U>
-    where
-        U: Unit,
-    {
-        /// Create a new mass quantity
-        pub fn new(quantity: f64) -> Self {
-            Mass::<U> {
-                quantity,
-                unit: PhantomData,
-            }
-        }
-
-        /// Convert to specified units
-        pub fn to<T: Unit>(self) -> Mass<T> {
-            let quantity = self.quantity * U::factor::<T>();
-            Mass::new(quantity)
-        }
-    }
-
-    impl<U> fmt::Display for Mass<U>
-    where
-        U: Unit,
-    {
-        fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-            self.quantity.fmt(f)?;
-            write!(f, " {}", U::ABBREVIATION)
-        }
-    }
-}
-
-/// Unit definition for Mass
-pub trait Unit {
-    /// Unit abbreviation
-    const ABBREVIATION: &'static str;
-
-    /// Multiplication factor to convert to grams
-    const G_FACTOR: f64;
-
-    /// Multiplication factor to convert to another unit
-    fn factor<T: Unit>() -> f64 {
-        Self::G_FACTOR / T::G_FACTOR
-    }
-}
-
-/// Define a custom [unit] of [mass]
-///
-/// * `unit` Unit struct name
-/// * `abbreviation` Standard unit abbreviation
-/// * `g_factor` Factor to convert to grams
-///
-/// # Example: Solar Mass
-/// ```rust
-/// use mag::{mass_unit, mass::kg};
-///
-/// mass_unit!(M, "M☉", 1.988_47e33);
-///
-/// let sun = 1 * M;
-/// assert_eq!(sun.to(), 1.988_47e30 * kg);
-/// assert_eq!(sun.to_string(), "1 M☉");
-/// ```
-///
-/// [mass]: struct.Mass.html
-/// [unit]: mass/trait.Unit.html
-#[macro_export]
-macro_rules! mass_unit {
-    ($(#[$doc:meta])* $unit:ident, $abbreviation:expr, $g_factor:expr) => {
-
-        $(#[$doc])*
-        #[allow(non_camel_case_types)]
-        #[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
-        pub struct $unit;
-
-        impl $crate::mass::Unit for $unit {
-            const ABBREVIATION: &'static str = $abbreviation;
-            const G_FACTOR: f64 = $g_factor;
-        }
-
-        // f64 * <unit> => Mass
-        impl core::ops::Mul<$unit> for f64 {
-            type Output = $crate::quan::Mass<$unit>;
-            fn mul(self, _unit: $unit) -> Self::Output {
-                Self::Output::new(self)
-            }
-        }
-
-        // i32 * <unit> => Mass
-        impl core::ops::Mul<$unit> for i32 {
-            type Output = $crate::quan::Mass<$unit>;
-            fn mul(self, _unit: $unit) -> Self::Output {
-                Self::Output::new(f64::from(self))
-            }
-        }
-    };
-}
-
-mass_unit!(
+declare_unit!(
     /** Metric Ton / Tonne */
     t,
     "t",
-    1_000_000.0
+    Mass,
+    1_000_000.0,
 );
 
-mass_unit!(
+declare_unit!(
     /** Kilogram */
     kg,
     "kg",
-    1_000.0
+    Mass,
+    1_000.0,
 );
 
-mass_unit!(
+declare_unit!(
     /** Gram */
     g,
     "g",
-    1.0
+    Mass,
+    1.0,
 );
 
-mass_unit!(
+declare_unit!(
     /** Decigram */
     dg,
     "dg",
-    0.1
+    Mass,
+    0.1,
 );
 
-mass_unit!(
+declare_unit!(
     /** Centigram */
     cg,
     "cg",
-    0.01
+    Mass,
+    0.01,
 );
 
-mass_unit!(
+declare_unit!(
     /** Milligram */
     mg,
     "mg",
-    0.001
+    Mass,
+    0.001,
 );
 
-mass_unit!(
+declare_unit!(
     /** Microgram */
     ug,
     "μg",
-    0.000_001
+    Mass,
+    0.000_001,
 );
 
-mass_unit!(
+declare_unit!(
     /** Nanogram */
     ng,
     "ng",
-    0.000_000_001
+    Mass,
+    0.000_000_001,
 );
 
-mass_unit!(
+declare_unit!(
     /** Pound (imperial) */
     lb,
     "lb",
-    453.592_37
+    Mass,
+    453.592_37,
 );
 
-mass_unit!(
+declare_unit!(
     /** Slug (imperial) */
     sl,
     "sl",
-    14_593.903
+    Mass,
+    14_593.903,
 );
 
-mass_unit!(
+declare_unit!(
     /** Dalton (unified atomic mass) */
     Da,
     "Da",
-    1.660_539_066_60e-24
+    Mass,
+    1.660_539_066_60e-24,
 );
 
 #[cfg(test)]

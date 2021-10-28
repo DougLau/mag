@@ -10,5 +10,4 @@
 //! - [Mass]
 //! - [Temperature]
 //!
-pub use crate::mass::quan::Mass;
 pub use crate::temp::quan::Temperature;

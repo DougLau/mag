@@ -41,8 +41,8 @@ pub(crate) mod quan {
     /// * Temperature `+` Temperature `=>` Temperature
     /// * Temperature `-` Temperature `=>` Temperature
     ///
-    /// Units must be the same for operations with two Temperature operands.  The
-    /// [to] method can be used for conversion.
+    /// Units must be the same for operations with two Temperature operands.
+    /// The [to] method can be used for conversion.
     ///
     /// ```rust
     /// use mag::temp::{DegC, DegF};

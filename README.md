@@ -1,5 +1,4 @@
-[Mag] is a library for dealing with physical quantities and units, using the
-International System of Quantities.
+[Mag] is a library for dealing with physical quantities and units.
 
 Quantities are created by multiplying scalar values by a unit type.  These units
 are named after common abbreviations:
@@ -23,6 +22,7 @@ assert_eq!(e.to_string(), "55 mi/h");
 ## Highlights
 
 * Easy to understand and use
+* Performs conversions between units (SI, imperial)
 * Units are not discarded when creating quantities
 * Fast compile time
 * No external dependencies
