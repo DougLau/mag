@@ -13,235 +13,87 @@
 //! ```rust
 //! use mag::temp::{DegC, DegF};
 //!
-//! let a = 22.8 * DegC; // Temperature<DegC>
-//! let b = 98.6 * DegF; // Temperature<DegF>
+//! let a = 22.8 * DegC;
+//! let b = 98.6 * DegF;
 //!
 //! assert_eq!(a.to_string(), "22.8 °C");
 //! assert_eq!(b.to_string(), "98.6 °F");
 //! assert_eq!(b.to(), 37 * DegC);
 //! ```
-//! [Temperature]: ../quan/struct.Temperature.html
 //!
-extern crate alloc;
+//! # Example: Delisle
+//! ```rust
+//! use approx::assert_relative_eq;
+//! use mag::{declare_unit, temp::DegC, measure::Temperature};
+//!
+//! declare_unit!(Delisle, "°D", Temperature, -2.0 / 3.0, 559.73,);
+//!
+//! let boiling = 0 * Delisle;
+//! assert_eq!(boiling.to_string(), "0 °D");
+//! assert_relative_eq!(
+//!     boiling.to::<DegC>().value,
+//!     100.0,
+//!     max_relative = 0.000_1
+//! );
+//! let freezing = 0 * DegC;
+//! assert_relative_eq!(
+//!     freezing.to::<Delisle>().value,
+//!     150.0,
+//!     max_relative = 0.000_1
+//! );
+//! ```
+use crate::declare_unit;
+use crate::measure::Temperature;
 
-pub(crate) mod quan {
-    use crate::temp::Unit;
-    use core::fmt;
-    use core::marker::PhantomData;
-    use core::ops::{Add, Sub};
-
-    /// Thermodynamic _temperature_.
-    ///
-    /// Temperature is a base quantity with a specific [unit].
-    ///
-    /// ## Operations
-    ///
-    /// * f64 `*` [unit] `=>` Temperature
-    /// * i32 `*` [unit] `=>` Temperature
-    /// * Temperature `+` Temperature `=>` Temperature
-    /// * Temperature `-` Temperature `=>` Temperature
-    ///
-    /// Units must be the same for operations with two Temperature operands.
-    /// The [to] method can be used for conversion.
-    ///
-    /// ```rust
-    /// use mag::temp::{DegC, DegF};
-    ///
-    /// let a = 72.5 * DegF;
-    /// let b = 100 * DegC;
-    ///
-    /// assert_eq!(a.to_string(), "72.5 °F");
-    /// assert_eq!(b.to_string(), "100 °C");
-    /// ```
-    /// [unit]: ../temp/index.html
-    /// [to]: struct.Temperature.html#method.to
-    ///
-    #[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
-    pub struct Temperature<U>
-    where
-        U: Unit,
-    {
-        /// Temperature quantity
-        pub quantity: f64,
-
-        /// Measurement unit
-        unit: PhantomData<U>,
-    }
-
-    impl<U> fmt::Display for Temperature<U>
-    where
-        U: Unit,
-    {
-        fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-            self.quantity.fmt(f)?;
-            write!(f, " {}", U::ABBREVIATION)
-        }
-    }
-
-    impl<U> Temperature<U>
-    where
-        U: Unit,
-    {
-        /// Create a new temperature quantity
-        pub fn new(quantity: f64) -> Self {
-            Temperature {
-                quantity,
-                unit: PhantomData,
-            }
-        }
-
-        /// Convert to specified units
-        pub fn to<T: Unit>(self) -> Temperature<T> {
-            let dk = (self.quantity - U::K_ZERO) * U::K_FACTOR;
-            let quantity = dk / T::K_FACTOR + T::K_ZERO;
-            Temperature::new(quantity)
-        }
-    }
-
-    // Temperature + Temperature => Temperature
-    impl<U> Add for Temperature<U>
-    where
-        U: Unit,
-    {
-        type Output = Self;
-        fn add(self, other: Self) -> Self::Output {
-            Self::new(self.quantity + other.quantity)
-        }
-    }
-
-    // Temperature - Temperature => Temperature
-    impl<U> Sub for Temperature<U>
-    where
-        U: Unit,
-    {
-        type Output = Self;
-        fn sub(self, other: Self) -> Self::Output {
-            Self::new(self.quantity - other.quantity)
-        }
-    }
-}
-
-/// Unit definition for temperature
-pub trait Unit {
-    /// Unit abbreviation
-    const ABBREVIATION: &'static str;
-
-    /// Multiplication factor to convert to Kelvin
-    const K_FACTOR: f64;
-
-    /// Value at aero degrees Kelvin
-    const K_ZERO: f64;
-}
-
-/// Define a custom [unit] of [temperature]
-///
-/// * `unit` Unit struct name
-/// * `abbreviation` Standard unit abbreviation
-/// * `k_factor` Factor to convert to degrees Kelvin
-/// * `k_zero` Value at absolute zero
-///
-/// # Example: Delisle
-/// ```rust
-/// use approx::assert_relative_eq;
-/// use mag::{temp_unit, temp::DegC};
-///
-/// temp_unit!(Delisle, "°D", -2.0 / 3.0, 559.73);
-///
-/// let boiling = 0 * Delisle;
-/// assert_eq!(boiling.to_string(), "0 °D");
-/// assert_relative_eq!(
-///     boiling.to::<DegC>().quantity,
-///     100.0,
-///     max_relative = 0.000_1
-/// );
-/// let freezing = 0 * DegC;
-/// assert_relative_eq!(
-///     freezing.to::<Delisle>().quantity,
-///     150.0,
-///     max_relative = 0.000_1
-/// );
-/// ```
-///
-/// [temperature]: struct.Temperature.html
-/// [unit]: temp/trait.Unit.html
-#[macro_export]
-macro_rules! temp_unit {
-    (
-        $(#[$doc:meta])* $unit:ident,
-        $abbreviation:expr,
-        $k_factor:expr,
-        $k_zero:expr
-    ) => {
-        $(#[$doc])*
-        #[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
-        pub struct $unit;
-
-        impl $crate::temp::Unit for $unit {
-            const ABBREVIATION: &'static str = $abbreviation;
-            const K_FACTOR: f64 = $k_factor;
-            const K_ZERO: f64 = $k_zero;
-        }
-
-        // f64 * <unit> => Temperature
-        impl core::ops::Mul<$unit> for f64 {
-            type Output = $crate::quan::Temperature<$unit>;
-            fn mul(self, _other: $unit) -> Self::Output {
-                Self::Output::new(self)
-            }
-        }
-
-        // i32 * <unit> => Temperature
-        impl core::ops::Mul<$unit> for i32 {
-            type Output = $crate::quan::Temperature<$unit>;
-            fn mul(self, _other: $unit) -> Self::Output {
-                Self::Output::new(f64::from(self))
-            }
-        }
-    };
-}
-
-temp_unit!(
+declare_unit!(
     /** Degrees Celsius / Centigrade */
     DegC,
     "°C",
+    Temperature,
     1.0,
-    -273.15
+    -273.15,
 );
 
-temp_unit!(
+declare_unit!(
     /** Degrees Kelvin */
     DegK,
     "°K",
+    Temperature,
     1.0,
-    0.0
+    0.0,
 );
 
-temp_unit!(
+declare_unit!(
     /** Degrees Fahrenheit */
     DegF,
     "°F",
+    Temperature,
     5.0 / 9.0,
-    -459.67
+    -459.67,
 );
 
-temp_unit!(
+declare_unit!(
     /** Degrees Rankine */
     DegR,
     "°R",
+    Temperature,
     5.0 / 9.0,
-    0.0
+    0.0,
 );
 
-temp_unit!(
+declare_unit!(
     /** Degrees Réaumur */
     DegRe,
     "°Ré",
+    Temperature,
     0.8,
-    -273.15
+    -273.15,
 );
 
 #[cfg(test)]
 mod test {
+    extern crate alloc;
+
     use super::*;
     use alloc::{format, string::ToString};
 

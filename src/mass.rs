@@ -20,8 +20,6 @@
 //! assert_eq!(b.to_string(), "5 g");
 //! ```
 //! [Mass]: struct.Mass.html
-extern crate alloc;
-
 use crate::declare_unit;
 use crate::measure::Mass;
 
@@ -115,6 +113,8 @@ declare_unit!(
 
 #[cfg(test)]
 mod test {
+    extern crate alloc;
+
     use super::*;
     use alloc::string::ToString;
 

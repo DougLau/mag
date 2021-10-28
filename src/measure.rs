@@ -9,7 +9,6 @@ use core::ops::{Add, Div, Mul, Sub};
 
 pub struct Length;
 pub struct Time;
-pub struct Temperature;
 
 /// Measure of mass.
 ///
@@ -42,10 +41,27 @@ pub struct Temperature;
 ///
 /// [mass]: struct.Mass.html
 /// [unit]: ../mass/index.html
-/// [to]: struct.Mass.html#method.to
+/// [to]: struct.Quantity.html#method.to
 ///
 #[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
 pub struct Mass;
+
+/// Thermodynamic _temperature_.
+///
+/// Temperature is a "base quantity" with units such as DegC and DegF.
+///
+/// ## Example
+///
+/// ```rust
+/// use mag::temp::{DegC, DegF};
+///
+/// let a = 98.6 * DegF;
+/// assert_eq!(a.to_string(), "98.6 °F");
+/// assert_eq!(a.to(), 37 * DegC);
+/// assert_eq!((22.8 * DegC).to_string(), "22.8 °C");
+/// ```
+#[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
+pub struct Temperature;
 
 /// Unit of measure
 pub trait Unit {
@@ -55,15 +71,18 @@ pub trait Unit {
     /// Factor to convert to base unit
     const FACTOR: f64;
 
+    /// Value of (absolute) zero
+    const ZERO: f64;
+
     /// Measure (length, mass, etc.)
     type Measure;
 
-    /// Factor to convert to another unit of the same measure
-    fn factor<T>() -> f64
+    /// Convert a value to another unit of the same measure
+    fn convert<T>(val: f64) -> f64
     where
         T: Unit<Measure = Self::Measure>,
     {
-        Self::FACTOR / T::FACTOR
+        val * (Self::FACTOR / T::FACTOR)
     }
 }
 
@@ -72,6 +91,15 @@ pub trait MulUnit {}
 
 impl MulUnit for Mass {}
 
+/// Define a custom [unit] of measure.
+///
+/// * `unit` Unit struct name
+/// * `abbreviation` Standard unit abbreviation
+/// * `measure` A base or derived measure
+/// * `factor` Factor to convert
+/// * `zero` (Absolute) zero point
+///
+/// [Unit]: measure/trait.Unit.html
 #[macro_export]
 macro_rules! declare_unit {
     ($(#[$doc:meta])*
@@ -89,6 +117,49 @@ macro_rules! declare_unit {
             type Measure = $measure;
             const ABBREVIATION: &'static str = $abbreviation;
             const FACTOR: f64 = $factor;
+            const ZERO: f64 = 0.0;
+        }
+
+        impl core::ops::Mul<$unit> for f64 {
+            type Output = $crate::measure::Quantity<$unit>;
+            fn mul(self, _unit: $unit) -> Self::Output {
+                Self::Output::new(self)
+            }
+        }
+
+        impl core::ops::Mul<$unit> for i32 {
+            type Output = $crate::measure::Quantity<$unit>;
+            fn mul(self, _unit: $unit) -> Self::Output {
+                Self::Output::new(self)
+            }
+        }
+    };
+    ($(#[$doc:meta])*
+        $unit:ident,
+        $abbreviation:expr,
+        $measure:ident,
+        $factor:expr,
+        $zero:expr,
+    ) => {
+        $(#[$doc])*
+        #[allow(non_camel_case_types)]
+        #[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
+        pub struct $unit;
+
+        impl $crate::measure::Unit for $unit {
+            type Measure = $measure;
+            const ABBREVIATION: &'static str = $abbreviation;
+            const FACTOR: f64 = $factor;
+            const ZERO: f64 = $zero;
+
+            /// Convert a value to another unit of the same measure
+            fn convert<T>(val: f64) -> f64
+            where
+                T: $crate::measure::Unit<Measure = Self::Measure>,
+            {
+                let v = (val - Self::ZERO) * Self::FACTOR;
+                v / T::FACTOR + T::ZERO
+            }
         }
 
         impl core::ops::Mul<$unit> for f64 {
@@ -150,8 +221,7 @@ where
     where
         T: Unit<Measure = <U>::Measure>,
     {
-        let value = self.value * U::factor::<T>();
-        Quantity::new(value)
+        Quantity::new(U::convert::<T>(self.value))
     }
 }
 
