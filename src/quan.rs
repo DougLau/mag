@@ -1,4 +1,4 @@
-// measure.rs
+// quan.rs
 //
 // Copyright (C) 2021  Douglas P Lau
 //
@@ -7,15 +7,9 @@ use core::fmt;
 use core::marker::PhantomData;
 use core::ops::{Add, Div, Mul, Sub};
 
-pub struct Length;
-pub struct Time;
-
 /// Measure of mass.
 ///
 /// Mass is a "base quantity", with units such as `kg` and `lb`.
-///
-/// Units must be the same for operations with two Mass operands.  The [to]
-/// method can be used for conversion.
 ///
 /// ## Example
 ///
@@ -30,7 +24,7 @@ pub struct Time;
 ///
 /// # Example: Solar Mass Units
 /// ```rust
-/// use mag::{declare_unit, mass::kg, measure::Mass};
+/// use mag::{declare_unit, mass::kg, quan::Mass};
 ///
 /// declare_unit!(M, "M☉", Mass, 1.988_47e33,);
 ///
@@ -86,11 +80,6 @@ pub trait Unit {
     }
 }
 
-/// Marker trait for units which can be scaled by multiplication (or division)
-pub trait MulUnit {}
-
-impl MulUnit for Mass {}
-
 /// Define a custom [unit] of measure.
 ///
 /// * `unit` Unit struct name
@@ -99,7 +88,7 @@ impl MulUnit for Mass {}
 /// * `factor` Factor to convert
 /// * `zero` (Absolute) zero point
 ///
-/// [Unit]: measure/trait.Unit.html
+/// [Unit]: quan/trait.Unit.html
 #[macro_export]
 macro_rules! declare_unit {
     ($(#[$doc:meta])*
@@ -113,7 +102,7 @@ macro_rules! declare_unit {
         #[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
         pub struct $unit;
 
-        impl $crate::measure::Unit for $unit {
+        impl $crate::quan::Unit for $unit {
             type Measure = $measure;
             const ABBREVIATION: &'static str = $abbreviation;
             const FACTOR: f64 = $factor;
@@ -121,14 +110,14 @@ macro_rules! declare_unit {
         }
 
         impl core::ops::Mul<$unit> for f64 {
-            type Output = $crate::measure::Quantity<$unit>;
+            type Output = $crate::quan::Quantity<$unit>;
             fn mul(self, _unit: $unit) -> Self::Output {
                 Self::Output::new(self)
             }
         }
 
         impl core::ops::Mul<$unit> for i32 {
-            type Output = $crate::measure::Quantity<$unit>;
+            type Output = $crate::quan::Quantity<$unit>;
             fn mul(self, _unit: $unit) -> Self::Output {
                 Self::Output::new(self)
             }
@@ -146,7 +135,7 @@ macro_rules! declare_unit {
         #[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
         pub struct $unit;
 
-        impl $crate::measure::Unit for $unit {
+        impl $crate::quan::Unit for $unit {
             type Measure = $measure;
             const ABBREVIATION: &'static str = $abbreviation;
             const FACTOR: f64 = $factor;
@@ -155,7 +144,7 @@ macro_rules! declare_unit {
             /// Convert a value to another unit of the same measure
             fn convert<T>(val: f64) -> f64
             where
-                T: $crate::measure::Unit<Measure = Self::Measure>,
+                T: $crate::quan::Unit<Measure = Self::Measure>,
             {
                 let v = (val - Self::ZERO) * Self::FACTOR;
                 v / T::FACTOR + T::ZERO
@@ -163,14 +152,14 @@ macro_rules! declare_unit {
         }
 
         impl core::ops::Mul<$unit> for f64 {
-            type Output = $crate::measure::Quantity<$unit>;
+            type Output = $crate::quan::Quantity<$unit>;
             fn mul(self, _unit: $unit) -> Self::Output {
                 Self::Output::new(self)
             }
         }
 
         impl core::ops::Mul<$unit> for i32 {
-            type Output = $crate::measure::Quantity<$unit>;
+            type Output = $crate::quan::Quantity<$unit>;
             fn mul(self, _unit: $unit) -> Self::Output {
                 Self::Output::new(self)
             }
@@ -180,15 +169,17 @@ macro_rules! declare_unit {
 
 /// Quantity is a value with an associated unit
 ///
+/// Units must be the same for operations with two Quantity operands.  The [to]
+/// method can be used for conversion.
+///
 /// ## Operations
 ///
-/// * f64 `*` [Unit] `=>` Quantity<Unit>
-/// * i32 `*` [Unit] `=>` Quantity<Unit>
-/// * Mass `+` Mass `=>` Mass
-/// * Mass `-` Mass `=>` Mass
-/// * Mass `*` f64 `=>` Mass
-/// * f64 `*` Mass `=>` Mass
-/// * Mass `/` f64 `=>` Mass
+/// * f64 `*` [Unit] `=> Quantity<Unit>`
+/// * i32 `*` [Unit] `=> Quantity<Unit>`
+/// * `Quantity<Unit> + Quantity<Unit> => Quantity<Unit>`
+/// * `Quantity<Unit> - Quantity<Unit> => Quantity<Unit>`
+///
+/// [to]: #method.to
 #[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
 pub struct Quantity<U>
 where
@@ -205,7 +196,7 @@ impl<U> Quantity<U>
 where
     U: Unit,
 {
-    /// Create a new measure
+    /// Create a new quantity
     pub fn new<V>(value: V) -> Self
     where
         V: Into<f64>,
@@ -255,9 +246,19 @@ where
     }
 }
 
-impl<U, V> Mul<V> for Quantity<U>
+/// Marker trait for units which can be scaled by multiplication (or division)
+///
+/// * `Quantity<Unit> * f64 => Quantity<Unit>`
+/// * `f64 * Quantity<Unit> => Quantity<Unit>`
+/// * `Quantity<Unit> / f64 => Quantity<Unit>`
+pub trait MulUnit {}
+
+impl MulUnit for Mass {}
+
+impl<U, M, V> Mul<V> for Quantity<U>
 where
-    U: Unit,
+    U: Unit<Measure = M>,
+    M: MulUnit,
     V: Into<f64>,
 {
     type Output = Self;

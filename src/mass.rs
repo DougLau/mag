@@ -13,15 +13,15 @@
 //! ```rust
 //! use mag::mass::{g, kg};
 //!
-//! let a = 1.2 * kg; // Mass<kg>
-//! let b = 5 * g; // Mass<g>
+//! let a = 1.2 * kg;
+//! let b = 5 * g;
 //!
 //! assert_eq!(a.to_string(), "1.2 kg");
 //! assert_eq!(b.to_string(), "5 g");
 //! ```
 //! [Mass]: struct.Mass.html
 use crate::declare_unit;
-use crate::measure::Mass;
+use crate::quan::Mass;
 
 declare_unit!(
     /** Metric Ton / Tonne */

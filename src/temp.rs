@@ -24,7 +24,7 @@
 //! # Example: Delisle
 //! ```rust
 //! use approx::assert_relative_eq;
-//! use mag::{declare_unit, temp::DegC, measure::Temperature};
+//! use mag::{declare_unit, temp::DegC, quan::Temperature};
 //!
 //! declare_unit!(Delisle, "°D", Temperature, -2.0 / 3.0, 559.73,);
 //!
@@ -43,7 +43,7 @@
 //! );
 //! ```
 use crate::declare_unit;
-use crate::measure::Temperature;
+use crate::quan::Temperature;
 
 declare_unit!(
     /** Degrees Celsius / Centigrade */

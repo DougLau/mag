@@ -80,7 +80,7 @@ macro_rules! impl_base_ops {
 
 pub mod length;
 pub mod mass;
-pub mod measure;
+pub mod quan;
 mod speed;
 pub mod temp;
 pub mod time;
