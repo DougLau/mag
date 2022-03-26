@@ -1,7 +1,7 @@
 // time.rs
 //
 // Copyright (C) 2019-2021  Minnesota Department of Transportation
-// Copyright (C) 2019-2021  Douglas P Lau
+// Copyright (C) 2019-2022  Douglas P Lau
 //
 //! Units of time.
 //!
@@ -26,8 +26,6 @@
 //! [Frequency]: ../struct.Frequency.html
 //! [Period]: ../struct.Period.html
 //!
-extern crate alloc;
-
 pub(crate) mod timepriv;
 
 /// Unit definition for time

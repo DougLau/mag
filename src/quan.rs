@@ -2,7 +2,6 @@
 //
 // Copyright (C) 2021  Douglas P Lau
 //
-
 use core::fmt;
 use core::marker::PhantomData;
 use core::ops::{Add, Div, Mul, Sub};

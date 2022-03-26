@@ -7,7 +7,7 @@ documentation = "https://docs.rs/mag"
 repository = "https://github.com/DougLau/mag"
 readme = "README.md"
 keywords = ["units", "measurement", "no_std"]
-edition = "2018"
+edition = "2021"
 
 [dev-dependencies]
 approx = "0.5"
