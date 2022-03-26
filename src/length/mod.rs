@@ -1,7 +1,7 @@
 // length.rs
 //
 // Copyright (C) 2019-2021  Minnesota Department of Transportation
-// Copyright (C) 2019-2021  Douglas P Lau
+// Copyright (C) 2019-2022  Douglas P Lau
 //
 //! Units of length in one dimension.
 //!
@@ -36,8 +36,8 @@ pub(crate) mod lenpriv;
 ///
 /// [Length]: ../struct.Length.html
 pub trait Unit {
-    /// Unit abbreviation
-    const ABBREVIATION: &'static str;
+    /// Unit label
+    const LABEL: &'static str;
 
     /// Multiplication factor to convert to meters
     const M_FACTOR: f64;
@@ -51,7 +51,7 @@ pub trait Unit {
 /// Define a custom [unit] of [length]
 ///
 /// * `unit` Unit struct name
-/// * `abbreviation` Standard unit abbreviation
+/// * `label` Standard unit label
 /// * `m_factor` Factor to convert to meters
 ///
 /// # Example: Football Field
@@ -67,7 +67,7 @@ pub trait Unit {
 /// [Unit]: length/trait.Unit.html
 #[macro_export]
 macro_rules! length_unit {
-    ($(#[$doc:meta])* $unit:ident, $abbreviation:expr, $m_factor:expr) => {
+    ($(#[$doc:meta])* $unit:ident, $label:expr, $m_factor:expr) => {
 
         $(#[$doc])*
         #[allow(non_camel_case_types)]
@@ -75,7 +75,7 @@ macro_rules! length_unit {
         pub struct $unit;
 
         impl $crate::length::Unit for $unit {
-            const ABBREVIATION: &'static str = $abbreviation;
+            const LABEL: &'static str = $label;
             const M_FACTOR: f64 = $m_factor;
         }
 

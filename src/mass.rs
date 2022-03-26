@@ -3,7 +3,7 @@
 // Copyright (C) 2021  Minnesota Department of Transportation
 // Copyright (C) 2021  Douglas P Lau
 //
-//! Units of physical [Mass].
+//! Units of physical mass.
 //!
 //! Each unit is defined relative to grams with a conversion factor.  They can
 //! be used to conveniently create Mass quantities.
@@ -19,7 +19,6 @@
 //! assert_eq!(a.to_string(), "1.2 kg");
 //! assert_eq!(b.to_string(), "5 g");
 //! ```
-//! [Mass]: struct.Mass.html
 use crate::declare_unit;
 use crate::quan::Mass;
 

@@ -1,7 +1,7 @@
 // speed.rs
 //
 // Copyright (C) 2019-2021  Minnesota Department of Transportation
-// Copyright (C) 2019-2021  Douglas P Lau
+// Copyright (C) 2019-2022  Douglas P Lau
 //
 //! Private module for speed structs
 //!
@@ -167,7 +167,7 @@ where
 {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         self.quantity.fmt(f)?;
-        write!(f, " {}/{}", L::ABBREVIATION, P::ABBREVIATION)
+        write!(f, " {}/{}", L::LABEL, P::LABEL)
     }
 }
 

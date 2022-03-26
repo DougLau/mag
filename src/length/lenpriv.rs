@@ -1,7 +1,7 @@
 // lenpriv.rs
 //
 // Copyright (C) 2019-2021  Minnesota Department of Transportation
-// Copyright (C) 2019-2021  Douglas P Lau
+// Copyright (C) 2019-2022  Douglas P Lau
 //
 //! Private module for length structs
 //!
@@ -206,7 +206,7 @@ where
 {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         self.quantity.fmt(f)?;
-        write!(f, " {}", U::ABBREVIATION)
+        write!(f, " {}", U::LABEL)
     }
 }
 
@@ -216,7 +216,7 @@ where
 {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         self.quantity.fmt(f)?;
-        write!(f, " {}²", U::ABBREVIATION)
+        write!(f, " {}²", U::LABEL)
     }
 }
 
@@ -226,7 +226,7 @@ where
 {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         self.quantity.fmt(f)?;
-        write!(f, " {}³", U::ABBREVIATION)
+        write!(f, " {}³", U::LABEL)
     }
 }
 

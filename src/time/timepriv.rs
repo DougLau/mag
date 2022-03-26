@@ -1,7 +1,7 @@
 // timepriv.rs
 //
 // Copyright (C) 2019-2021  Minnesota Department of Transportation
-// Copyright (C) 2019-2021  Douglas P Lau
+// Copyright (C) 2019-2022  Douglas P Lau
 //
 //! Private module for time structs
 //!
@@ -106,7 +106,7 @@ where
 {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         self.quantity.fmt(f)?;
-        write!(f, " {}", U::ABBREVIATION)
+        write!(f, " {}", U::LABEL)
     }
 }
 

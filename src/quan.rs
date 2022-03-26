@@ -1,6 +1,6 @@
 // quan.rs
 //
-// Copyright (C) 2021  Douglas P Lau
+// Copyright (C) 2021-2022  Douglas P Lau
 //
 use core::fmt;
 use core::marker::PhantomData;
@@ -58,8 +58,8 @@ pub struct Temperature;
 
 /// Unit of measure
 pub trait Unit {
-    /// Unit abbreviation
-    const ABBREVIATION: &'static str;
+    /// Unit label
+    const LABEL: &'static str;
 
     /// Factor to convert to base unit
     const FACTOR: f64;
@@ -82,7 +82,7 @@ pub trait Unit {
 /// Define a custom [unit] of measure.
 ///
 /// * `unit` Unit struct name
-/// * `abbreviation` Standard unit abbreviation
+/// * `label` Standard unit label
 /// * `measure` A base or derived measure
 /// * `factor` Factor to convert
 /// * `zero` (Absolute) zero point
@@ -92,7 +92,7 @@ pub trait Unit {
 macro_rules! declare_unit {
     ($(#[$doc:meta])*
         $unit:ident,
-        $abbreviation:expr,
+        $label:expr,
         $measure:ident,
         $factor:expr,
     ) => {
@@ -103,7 +103,7 @@ macro_rules! declare_unit {
 
         impl $crate::quan::Unit for $unit {
             type Measure = $measure;
-            const ABBREVIATION: &'static str = $abbreviation;
+            const LABEL: &'static str = $label;
             const FACTOR: f64 = $factor;
             const ZERO: f64 = 0.0;
         }
@@ -124,7 +124,7 @@ macro_rules! declare_unit {
     };
     ($(#[$doc:meta])*
         $unit:ident,
-        $abbreviation:expr,
+        $label:expr,
         $measure:ident,
         $factor:expr,
         $zero:expr,
@@ -136,7 +136,7 @@ macro_rules! declare_unit {
 
         impl $crate::quan::Unit for $unit {
             type Measure = $measure;
-            const ABBREVIATION: &'static str = $abbreviation;
+            const LABEL: &'static str = $label;
             const FACTOR: f64 = $factor;
             const ZERO: f64 = $zero;
 
@@ -221,7 +221,7 @@ where
 {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         self.value.fmt(f)?;
-        write!(f, " {}", U::ABBREVIATION)
+        write!(f, " {}", U::LABEL)
     }
 }
 

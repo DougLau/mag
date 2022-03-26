@@ -30,10 +30,10 @@ pub(crate) mod timepriv;
 
 /// Unit definition for time
 pub trait Unit {
-    /// Unit abbreviation
-    const ABBREVIATION: &'static str;
+    /// Unit label
+    const LABEL: &'static str;
 
-    /// Inverse unit abbreviation
+    /// Inverse unit label
     const INVERSE: &'static str;
 
     /// Multiplication factor to convert to seconds
@@ -48,7 +48,7 @@ pub trait Unit {
 /// Define a custom [unit] of [time]
 ///
 /// * `unit` Unit struct name
-/// * `abbreviation` Standard unit abbreviation
+/// * `label` Standard unit label
 /// * `inverse` Inverse time unit (frequency)
 /// * `s_factor` Factor to convert to seconds
 ///
@@ -73,7 +73,7 @@ pub trait Unit {
 macro_rules! time_unit {
     (
         $(#[$doc:meta])* $unit:ident,
-        $abbreviation:expr,
+        $label:expr,
         $inverse:expr,
         $s_factor:expr
     ) => {
@@ -83,7 +83,7 @@ macro_rules! time_unit {
         pub struct $unit;
 
         impl $crate::time::Unit for $unit {
-            const ABBREVIATION: &'static str = $abbreviation;
+            const LABEL: &'static str = $label;
             const INVERSE: &'static str = $inverse;
             const S_FACTOR: f64 = $s_factor;
         }
