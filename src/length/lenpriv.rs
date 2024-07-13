@@ -103,7 +103,7 @@ where
 ///
 /// ## Operations
 ///
-/// * Volume `+` Volum `=>` Volume
+/// * Volume `+` Volume `=>` Volume
 /// * Volume `-` Volume `=>` Volume
 /// * Volume `*` f64 `=>` Volume
 /// * Volume `/` f64 `=>` Volume
