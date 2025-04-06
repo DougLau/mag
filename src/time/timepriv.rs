@@ -7,7 +7,7 @@
 //!
 extern crate alloc;
 
-use crate::{length, time::Unit, Length, Speed};
+use crate::{Length, Speed, length, time::Unit};
 use core::fmt;
 use core::marker::PhantomData;
 use core::ops::{Add, Div, Mul, Sub};
